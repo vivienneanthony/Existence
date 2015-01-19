@@ -1,0 +1,2 @@
+Materials/clothingblack.xml
+Materials/clothinggreen.xml

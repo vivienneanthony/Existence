@@ -1,0 +1,2 @@
+Materials/hanger100diffuse.xml
+Materials/hanger100glass.xml

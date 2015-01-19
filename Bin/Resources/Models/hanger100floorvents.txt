@@ -1,0 +1,1 @@
+Materials/hanger100diffuse.xml

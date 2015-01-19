@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<scene id="1">
+	<attribute name="Name" value="" />
+	<attribute name="Time Scale" value="1" />
+	<attribute name="Smoothing Constant" value="50" />
+	<attribute name="Snap Threshold" value="5" />
+	<attribute name="Elapsed Time" value="41.0191" />
+	<attribute name="Next Replicated Node ID" value="1" />
+	<attribute name="Next Replicated Component ID" value="34535" />
+	<attribute name="Next Local Node ID" value="16811783" />
+	<attribute name="Next Local Component ID" value="16777318" />
+	<attribute name="Variables" />
+	<attribute name="Variable Names" value="" />
+	<component type="Octree" id="1" />
+	<component type="PhysicsWorld" id="2" />
+	<component type="DebugRenderer" id="3" />
+	<node id="16798325">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Terrain" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Terrain" id="16777303">
+			<attribute name="Height Map" value="Image;Textures/heightmap2.png" />
+			<attribute name="Material" value="Material;Materials/Terrain.xml" />
+			<attribute name="Smooth Height Map" value="true" />
+			<attribute name="Is Occluder" value="true" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="RigidBody" id="16777304">
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16777305">
+			<attribute name="Shape Type" value="Terrain" />
+		</component>
+	</node>
+	<node id="16777281">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Sunlight" />
+		<attribute name="Position" value="0 15.2658 0" />
+		<attribute name="Rotation" value="0.985681 0.168619 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Light" id="16777217">
+			<attribute name="Light Type" value="Directional" />
+			<attribute name="Brightness Multiplier" value="0.5" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+	</node>
+	<node id="16778902">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Camera" />
+		<attribute name="Position" value="-13.2652 24.3692 43.1406" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Camera" id="16777312">
+			<attribute name="Aspect Ratio" value="1.78218" />
+		</component>
+	</node>
+	<node id="16788712">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Suzanne" />
+		<attribute name="Position" value="-11.053 19.1677 59.4517" />
+		<attribute name="Rotation" value="0.598356 -0.169151 -0.648757 -0.438718" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16777296">
+			<attribute name="Model" value="Model;Models/Suzanne.mdl" />
+			<attribute name="Material" value="Material;Materials/SuzanneSurface.xml" />
+			<attribute name="Can Be Occluded" value="false" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="RigidBody" id="16777297">
+			<attribute name="Physics Rotation" value="0.598356 -0.169151 -0.648757 -0.438718" />
+			<attribute name="Physics Position" value="-11.053 19.1677 59.4517" />
+			<attribute name="Mass" value="0.2" />
+		</component>
+		<component type="CollisionShape" id="16777298">
+			<attribute name="Shape Type" value="ConvexHull" />
+			<attribute name="Model" value="Model;Models/Suzanne.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+	<node id="16799287">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Character" />
+		<attribute name="Position" value="-9.71474 22.3262 61.2344" />
+		<attribute name="Rotation" value="-4.37114e-08 0 1 -0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16777317">
+			<attribute name="Model" value="Model;Models/PlaneTest.mdl" />
+			<attribute name="Material" value="Material;Materials/Grass.xml" />
+		</component>
+	</node>
+	<node id="16809859">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="-7.80344 19.7824 60.5453" />
+		<attribute name="Rotation" value="0.884014 0.467461 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Light" id="16777315">
+			<attribute name="Light Type" value="Directional" />
+			<attribute name="Brightness Multiplier" value="0.4" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+	</node>
+	<node id="16809860">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="-7.80344 21.6887 66.7935" />
+		<attribute name="Rotation" value="-0.36101 -0.932562 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Light" id="16777316">
+			<attribute name="Light Type" value="Directional" />
+			<attribute name="Brightness Multiplier" value="0.3" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+	</node>
+</scene>

@@ -1,0 +1,8 @@
+<material>
+  <technique name="Techniques/Diff.xml"/>
+  <texture name="Textures/wallsegment_a1_1x2x4_bare_diffuse.png" unit="diffuse"/>
+  <parameter name="MatDiffColor" value="0.171676 0.241191 0.259798 1"/>
+  <parameter name="MatSpecColor" value="0 0 0 50"/>
+  <cull value="none"/>
+  <shadowcull value="none"/>
+</material>

@@ -1,0 +1,3 @@
+Materials/clothingcyanbrown.xml
+Materials/clothingmetalblack.xml
+Materials/clothing.transparent.xml

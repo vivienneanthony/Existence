@@ -1,0 +1,4 @@
+Materials/clothinglightgrey.xml
+Materials/clothingdarkblue.xml
+Materials/clothingblack.xml
+Materials/clothinggrey.xml

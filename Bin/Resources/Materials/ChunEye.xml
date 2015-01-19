@@ -1,0 +1,7 @@
+<material>
+  <technique name="Techniques/DiffSpec.xml"/>
+  <texture name="Textures/texture.png" unit="diffuse"/>
+  <texture name="Textures/texture_ref.png" unit="specular"/>
+  <parameter name="MatDiffColor" value="0.93 0.93 0.93 1"/>
+  <parameter name="MatSpecColor" value="0.32973 0.32973 0.32973 369"/>
+</material>

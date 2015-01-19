@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<node id="16777245">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="" />
+	<attribute name="Position" value="0.00898252 0.440373 -0.0140113" />
+	<attribute name="Rotation" value="0.999973 1.65204e-06 0.00740613 -1.21511e-06" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<component type="StaticModel" id="16777266">
+		<attribute name="Model" value="Model;Models/Box.mdl" />
+		<attribute name="Material" value="Material;" />
+	</component>
+	<component type="RigidBody" id="16777267">
+		<attribute name="Physics Rotation" value="0.999973 1.93201e-06 0.00740613 -7.48331e-07" />
+		<attribute name="Physics Position" value="0.00898205 0.440372 -0.0140106" />
+		<attribute name="Mass" value="0.2" />
+	</component>
+	<component type="CollisionShape" id="16777268">
+		<attribute name="Model" value="Model;Models/Box.mdl" />
+		<attribute name="LOD Level" value="1" />
+	</component>
+</node>

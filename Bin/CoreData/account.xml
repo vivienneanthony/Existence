@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<account>
+	<uniqueid uniqueid="test" />
+	<email email="&lt;Enter Email&gt;" />
+	<username username="&lt;Enter Username&gt;" />
+	<firstname firstname="&lt;firstname&gt;" />
+	<middlename middlename="&lt;middlename&gt;" />
+	<lastname lastname="&lt;lastname&gt;" />
+	<password password="&lt;Enter Password&gt;" />
+</account>

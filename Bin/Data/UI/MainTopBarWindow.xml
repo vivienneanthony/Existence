@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<element>
+	<attribute name="Name" value="MainTopBarHUDUIElement" />
+	<attribute name="Priority" value="1" />
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Use Derived Opacity" value="false" />
+	<element>
+		<attribute name="Name" value="MainTopBarGraphicGraphicUIElement" />
+		<attribute name="Priority" value="1" />
+		<attribute name="Is Enabled" value="true" />
+		<element type="Sprite" style="Sprite">
+			<attribute name="Name" value="MainTopBarBackground" />
+			<attribute name="Size" value="1440 32" />
+			<attribute name="Texture" value="Texture2D;Textures/Buttons/maintopbar.png" />
+			<attribute name="Image Rect" value="0 0 1440 32" />
+			<attribute name="Priority" value="1" />
+		</element>
+	</element>
+	<element>
+		<attribute name="Name" value="MainTopBarGraphicUIElement" />
+		<attribute name="Size" value="104 15" />
+		<attribute name="Min Size" value="104 15" />
+		<attribute name="Priority" value="1" />
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Bring To Front" value="true" />
+		<attribute name="Bring To Back" value="false" />
+		<element type="Text">
+			<attribute name="Name" value="PlayerNameText" />
+			<attribute name="Position" value="24 6" />
+			<attribute name="Vert Alignment" value="Center" />
+			<attribute name="Priority" value="1" />
+			<attribute name="Color" value="1 1 1 1" />
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Bring To Front" value="true" />
+			<attribute name="Bring To Back" value="false" />
+			<attribute name="Use Derived Opacity" value="true" />
+			<attribute name="Font" value="Font;Fonts/Finalnew.ttf" />
+			<attribute name="Font Size" value="9" />
+			<attribute name="Text" value="Rank - Player" />
+			<attribute name="Text Effect" value="Shadow" />
+		</element>
+	</element>
+</element>

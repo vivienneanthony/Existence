@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<node id="16820235">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="Character" />
+	<attribute name="Position" value="-6.68484 -3.35882 -332.162" />
+	<attribute name="Rotation" value="0.0156228 0 0.999878 0" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<component type="StaticModel" id="16778832">
+		<attribute name="Model" value="Model;Models/standardfemale:Body.mdl" />
+		<attribute name="Material" value="Material;Materials/standardfemale:Skin.xml" />
+	</component>
+</node>

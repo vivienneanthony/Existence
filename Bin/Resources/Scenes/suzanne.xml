@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<scene id="1">
+	<attribute name="Name" value="" />
+	<attribute name="Time Scale" value="1" />
+	<attribute name="Smoothing Constant" value="50" />
+	<attribute name="Snap Threshold" value="5" />
+	<attribute name="Elapsed Time" value="0" />
+	<attribute name="Next Replicated Node ID" value="8" />
+	<attribute name="Next Replicated Component ID" value="9" />
+	<attribute name="Next Local Node ID" value="16777217" />
+	<attribute name="Next Local Component ID" value="16777217" />
+	<attribute name="Variables" />
+	<attribute name="Variable Names" value="" />
+	<component type="PhysicsWorld" id="1" />
+	<component type="Octree" id="2" />
+	<component type="DebugRenderer" id="3" />
+	<node id="2">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Zone" />
+		<attribute name="Position" value="0.637303 3.64568 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Zone" id="4">
+			<attribute name="Bounding Box Min" value="-1000 -1000 -1000" />
+			<attribute name="Bounding Box Max" value="1000 1000 1000" />
+			<attribute name="Ambient Color" value="0.25 0.25 0.25 1" />
+		</component>
+	</node>
+	<node id="3">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="&lt;BlenderRoot&gt;" />
+		<attribute name="Position" value="0.637303 3.64568 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<node id="4">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="Suzanne" />
+			<attribute name="Position" value="-0.723128 -2.49879 -0.845561" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="5">
+				<attribute name="Model" value="Model;Models/Suzanne.mdl" />
+				<attribute name="Material" value="Material;Materials/JoinedMaterial_#1.xml" />
+			</component>
+		</node>
+		<node id="7">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="terrainPlane" />
+			<attribute name="Position" value="5.96046e-08 -3.59665 -0.845562" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="8">
+				<attribute name="Model" value="Model;Models/terrainPlane.mdl" />
+				<attribute name="Material" value="Material;Materials/JoinedMaterial_#1.xml" />
+			</component>
+		</node>
+		<node id="6">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="SunLamp" />
+			<attribute name="Position" value="-0.607889 2.30721 0.159896" />
+			<attribute name="Rotation" value="0.586906 -0.413176 -0.662179 -0.21528" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="Light" id="7">
+				<attribute name="Light Shape Texture" value="TextureCube;" />
+			</component>
+		</node>
+	</node>
+	<node id="16777216">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Camera" />
+		<attribute name="Position" value="0.00114012 0.730749 -6.25741" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Camera" id="16777216">
+			<attribute name="Aspect Ratio" value="1.78218" />
+		</component>
+	</node>
+</scene>

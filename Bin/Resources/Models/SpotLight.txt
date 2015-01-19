@@ -1,0 +1,2 @@
+Materials/SpotLightEmit.xml
+Materials/SpotLightBase.xml

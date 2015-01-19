@@ -1,0 +1,3 @@
+Materials/AirshipMerged.Metal1.xml
+Materials/AirshipMerged.Metal2.xml
+Materials/AirshipMerged.Glass.xml

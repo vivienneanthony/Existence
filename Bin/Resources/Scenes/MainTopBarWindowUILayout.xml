@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<element>
+	<attribute name="Name" value="MainTopBarUIElement" />
+	<element type="Window">
+		<attribute name="Name" value="MainTopBarWindow" />
+	</element>
+</element>

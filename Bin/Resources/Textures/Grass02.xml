@@ -1,0 +1,6 @@
+<texture>
+	<address coord="v" mode="clamp" />	
+	<filter mode="default" />
+	<mipmap enable="false" />
+</texture>
+

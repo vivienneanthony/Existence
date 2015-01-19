@@ -1,0 +1,407 @@
+<?xml version="1.0"?>
+<scene id="1">
+	<attribute name="Name" value="" />
+	<attribute name="Time Scale" value="1" />
+	<attribute name="Smoothing Constant" value="50" />
+	<attribute name="Snap Threshold" value="5" />
+	<attribute name="Elapsed Time" value="91.7058" />
+	<attribute name="Next Replicated Node ID" value="1" />
+	<attribute name="Next Replicated Component ID" value="4" />
+	<attribute name="Next Local Node ID" value="16777252" />
+	<attribute name="Next Local Component ID" value="16777283" />
+	<attribute name="Variables" />
+	<attribute name="Variable Names" value="" />
+	<component type="Octree" id="1" />
+	<component type="PhysicsWorld" id="2" />
+	<component type="DebugRenderer" id="3" />
+	<node id="16777249">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="-0.012422 0.460372 0.00271687" />
+		<attribute name="Rotation" value="1 1.30976e-06 0.000361086 6.60281e-07" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="RigidBody" id="16777277">
+			<attribute name="Physics Rotation" value="1 1.30991e-06 0.000361086 6.34012e-07" />
+			<attribute name="Physics Position" value="-0.012422 0.460372 0.00271687" />
+		</component>
+		<component type="CollisionShape" id="16777278">
+			<attribute name="Size" value="1.1 1.3 3.95" />
+			<attribute name="Offset Position" value="0 0.13 0.3" />
+		</component>
+		<node id="16777236">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777257">
+				<attribute name="Model" value="Model;Models/airbikefoils.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777216">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="&lt;BlenderRoot&gt;" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777216">
+				<attribute name="Model" value="Model;Models/airbike.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777247">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777238">
+				<attribute name="Model" value="Model;Models/airbikecontrol.right.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.chrome.xml;Materials/airbike.colorblack.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777218">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777239">
+				<attribute name="Model" value="Model;Models/airbikecontrol.left.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.chrome.xml;Materials/airbike.colorblack.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777219">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777240">
+				<attribute name="Model" value="Model;Models/airbikepower.right.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml;Materials/airbike.emit.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777220">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777241">
+				<attribute name="Model" value="Model;Models/airbikepower.left.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml;Materials/airbike.emit.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777221">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777242">
+				<attribute name="Model" value="Model;Models/airbikefoot.left.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777222">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777243">
+				<attribute name="Model" value="Model;Models/airbikefoot.right.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777223">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777244">
+				<attribute name="Model" value="Model;Models/airbikethrustersmall.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777224">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777245">
+				<attribute name="Model" value="Model;Models/airbikethrustersmall.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777225">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777246">
+				<attribute name="Model" value="Model;Models/airbikethruster.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.exhaust.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777226">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777247">
+				<attribute name="Model" value="Model;Models/airbikewings.right.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777227">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777248">
+				<attribute name="Model" value="Model;Models/airbikewings.left.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777228">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777249">
+				<attribute name="Model" value="Model;Models/airbikedoorr.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777229">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777250">
+				<attribute name="Model" value="Model;Models/airbikedoorl.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777251">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777251">
+				<attribute name="Model" value="Model;Models/airbakegear.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.synthrubber.xml;Materials/airbike.radius.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777231">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777252">
+				<attribute name="Model" value="Model;Models/airbikepads.right.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777232">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777253">
+				<attribute name="Model" value="Model;Models/airbikepads.left.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777233">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777254">
+				<attribute name="Model" value="Model;Models/airbikewheel.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.synthrubber.xml;Materials/airbike.chrome.xml;Materials/Material.001.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777234">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777255">
+				<attribute name="Model" value="Model;Models/airbikegrill.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.grill.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777235">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777256">
+				<attribute name="Model" value="Model;Models/airbikeintake.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16777237">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="" />
+			<attribute name="Position" value="0 0 0" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777258">
+				<attribute name="Model" value="Model;Models/airbikeglass.mdl" />
+				<attribute name="Material" value="Material;Materials/airbike.glass.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+	</node>
+	<node id="16777239">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="1.57542 -0.27093 -0.870285" />
+		<attribute name="Rotation" value="0.935008 -0.0065829 -0.354142 -0.0173802" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Light" id="16777259">
+			<attribute name="Light Type" value="Directional" />
+			<attribute name="Specular Intensity" value="0" />
+			<attribute name="Brightness Multiplier" value="0.3" />
+			<attribute name="Range" value="20" />
+			<attribute name="Spot FOV" value="60" />
+			<attribute name="Cast Shadows" value="true" />
+			<attribute name="Shadow Intensity" value="1" />
+		</component>
+	</node>
+	<node id="16777250">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="0 -0.207637 0" />
+		<attribute name="Rotation" value="1.37679e-07 -1.37679e-07 0.707107 0.707107" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16777279">
+			<attribute name="Model" value="Model;Models/airbrake.plane.mdl" />
+			<attribute name="Material" value="Material;Materials/airbrake.plane.xml" />
+		</component>
+		<component type="CollisionShape" id="16777280">
+			<attribute name="Shape Type" value="ConvexHull" />
+			<attribute name="Model" value="Model;Models/airbrake.plane.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+		<component type="RigidBody" id="16777281">
+			<attribute name="Physics Rotation" value="1.37679e-07 -1.37679e-07 0.707107 0.707107" />
+			<attribute name="Physics Position" value="0 -0.207637 0" />
+		</component>
+	</node>
+	<node id="16777241">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Camera" />
+		<attribute name="Position" value="3.46889 0.753523 -2.58396" />
+		<attribute name="Rotation" value="0.894529 0 -0.447012 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Camera" id="16777261">
+			<attribute name="Aspect Ratio" value="1.78218" />
+		</component>
+	</node>
+	<node id="16777242">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="0.13793 2.55781 0" />
+		<attribute name="Rotation" value="0.960162 -0.0441547 -0.275641 0.0126758" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Light" id="16777262">
+			<attribute name="Specular Intensity" value="3" />
+			<attribute name="Brightness Multiplier" value="0.9" />
+			<attribute name="Range" value="5" />
+			<attribute name="Spot FOV" value="60" />
+			<attribute name="Light Shape Texture" value="TextureCube;" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+	</node>
+	<node id="16777243">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="0.503914 2.37754 -1.24705" />
+		<attribute name="Rotation" value="0.936244 0 -0.351353 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Light" id="16777263">
+			<attribute name="Light Type" value="Directional" />
+			<attribute name="Specular Intensity" value="2" />
+			<attribute name="Brightness Multiplier" value="0.2" />
+			<attribute name="Range" value="50" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+	</node>
+	<node id="16777244">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Character" />
+		<attribute name="Position" value="0.0646458 1.18103 -3.55957" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+	</node>
+</scene>

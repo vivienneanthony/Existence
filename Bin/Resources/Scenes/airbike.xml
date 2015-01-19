@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<scene id="1">
+	<attribute name="Name" value="" />
+	<attribute name="Time Scale" value="1" />
+	<attribute name="Smoothing Constant" value="50" />
+	<attribute name="Snap Threshold" value="5" />
+	<attribute name="Elapsed Time" value="0" />
+	<attribute name="Next Replicated Node ID" value="8" />
+	<attribute name="Next Replicated Component ID" value="58" />
+	<attribute name="Next Local Node ID" value="16777221" />
+	<attribute name="Next Local Component ID" value="16777219" />
+	<attribute name="Variables" />
+	<attribute name="Variable Names" value="" />
+	<component type="Octree" id="2" />
+	<component type="DebugRenderer" id="3" />
+	<node id="2">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="Zone" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Zone" id="4">
+			<attribute name="Bounding Box Min" value="-1000 -1000 -1000" />
+			<attribute name="Bounding Box Max" value="1000 1000 1000" />
+			<attribute name="Ambient Color" value="0.25 0.25 0.25 1" />
+			<attribute name="Fog Color" value="0 0 0 0" />
+		</component>
+	</node>
+	<node id="16777217">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="2.68397 0.226217 -0.486173" />
+		<attribute name="Rotation" value="0.869038 0.0770924 -0.483834 0.0687978" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Camera" id="16777217">
+			<attribute name="Aspect Ratio" value="1.78218" />
+		</component>
+	</node>
+	<node id="16777220">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="0 -3.94426 7.88855" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="37">
+			<attribute name="Model" value="Model;Models/airbike.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="38">
+			<attribute name="Model" value="Model;Models/airbikeglass.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.glass.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="39">
+			<attribute name="Model" value="Model;Models/airbikefoils.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="40">
+			<attribute name="Model" value="Model;Models/airbikeintake.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="41">
+			<attribute name="Model" value="Model;Models/airbikegrill.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.grill.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="42">
+			<attribute name="Model" value="Model;Models/airbikewheel.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.synthrubber.xml;Materials/airbike.chrome.xml;Materials/Material.001.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="43">
+			<attribute name="Model" value="Model;Models/airbikepads.left.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="44">
+			<attribute name="Model" value="Model;Models/airbikepads.right.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="45">
+			<attribute name="Model" value="Model;Models/airbakegear.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.synthrubber.xml;Materials/airbike.radius.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="46">
+			<attribute name="Model" value="Model;Models/airbikedoorl.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="47">
+			<attribute name="Model" value="Model;Models/airbikedoorr.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+		</component>
+		<component type="StaticModel" id="48">
+			<attribute name="Model" value="Model;Models/airbikewings.left.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="49">
+			<attribute name="Model" value="Model;Models/airbikewings.right.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="50">
+			<attribute name="Model" value="Model;Models/airbikethruster.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.exhaust.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="51">
+			<attribute name="Model" value="Model;Models/airbikethrustersmall.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="52">
+			<attribute name="Model" value="Model;Models/airbikefoot.right.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="53">
+			<attribute name="Model" value="Model;Models/airbikefoot.left.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.brakepad.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="54">
+			<attribute name="Model" value="Model;Models/airbikepower.left.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml;Materials/airbike.emit.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="55">
+			<attribute name="Model" value="Model;Models/airbikepower.right.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.colorbase.xml;Materials/airbike.emit.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="56">
+			<attribute name="Model" value="Model;Models/airbikecontrol.left.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.chrome.xml;Materials/airbike.colorblack.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="StaticModel" id="57">
+			<attribute name="Model" value="Model;Models/airbikecontrol.right.mdl" />
+			<attribute name="Material" value="Material;Materials/airbike.chrome.xml;Materials/airbike.colorblack.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+	</node>
+</scene>

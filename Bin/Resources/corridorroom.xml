@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<node id="16839494">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="CollisonCorridor1" />
+	<attribute name="Position" value="-20.5506 -1.41421 -265.403" />
+	<attribute name="Rotation" value="1 0 0 0" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<node id="16839495">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="6 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="0.1 2.1 5.05" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16778937">
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="Material" value="Material;" />
+		</component>
+		<component type="RigidBody" id="16778938">
+			<attribute name="Physics Position" value="-14.5506 -1.41421 -265.403" />
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16778939">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+	<node id="16839496">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="-6 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="0.1 2.1 5.05" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16778940">
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="Material" value="Material;" />
+		</component>
+		<component type="RigidBody" id="16778941">
+			<attribute name="Physics Position" value="-26.5506 -1.41421 -265.403" />
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16778942">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+</node>

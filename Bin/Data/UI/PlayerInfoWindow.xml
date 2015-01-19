@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<element>
+	<attribute name="Name" value="PlayerInfoUIElement" />
+	<attribute name="Position" value="0 49" />
+	<attribute name="Size" value="402 42" />
+	<attribute name="Priority" value="1" />
+	<attribute name="Opacity" value="0.9" />
+	<attribute name="Color" value="0 0 0 0" />
+	<attribute name="Top Left Color" value="0 0 0 0" />
+	<attribute name="Top Right Color" value="0 0 0 0" />
+	<attribute name="Bottom Left Color" value="0 0 0 0" />
+	<attribute name="Bottom Right Color" value="0 0 0 0" />
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Is Editable" value="false" />
+	<attribute name="Use Derived Opacity" value="false" />
+	<element type="Sprite" style="Sprite">
+		<attribute name="Name" value="PlayerInfoBackground" />
+		<attribute name="Size" value="402 42" />
+		<attribute name="Texture" value="Texture2D;Textures/Buttons/playerinfo.png" />
+		<attribute name="Image Rect" value="0 0 402 42" />
+		<attribute name="Blend Mode" value="alpha" />
+		<attribute name="Priority" value="1" />
+		<attribute name="Opacity" value="0.9" />
+	</element>
+	<element type="Sprite" style="Sprite">
+		<attribute name="Name" value="PlayerInfoHealthBarBackground" />
+		<attribute name="Position" value="58 27" />
+		<attribute name="Size" value="229 11" />
+		<attribute name="Texture" value="Texture2D;UI/Buttons/healthbar.png" />
+		<attribute name="Image Rect" value="0 0 229 11" />
+		<attribute name="Priority" value="2" />
+	</element>
+	<element type="Sprite" style="Sprite">
+		<attribute name="Name" value="PlayerInfoHealthBarIndicate" />
+		<attribute name="Position" value="58 27" />
+		<attribute name="Size" value="229 11" />
+		<attribute name="Texture" value="Texture2D;UI/Buttons/healthbarindicate.png" />
+		<attribute name="Image Rect" value="0 0 229 11" />
+		<attribute name="Priority" value="3" />
+	</element>
+</element>

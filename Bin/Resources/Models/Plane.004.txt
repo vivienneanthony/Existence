@@ -1,0 +1,1 @@
+Materials/clothing.metal.black.xml

@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<node id="16839494">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="CollisonCorridorRoom" />
+	<attribute name="Position" value="-20.5506 -1.41421 -265.403" />
+	<attribute name="Rotation" value="1 0 0 0" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<node id="16839495">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="6.08247 0 -4.35492" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="0.1 2.1 3.1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16778937">
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="Material" value="Material;Materials/boxtransparent.xml" />
+		</component>
+		<component type="RigidBody" id="16778938">
+			<attribute name="Physics Position" value="-14.4682 -1.41421 -269.758" />
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16778939">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+	<node id="16839496">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="-6 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="0.1 2.1 7.1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16778940">
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="Material" value="Material;Materials/boxtransparent.xml" />
+		</component>
+		<component type="RigidBody" id="16778941">
+			<attribute name="Physics Position" value="-26.5506 -1.41421 -265.403" />
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16778942">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+	<node id="16839498">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="4.3869e-05 4.76837e-07 -7.26923" />
+		<attribute name="Rotation" value="0.707107 0 0.707107 0" />
+		<attribute name="Scale" value="0.1 2.1 6" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16778943">
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="Material" value="Material;Materials/boxtransparent.xml" />
+		</component>
+		<component type="RigidBody" id="16778944">
+			<attribute name="Physics Rotation" value="0.707107 0 0.707107 0" />
+			<attribute name="Physics Position" value="-20.5506 -1.41421 -272.673" />
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16778945">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+	<node id="16839499">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="4.19617e-05 4.76837e-07 7.08078" />
+		<attribute name="Rotation" value="0.707107 0 0.707107 0" />
+		<attribute name="Scale" value="0.1 2.1 6" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16778946">
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="Material" value="Material;Materials/boxtransparent.xml" />
+		</component>
+		<component type="RigidBody" id="16778947">
+			<attribute name="Physics Rotation" value="0.707107 0 0.707107 0" />
+			<attribute name="Physics Position" value="-20.5506 -1.41421 -258.323" />
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16778948">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+	<node id="16839500">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="6.08247 0 4.62427" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="0.1 2.1 2.5" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="16778949">
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="Material" value="Material;Materials/boxtransparent.xml" />
+		</component>
+		<component type="RigidBody" id="16778950">
+			<attribute name="Physics Position" value="-14.4682 -1.41421 -260.779" />
+			<attribute name="Collision Event Mode" value="Always" />
+			<attribute name="Use Gravity" value="false" />
+		</component>
+		<component type="CollisionShape" id="16778951">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/boxtransparent.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+	</node>
+</node>

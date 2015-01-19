@@ -1,0 +1,6 @@
+<material>
+  <technique name="Techniques/Diff.xml"/>
+  <texture name="Textures/brown_eye.png" unit="diffuse"/>
+  <parameter name="MatDiffColor" value="1 1 1 1"/>
+  <parameter name="MatSpecColor" value="1 1 1 511"/>
+</material>

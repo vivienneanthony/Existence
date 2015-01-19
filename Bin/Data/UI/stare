@@ -1,0 +1,23 @@
+   // This is temoporarily the necessary code
+    bool accountexist;
+    bool serveronline;
+    bool clientrunning;
+
+    bool consoletoggle;
+
+    int prompt;
+    int interface;
+    int gameOn;
+
+
+
+    // flags
+    bool	consoleactive;
+    bool	gameactive;
+    bool 	serveronline;
+
+    //
+    int 	gamestate;  // 0-gamestateMainMenuMode, 1-gamestateGameMode
+	
+
+

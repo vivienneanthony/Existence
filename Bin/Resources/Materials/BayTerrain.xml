@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<material>
+	<technique name="Techniques/TerrainBlend.xml" quality="0" loddistance="0" />
+	<texture unit="diffuse" name="Textures/bayweight.tga" />
+	<texture unit="normal" name="Textures/TerrainDetail1.dds" />
+	<texture unit="specular" name="Textures/TerrainDetail1.dds" />
+	<texture unit="emissive" name="Textures/TerrainDetail2.dds" />
+	<parameter name="UOffset" value="1 0 0 0" />
+	<parameter name="VOffset" value="0 .96 0 0" />
+	<parameter name="MatDiffColor" value="1 1 1 1" />
+	<parameter name="MatEmissiveColor" value="0 0 0" />
+	<parameter name="MatEnvMapColor" value="1 1 1" />
+	<parameter name="MatSpecColor" value="0 0 0 16" />
+	<parameter name="DetailTiling" value="256 256" />
+	<cull value="ccw" />
+	<shadowcull value="ccw" />
+	<depthbias constant="0" slopescaled="0" />
+</material>

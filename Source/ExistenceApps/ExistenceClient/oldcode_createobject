@@ -1,0 +1,202 @@
+  Node * RockNodes = scene_ -> CreateChild("RockNodes");
+
+    ///Loop 1,000 times to find a suitable location (In this case 40)
+    for(unsigned int i=0; i<500; i++)
+    {
+
+        /// Pick a random spot
+        Spotx=rand()%10000;
+        Spotz=rand()%10000;
+
+        randomSpotx=((float)Spotx/100)-50.0f;
+        randomSpotz=((float)Spotz/100)-50.0f;
+
+        /// Add a Rock to the seen - Rock Node
+        Node * RockNode = RockNodes -> CreateChild("RockNode");
+
+        StaticModel * RockStaticModel = RockNode->CreateComponent<StaticModel>();
+
+        RockStaticModel->SetModel(cache->GetResource<Model>("Resources/Models/Rock1.mdl"));
+        RockStaticModel->ApplyMaterialList("Resources/Models/Rock1.txt");
+
+        /// Create Nodes and COmponents
+        RockStaticModel->SetCastShadows(true);
+
+        BoundingBox  staticmodelbox = RockStaticModel->GetBoundingBox();
+        Vector3  staticmodelboxcenter= staticmodelbox.HalfSize();
+
+        cout << randomSpotx << " " << randomSpotz << endl;
+
+        /// Select a possible position to place a Rock
+        Vector3 selectPosition=Vector3(randomSpotx,terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz))+staticmodelboxcenter.y_,randomSpotz);
+
+        bool collision=false;
+
+        if(SaveCollisionObjects>0)
+        {
+            for(unsigned int idx=0; idx<SaveCollisionObjects; idx++)
+            {
+
+                /// Check x boundary for overlapping
+                if(intersects( make_range(randomSpotx-staticmodelboxcenter.x_,randomSpotx+staticmodelboxcenter.x_), make_range(CollisionBounds[idx].origin_x-CollisionBounds[idx].size_x,CollisionBounds[idx].origin_x+CollisionBounds[idx].size_x)))
+
+                {
+                    /// Set collision true
+                    collision=true;
+                    break;
+                }
+
+                /// Check z boundary for overlapping
+                if(intersects( make_range(randomSpotz-staticmodelboxcenter.z_,randomSpotz+staticmodelboxcenter.z_), make_range(CollisionBounds[idx].origin_z-CollisionBounds[idx].size_z,CollisionBounds[idx].origin_z+CollisionBounds[idx].size_z)))
+                {
+
+                    /// Set collision true
+                    collision=true;
+                    break;
+                }
+            }
+        }
+
+
+        /// Test collision
+        if(collision==false)
+        {
+            /// Save coordinates
+            CollisionBounds[SaveCollisionObjects].size_x=staticmodelboxcenter.x_;
+            CollisionBounds[SaveCollisionObjects].size_y=staticmodelboxcenter.y_;
+            CollisionBounds[SaveCollisionObjects].size_z=staticmodelboxcenter.z_;
+            CollisionBounds[SaveCollisionObjects].origin_x=randomSpotx;
+            CollisionBounds[SaveCollisionObjects].origin_y=terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz))+staticmodelboxcenter.y_;
+            CollisionBounds[SaveCollisionObjects].origin_z=randomSpotz;
+            CollisionBounds[SaveCollisionObjects].lod=0;
+
+            /// Save object
+            SaveCollisionObjects++;
+
+            /// Set Rock position
+            RockNode->SetPosition(selectPosition);
+            RockNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
+        }
+        else
+        {
+
+            /// Erase the node
+            RockNode->RemoveAllComponents();
+            RockNode->Remove();
+        }
+
+    }
+
+    Node * TreeNodes = scene_ -> CreateChild("TreeNodes");
+
+///Loop 10,000
+    for(unsigned int i=0; i<500; i++)
+    {
+
+        /// Pick a random spot
+        Spotx=rand()%10000;
+        Spotz=rand()%10000;
+
+        randomSpotx=((float)Spotx/100)-50.0f;
+        randomSpotz=((float)Spotz/100)-50.0f;
+
+        /// Add a Tree to the seen - Tree Node
+        Node * TreeNode = TreeNodes -> CreateChild("TreeNode");
+
+        StaticModel * TreeStaticModel = TreeNode->CreateComponent<StaticModel>();
+
+        TreeStaticModel->SetModel(cache->GetResource<Model>("Resources/Models/BoxTree.mdl"));
+        TreeStaticModel->ApplyMaterialList("Resources/Models/BoxTree.txt");
+
+        /// Create Nodes and COmponents
+        TreeStaticModel->SetCastShadows(true);
+
+        BoundingBox  staticmodelbox = TreeStaticModel->GetBoundingBox();
+        Vector3  staticmodelboxcenter= staticmodelbox.HalfSize();
+
+        /// Select a possible position to place a Tree
+        Vector3 selectPosition=Vector3(randomSpotx,terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz))+staticmodelboxcenter.y_,randomSpotz);
+
+        bool collision=false;
+
+        if(SaveCollisionObjects>0)
+        {
+
+
+            for(unsigned int idx=0; idx<SaveCollisionObjects; idx++)
+            {
+
+
+                /// Check x boundary for overlapping
+                if(intersects( make_range(randomSpotx-0.5f,randomSpotx+0.5f), make_range(CollisionBounds[idx].origin_x-CollisionBounds[idx].size_x,CollisionBounds[idx].origin_x+CollisionBounds[idx].size_x)))
+
+                {
+                    /// Set collision true
+                    collision=true;
+                    break;
+                }
+
+                /// Check z boundary for overlapping
+                if(intersects( make_range(randomSpotz-0.5f,randomSpotz+0.5f), make_range(CollisionBounds[idx].origin_z-CollisionBounds[idx].size_z,CollisionBounds[idx].origin_z+CollisionBounds[idx].size_z)))
+                {
+
+                    /// Set collision true
+                    collision=true;
+                    break;
+                }
+
+                if(CollisionBounds[idx].lod==1)
+
+                {
+                    /*/// Check x boundary for overlapping
+                    if(intersects( make_range(randomSpotx-staticmodelboxcenter.x_,randomSpotx+staticmodelboxcenter.x_), make_range(CollisionBounds[idx].origin_x-CollisionBounds[idx].size_x,CollisionBounds[idx].origin_x+CollisionBounds[idx].size_x)))
+
+                    {
+                        /// Set collision true
+                        collision=true;
+                        break;
+                    }
+
+                    /// Check z boundary for overlapping
+                    if(intersects( make_range(randomSpotz-staticmodelboxcenter.z_,randomSpotz+staticmodelboxcenter.z_), make_range(CollisionBounds[idx].origin_z-CollisionBounds[idx].size_z,CollisionBounds[idx].origin_z+CollisionBounds[idx].size_z)))
+                    {
+
+                        /// Set collision true
+                        collision=true;
+                        break;
+                    }*/
+                }
+            }
+        }
+
+
+        /// Test collision
+        if(collision==false)
+        {
+            /// Save coordinates
+            CollisionBounds[SaveCollisionObjects].size_x=staticmodelboxcenter.x_;
+            CollisionBounds[SaveCollisionObjects].size_y=staticmodelboxcenter.y_;
+            CollisionBounds[SaveCollisionObjects].size_z=staticmodelboxcenter.z_;
+            CollisionBounds[SaveCollisionObjects].origin_x=randomSpotx;
+            CollisionBounds[SaveCollisionObjects].origin_y=terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz))+staticmodelboxcenter.y_;
+            CollisionBounds[SaveCollisionObjects].origin_z=randomSpotz;
+            CollisionBounds[SaveCollisionObjects].lod=1;
+
+            /// Save object
+            SaveCollisionObjects++;
+
+            /// Set Tree position
+            TreeNode->SetPosition(selectPosition);
+            TreeNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
+        }
+        else
+        {
+
+            /// Erase the node
+            TreeNode->RemoveAllComponents();
+            TreeNode->Remove();
+        }
+
+    }
+
+

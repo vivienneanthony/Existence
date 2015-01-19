@@ -1,0 +1,17 @@
+Materials/hull.001.xml
+Materials/glass.001.xml
+Materials/hull.black.xml
+Materials/impulseengine.xml
+Materials/emission.001.xml
+Materials/hull.dark.xml
+Materials/hull.red.xml
+Materials/hull.dark.001.xml
+Materials/implulseplate.xml
+Materials/clearglass.xml
+Materials/emission.xml
+Materials/Material.001.xml
+Materials/emission.002.xml
+Materials/hull.dark.misile.xml
+Materials/Material.xml
+Materials/yellow.emmission.xml
+Materials/warpplate.xml

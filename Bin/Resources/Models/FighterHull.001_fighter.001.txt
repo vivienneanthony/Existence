@@ -1,0 +1,5 @@
+Materials/TiftFighterBlack.xml
+Materials/TiftFighterDark.xml
+Materials/TiftFighterHull.xml
+Materials/TiftFighterClearGlass.xml
+Materials/TiftFighterGlass.xml
