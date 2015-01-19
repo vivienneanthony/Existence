@@ -18228,4 +18228,32 @@
 		<gender gender="34" />
 		<personalitytrait personalitytrait="0" />
 	</character>
+	<character character="character">
+		<firstname firstname="Belysloe" />
+		<middlename middlename="Maxobloe" />
+		<lastname lastname="Liel'rth" />
+		<reputation1 reputation1="0" />
+		<reputation2 reputation2="0" />
+		<reputation3 reputation3="0" />
+		<reputation4 reputation4="0" />
+		<experience experience="0" />
+		<alienrace alienrace="1" />
+		<alienalliancealigned alienalliancealigned="false" />
+		<gender gender="67" />
+		<personalitytrait personalitytrait="0" />
+	</character>
+	<character character="character">
+		<firstname firstname="Cielath" />
+		<middlename middlename="Aoeiel" />
+		<lastname lastname="Dmma" />
+		<reputation1 reputation1="0" />
+		<reputation2 reputation2="0" />
+		<reputation3 reputation3="0" />
+		<reputation4 reputation4="0" />
+		<experience experience="0" />
+		<alienrace alienrace="1" />
+		<alienalliancealigned alienalliancealigned="false" />
+		<gender gender="5" />
+		<personalitytrait personalitytrait="0" />
+	</character>
 </characters>
