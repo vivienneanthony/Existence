@@ -10,7 +10,7 @@ The current theme is based on a Star Trek theme in a much expanded universe on a
 
 Developers
 ==================
-Developers Vivienne Anthony – Content creator and C/C++ programmer 
+Vivienne Anthony – Content creator and C/C++ programmer 
 
 Tools
 ================== 
