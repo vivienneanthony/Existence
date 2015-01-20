@@ -98,10 +98,9 @@ int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobject
 
     Terrain* terrain = terrainNode->GetComponent<Terrain>();
 
-
-    cout << "\r\nSave" << SaveCollisionObjects;
-    cout << "\r\nBounds" << CollisionBounds.size();
-    cout << "another path";
+    //cout << "\r\nSave" << SaveCollisionObjects;
+    //cout << "\r\nBounds" << CollisionBounds.size();
+    //cout << "another path";
 
     /// Need variables
     float lengthlimitdistance= length;
@@ -240,7 +239,7 @@ int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobject
                 RockNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
 
                 /// Output X, Y
-                cout << position_x << " " << position_z << "\r\n";
+                //cout << position_x << " " << position_z << "\r\n";
 
             }
         }
@@ -269,9 +268,9 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
 
     Terrain* terrain = terrainNode->GetComponent<Terrain>();
 
-    cout << "\r\nSave" << SaveCollisionObjects;
-    cout << "\r\nBounds" << CollisionBounds.size();
-    cout << "another path";
+    //cout << "\r\nSave" << SaveCollisionObjects;
+    //cout << "\r\nBounds" << CollisionBounds.size();
+    //cout << "another path";
 
 
     /// Need variables
@@ -427,7 +426,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
                 RockNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
 
                 /// Output X, Y
-                cout << position_x << " " << position_z << "\r\n";
+                //cout << position_x << " " << position_z << "\r\n";
             }
         }
     }

@@ -1,0 +1,9 @@
+<cubemap>
+    <face name="Field_posx.dds" />
+    <face name="Field_negx.dds" />
+    <face name="Field_posy.dds" />
+    <face name="Field_negy.dds" />
+    <face name="Field_posz.dds" />
+    <face name="Field_negz.dds" />
+    <quality low="0" />
+</cubemap>

@@ -1,0 +1,9 @@
+<cubemap>
+    <face name="Ice_posx.dds" />
+    <face name="Ice_negx.dds" />
+    <face name="Ice_posy.dds" />
+    <face name="Ice_negy.dds" />
+    <face name="Ice_posz.dds" />
+    <face name="Ice_negz.dds" />
+    <quality low="0" />
+</cubemap>

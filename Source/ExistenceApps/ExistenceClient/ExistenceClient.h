@@ -132,8 +132,6 @@ private:
     void Print(const String& output);
 
     void CharacterSelectionHandler(VariantMap& eventData);
-    void GenerateScene(const time_t &timeseed, terrain_rule terrainrule);
-
     int LoadCharacterMesh(String nodename, unsigned int alienrace, unsigned int gender);
 
     void HandlePostUpdates(StringHash eventType, VariantMap& eventData);
@@ -155,6 +153,10 @@ private:
     int ConsoleActionDebug(const char * lineinput);
     int ConsoleActionCharacter(const char * lineinput);
     int ConsoleActionRenderer(const char * lineinput);
+
+    void GenerateScene(const time_t &timeseed, terrain_rule terrainrule);
+    int GenerateSceneBuildWorld(terrain_rule terrainrule);
+    int GenerateSceneUpdateEnvironment(terrain_rule terrainrule);
 
     /// The Window.
     SharedPtr<Window> window_;

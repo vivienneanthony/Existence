@@ -1,0 +1,9 @@
+<cubemap>
+    <face name="Desert_posx.dds" />
+    <face name="Desert_negx.dds" />
+    <face name="Desert_posy.dds" />
+    <face name="Desert_negy.dds" />
+    <face name="Desert_posz.dds" />
+    <face name="Desert_negz.dds" />
+    <quality low="0" />
+</cubemap>

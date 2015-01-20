@@ -3074,8 +3074,9 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
         terrain_rule terrainrule;
 
         /// Copy rule
-        terrainrule.moutainrange=(float)atof(argument[3].c_str());
-        terrainrule.cratersdeep=(float)atof(argument[4].c_str());
+        terrainrule.worldtype=(float)atoi(argument[3].c_str());
+        terrainrule.moutainrange=(float)atof(argument[4].c_str());
+        terrainrule.cratersdeep=(float)atof(argument[5].c_str());
 
         /// Set timeseed
         terrainrule.timeseed=timeseed;   /// temporary
@@ -3746,113 +3747,11 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     /// Get the materials
     Material * skyboxMaterial = skybox->GetMaterial();
 
+    /// Change environment
+    GenerateSceneUpdateEnvironment(terrainrule);
 
-    /// Define random point variables
-    float Spotx=0.0f;
-    float Spotz=0.0f;
-    float InitialSpotx=0.0f;
-    float InitialSpotz=0.0f;
-
-
-    float randomSpotx=0.0f;
-    float randomSpotz=0.0f;
-    float InitialrandomSpotx=0.0f;
-    float InitialrandomSpotz=0.0f;
-
-    int NumberOfPlantingsGrowth=250;
-    int NumberOfPlantings=500;
-    unsigned int InitialRange=100;
-    unsigned int  SpreadRange=60;
-
-// I will need the number of plantings
-    for(unsigned int i=0; i<NumberOfPlantings; ++i)
-    {
-
-        /// Pick random values
-        InitialSpotx=rand()%(InitialRange*100);
-        InitialSpotz=rand()%(InitialRange*100);
-
-        InitialSpotx=((float)InitialSpotx/100)-(InitialRange/2);
-        InitialSpotz=((float)InitialSpotz/100)-(InitialRange/2);
-
-        Node* GrassInitialNode = scene_->CreateChild("GrassBillboardSetNode");
-        GrassInitialNode->SetPosition(Vector3(InitialrandomSpotx,0.0f,InitialrandomSpotz));
-        BillboardSet* billboardObject = GrassInitialNode->CreateComponent<BillboardSet>();
-        billboardObject->SetNumBillboards(NumberOfPlantingsGrowth);
-
-        billboardObject->SetMaterial(cache->GetResource<Material>("Resources/Materials/Grass.xml"));
-        billboardObject->SetSorted(true);
-        billboardObject->SetCastShadows(true);
-
-
-/// Create X number of nodes per billboard
-        for (unsigned int j = 0; j < NumberOfPlantingsGrowth; ++j)
-        {
-
-            Spotx=rand()%(SpreadRange*100);
-            Spotz=rand()%(SpreadRange*100);
-
-            randomSpotx=((float)Spotx/100)-(SpreadRange/2);
-            randomSpotz=((float)Spotz/100)-(SpreadRange/2);
-
-            randomSpotx=InitialSpotx+randomSpotx;
-            randomSpotz=InitialSpotz+randomSpotz;
-
-            Billboard* bb = billboardObject->GetBillboard(j);
-
-            /// Select a possible position to place a plant
-            Vector3 selectPosition=Vector3(randomSpotx,terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz)),randomSpotz);
-
-            bb->position_ =selectPosition;
-            bb->size_ = Vector2(Random(0.2f) + 0.1f, Random(0.2f) + 0.1f);
-            bb->enabled_ = true;
-        }
-    }
-
-    /// Build world
-    Node * WorldObjectNode = scene_-> CreateChild("WorldBuildNode");
-    WorldBuild * WorldBuildObjects = WorldObjectNode  -> CreateComponent<WorldBuild>();
-
-    /// Initialize
-    WorldBuildObjects -> Init();
-
-
-    /// Plant rocks
-    for(unsigned int i=0; i<30; i++)
-    {
-
-        /// Pick a random spotskx
-        Spotx=rand()%20000;
-        Spotz=rand()%20000;
-
-        /// Calculat z,x location
-        randomSpotx=((float)Spotx/100)-100.0f;
-        randomSpotz=((float)Spotz/100)-100.0f;
-
-        /// Create rocks on paths
-        WorldBuildObjects -> CreateRockObjectAlongPath(randomSpotx,randomSpotz, 5, 100.0f);
-    }
-
-
-    /// Plant rocks
-    for(unsigned int i=0; i<100; i++)
-    {
-
-        /// Pick a random spot
-        Spotx=rand()%20000;
-        Spotz=rand()%20000;
-
-        /// Calculat z,x location
-        randomSpotx=((float)Spotx/100)-100.0f;
-        randomSpotz=((float)Spotz/100)-100.0f;
-
-        /// Create rocks on paths
-        WorldBuildObjects -> CreateTreeObjectAlongPath(randomSpotx,randomSpotz, 8, 100.0f);
-    }
-
-
-    /// Remove*/
-    WorldObjectNode -> Remove();
+    /// Add objects functions
+    GenerateSceneBuildWorld(terrainrule);
 
     return;
 }
@@ -4335,6 +4234,224 @@ int ExistenceClient::ConsoleActionRenderer(const char * lineinput)
 
         effectRenderPath->ToggleEnabled("Bloom");
     }
+
+    return 1;
+}
+
+
+/// build world
+int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
+{
+    /// Define Resouces
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+
+
+    /// Build world
+    Node * WorldObjectNode = scene_-> CreateChild("WorldBuildNode");
+    WorldBuild * WorldBuildObjects = WorldObjectNode  -> CreateComponent<WorldBuild>();
+
+    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Terrain * terrain = terrainNode -> GetComponent<Terrain>();
+
+    /// Define random point variables
+    float Spotx=0.0f;
+    float Spotz=0.0f;
+    float InitialSpotx=0.0f;
+    float InitialSpotz=0.0f;
+
+
+    float randomSpotx=0.0f;
+    float randomSpotz=0.0f;
+    float InitialrandomSpotx=0.0f;
+    float InitialrandomSpotz=0.0f;
+
+    int NumberOfPlantingsGrowth=0;
+    int NumberOfPlantings=0;
+    unsigned int InitialRange=0;
+    unsigned int  SpreadRange=0;
+
+    /// change parameters based on type
+    switch (terrainrule.worldtype)
+    {
+
+    case WORLD_DESERT:
+        NumberOfPlantingsGrowth=25;
+        NumberOfPlantings=50;
+        InitialRange=100;
+        SpreadRange=100;
+        break;
+    case WORLD_TERRAIN:
+        NumberOfPlantingsGrowth=250;
+        NumberOfPlantings=500;
+        InitialRange=100;
+        SpreadRange=60;
+        break;
+    default:
+        break;
+    }
+
+    // I will need the number of plantings
+    for(unsigned int i=0; i<NumberOfPlantings; ++i)
+    {
+
+        /// Pick random values
+        InitialSpotx=rand()%(InitialRange*100);
+        InitialSpotz=rand()%(InitialRange*100);
+
+        InitialSpotx=((float)InitialSpotx/100)-(InitialRange/2);
+        InitialSpotz=((float)InitialSpotz/100)-(InitialRange/2);
+
+        Node* GrassInitialNode = scene_->CreateChild("GrassBillboardSetNode");
+        GrassInitialNode->SetPosition(Vector3(InitialrandomSpotx,0.0f,InitialrandomSpotz));
+        BillboardSet* billboardObject = GrassInitialNode->CreateComponent<BillboardSet>();
+        billboardObject->SetNumBillboards(NumberOfPlantingsGrowth);
+
+        billboardObject->SetMaterial(cache->GetResource<Material>("Resources/Materials/Grass.xml"));
+        billboardObject->SetSorted(true);
+        billboardObject->SetCastShadows(true);
+
+        /// Create X number of nodes per billboard
+        for (unsigned int j = 0; j < NumberOfPlantingsGrowth; ++j)
+        {
+
+            Spotx=rand()%(SpreadRange*100);
+            Spotz=rand()%(SpreadRange*100);
+
+            randomSpotx=((float)Spotx/100)-(SpreadRange/2);
+            randomSpotz=((float)Spotz/100)-(SpreadRange/2);
+
+            randomSpotx=InitialSpotx+randomSpotx;
+            randomSpotz=InitialSpotz+randomSpotz;
+
+            Billboard* bb = billboardObject->GetBillboard(j);
+
+            /// Select a possible position to place a plant
+            Vector3 selectPosition=Vector3(randomSpotx,terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz)),randomSpotz);
+
+            bb->position_ =selectPosition;
+            bb->size_ = Vector2(Random(0.2f) + 0.1f, Random(0.2f) + 0.1f);
+            bb->enabled_ = true;
+        }
+    }
+
+    /// Initialize
+    WorldBuildObjects -> Init();
+
+    /// Build environment based on terrain
+    switch(terrainrule.worldtype)
+    {
+    case WORLD_TERRAIN:
+        /// Plant rocks
+        for(unsigned int i=0; i<30; i++)
+        {
+
+            /// Pick a random spotskx
+            Spotx=rand()%20000;
+            Spotz=rand()%20000;
+
+            /// Calculat z,x location
+            randomSpotx=((float)Spotx/100)-100.0f;
+            randomSpotz=((float)Spotz/100)-100.0f;
+
+            /// Create rocks on paths
+            WorldBuildObjects -> CreateRockObjectAlongPath(randomSpotx,randomSpotz, 5, 100.0f);
+        }
+
+
+        /// Plant rocks
+        for(unsigned int i=0; i<100; i++)
+        {
+
+            /// Pick a random spot
+            Spotx=rand()%20000;
+            Spotz=rand()%20000;
+
+            /// Calculat z,x location
+            randomSpotx=((float)Spotx/100)-100.0f;
+            randomSpotz=((float)Spotz/100)-100.0f;
+
+            /// Create rocks on paths
+            WorldBuildObjects -> CreateTreeObjectAlongPath(randomSpotx,randomSpotz, 8, 100.0f);
+        }
+        break;
+    default:
+        break;
+    }
+
+    /// Remove
+    WorldObjectNode -> Remove();
+
+    return 1;
+}
+
+/// Change environment
+int ExistenceClient::GenerateSceneUpdateEnvironment(terrain_rule terrainrule)
+{
+    /// Define Resouces
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+    /// Get skybox. The Skybox component is used like StaticModel, but it will be always located at the camera, giving the
+    /// illusion of the box planes being far away. Use just the ordinary Box model and a suitable material, whose shader will
+    /// generate the necessary 3D texture coordinates for cube mapping
+    Node* skyNode = scene_->GetChild("Sky",true);
+    Skybox* skybox = skyNode->GetComponent<Skybox>();
+
+    /// Get a Zone component for ambient lighting & fog control
+    Node* zoneNode = scene_->GetChild("Zone",true);
+    Zone* zone = zoneNode->GetComponent<Zone>();
+
+    /// Get a directional light to the world. Enable cascaded shadows on it
+    Node* lightNode1 = scene_->GetChild("DirectionalLight1",true);
+    Light* light1 = lightNode1->GetComponent<Light>();
+
+    /// Get a directional light to the world. Enable cascaded shadows on it
+    Node* lightNode2 = scene_->GetChild("DirectionalLight2",true);
+    Light* light2 = lightNode2->GetComponent<Light>();
+
+    /// Get a directional light to the world. Enable cascaded shadows on it
+    Node* lightNode3 = scene_->GetChild("DirectionalLight3",true);
+    Light* light3 = lightNode3->GetComponent<Light>();
+
+    /// Generate Terrain
+    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Terrain* terrain = terrainNode->GetComponent<Terrain>();
+
+    /// Change texture
+    switch (terrainrule.worldtype)
+    {
+    case WORLD_DESERT:
+        skybox->SetMaterial(cache->GetResource<Material>("Materials/Skybox_Desert.xml"));
+        terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainTriPlanar-Desert.xml"));
+
+        light1->SetColor(Color(1.0f, 0.843f, 0.482f));
+        light1->SetBrightness(0.4f);
+
+        light2->SetColor(Color(1.0f, 0.843f, 0.482f));
+        light2->SetBrightness(0.6f);
+
+        zone->SetFogColor(Color(0.302f, 0.259f, 0.259f));
+
+        break;
+    case WORLD_ICE:
+        skybox->SetMaterial(cache->GetResource<Material>("Materials/Skybox_Ice.xml"));
+        terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainTriPlanar-Ice.xml"));
+        break;
+    default:
+        terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainTriPlanar-Terrain.xml"));
+        break;
+    }
+
+
+
 
     return 1;
 }

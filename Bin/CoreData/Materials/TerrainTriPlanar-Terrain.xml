@@ -1,0 +1,9 @@
+<material>
+    <technique name="Techniques/TerrainBlendTriPlanar.xml" />
+    <texture unit="0" name="Textures/TerrainWeights.dds" />
+    <texture unit="1" name="Textures/Environments/SoilGrass1.jpg" />    
+    <texture unit="2" name="Textures/Environments/SoilGrass2.jpg" />    
+    <texture unit="3" name="Textures/Environments/SoilGrass3.jpg" />
+    <parameter name="MatSpecColor" value="0 0 0 0" />
+    <parameter name="DetailTiling" value="3072" />
+</material>
