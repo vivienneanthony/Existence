@@ -6,7 +6,14 @@
 using namespace Urho3D;
 using namespace std;
 
+
+/// Define objects
 #define WorldOjectCollisionMapLimit  1000
+
+/// Define building blocks
+#define WORLDBUILD_ROCKS            0
+#define WORLDBUILD_TREES            50
+#define WORLDBUILD_ICESPIKES        100
 
 /// Temporary structure
 struct WorldOjectCollisionMap
@@ -36,9 +43,10 @@ public:
 
     int Init(void);
 
-    /// public
+    /// public will remove
     int CreateRockObjectAlongPath(float x, float z, float numberofobjects, float length);
     int CreateTreeObjectAlongPath(float x, float z, float numberofobjects, float length);
+    int CreateObjectsAlongPath(int objecttypes, float x, float z, float numberofobjects, float length);
 
 protected:
 

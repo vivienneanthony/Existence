@@ -7,9 +7,13 @@
 #define WORLD_WATER         75
 #define WORLD_ICE           100
 
+#define SUBWORLD_TERRAIN       0
+#define SUBWORLD_ALIEN         1
+
 struct terrain_rule
 {
-    int worldtype;
+    int worldtype;      // world type
+    int subworldtype;      // subworldtype
     float moutainrange; // value 0.0f to 1.0f
     float cratersdeep; // deep craters
     time_t timeseed;

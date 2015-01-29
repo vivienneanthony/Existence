@@ -177,6 +177,7 @@ public:
     SDL_Surface* GetSDLSurface(const IntRect& rect = IntRect::ZERO) const;
     /// Precalculate the mip levels. Used by asynchronous texture loading.
     void PrecalculateLevels();
+    void SetDataSlope(const unsigned char* pixelData);
 
 private:
     /// Decode an image using stb_image.

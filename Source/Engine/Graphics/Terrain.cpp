@@ -1236,9 +1236,9 @@ bool Terrain::GenerateProceduralHeightMap(terrain_rule terrainrule)
     float octave8 = (float) octave7*basepersistence;
 
     /// Initilalize procedural
-    proceduralMap -> Initialize(1024,1024);
+    proceduralMap -> Initialize(2048,2048);
     proceduralMap -> SetOffSets(0,0);
-    proceduralImage -> SetSize(1024,1024, 1, 4);
+    proceduralImage -> SetSize(2048,2048, 1, 4);
 
     /// Test procedual generation
     proceduralMap -> SetOctaves(octaves,.25f,true,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);

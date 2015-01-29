@@ -435,3 +435,224 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
 
     return 1;
 }
+
+int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float numberofobjects, float length)
+{
+    /// Get Needed SubSystems
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+
+    /// Try to get the node information;
+    Scene * scene_;
+
+    scene_ = this -> GetScene();
+
+    Node* terrainNode = scene_ ->GetChild("Terrain",true);
+
+    Terrain* terrain = terrainNode->GetComponent<Terrain>();
+
+    //cout << "\r\nSave" << SaveCollisionObjects;
+    //cout << "\r\nBounds" << CollisionBounds.size();
+    //cout << "another path";
+
+
+    /// Need variables
+    float lengthlimitdistance= length;
+
+    float objectsalongpath=numberofobjects;
+    float objectsdistance=lengthlimitdistance/objectsalongpath;
+    float objectincrement=1;
+
+    float origin_x=x;
+    float origin_z=z;
+
+    float difference_z=0.0f;
+    float difference_x=0.0f;
+
+    float position_x=0.0f;
+    float position_z=0.0f;
+
+    float newposition_x=0.0f;
+    float newposition_z=0.0f;
+    float olddistance=0.0f;
+
+    position_x=origin_x;
+    position_z=origin_z;
+
+    do
+    {
+        /// Pick a random directoin
+        int direction=rand()%8+1;
+
+        /// Select coordinate change based on random direction
+        switch (direction)
+        {
+        case NORTH:
+            difference_x=0;
+            difference_z=1;
+            break;
+        case NORTHEAST:
+            difference_x=1;
+            difference_z=1;
+            break;
+        case EAST:
+            difference_x=+1;
+            difference_z=0;
+            break;
+        case SOUTHEAST:
+            difference_x=1;
+            difference_z=-1;
+            break;
+        case SOUTH:
+            difference_x=0;
+            difference_z=-1;
+            break;
+        case SOUTHWEST:
+            difference_x=-1;
+            difference_z=-1;
+            break;
+        case WEST:
+            difference_x=-1;
+            difference_z=0;
+            break;
+        case NORTHWEST:
+            difference_x=-1;
+            difference_z=1;
+            break;
+        }
+
+
+        /// If distance less then current distance then while continue loop
+        if(ComputeDistance(position_x+difference_x, origin_x, position_z+difference_z,origin_z)<olddistance)
+        {
+            continue;
+        }
+        else
+        {
+            /// Create a new position
+            newposition_x=position_x+difference_x;
+            newposition_z=position_z+difference_z;
+
+            ///  Copy newposition to current positon
+            position_x=newposition_x;
+            position_z=newposition_z;
+
+            /// Get distance
+            olddistance=ComputeDistance(position_x, origin_x, position_z, origin_z);
+
+            /// Try this method to use percentange
+            if(olddistance/lengthlimitdistance>(objectsdistance*objectincrement)/lengthlimitdistance)
+            {
+                /// Set next pointer
+                objectincrement++;
+
+                /// Add a object node
+                Node * ObjectStaticNode= scene_ -> CreateChild("RockNode");
+
+                /// Create nodes
+                StaticModel * ObjectStaticModelBase = ObjectStaticNode->CreateComponent<StaticModel>();
+                StaticModel * ObjectStaticModelBaseLeaves = ObjectStaticNode->CreateComponent<StaticModel>();
+
+                unsigned int pick=0;
+
+                switch (objecttypes)
+                {
+                case WORLDBUILD_ROCKS:
+                    /// Pick random
+                    pick= rand()%2+1;
+
+                    if(pick==1)
+                    {
+                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/Rock1.mdl"));
+                        ObjectStaticModelBase->ApplyMaterialList("Resources/Models/Rock1.txt");
+
+                    }
+                    else
+                    {
+                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/Rock2.mdl"));
+                        ObjectStaticModelBase->ApplyMaterialList("Resources/Models/Rock2.txt");
+
+                    }
+                    break;
+                case WORLDBUILD_TREES:
+                    /// Pick Random
+                    pick= rand()%3+1;
+
+                    switch (pick)
+                    {
+
+                    case 1:
+                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/AlienTree1.mdl"));
+                        ObjectStaticModelBase->ApplyMaterialList("Resources/Models/AlienTree1.txt");
+
+                        ObjectStaticModelBaseLeaves->SetModel(cache->GetResource<Model>("Resources/Models/AlienTree1Leaves.mdl"));
+                        ObjectStaticModelBaseLeaves->ApplyMaterialList("Resources/Models/AlienTree1Leaves.txt");
+                        break;
+
+                    case 2:
+                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/AlienTree2.mdl"));
+                        ObjectStaticModelBase->ApplyMaterialList("Resources/Models/AlienTree2.txt");
+
+                        ObjectStaticModelBaseLeaves->SetModel(cache->GetResource<Model>("Resources/Models/AlienTree2Leaves.mdl"));
+                        ObjectStaticModelBaseLeaves->ApplyMaterialList("Resources/Models/AlienTree2Leaves.txt");
+
+                        break;
+                    case 3:
+                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/AlienTree3.mdl"));
+                        ObjectStaticModelBase->ApplyMaterialList("Resources/Models/AlienTree3.txt");
+
+                        ObjectStaticModelBaseLeaves->SetModel(cache->GetResource<Model>("Resources/Models/AlienTree3Leaves.mdl"));
+                        ObjectStaticModelBaseLeaves->ApplyMaterialList("Resources/Models/AlienTree3Leaves.txt");
+                        break;
+                    default:
+                        /// Do nothing
+                        break;
+                    }
+                default:
+                    /// Do nothing
+                    break;
+                }
+
+
+                /// Create Nodes and COmponents
+                ObjectStaticModelBase->SetCastShadows(true);
+
+                if(objecttypes==WORLDBUILD_TREES)
+                {
+                    ObjectStaticModelBaseLeaves->SetCastShadows(true);
+                }
+
+                /// Get dimensions
+                BoundingBox  ObjectStaticModelBox = ObjectStaticModelBase ->GetBoundingBox();
+                Vector3  ObjectStaticModelCenter= ObjectStaticModelBox.HalfSize();
+
+                /// Select a possible position to place a Rock
+                Vector3 selectPosition=Vector3(position_x,terrain->GetHeight(Vector3(position_x,0.0f,position_z))+ObjectStaticModelCenter.y_,position_z);
+
+                /// Save collisions
+                CollisionBounds.at(SaveCollisionObjects).size_x=ObjectStaticModelCenter.x_;
+                CollisionBounds.at(SaveCollisionObjects).size_y=ObjectStaticModelCenter.y_;
+                CollisionBounds.at(SaveCollisionObjects).size_z=ObjectStaticModelCenter.z_;
+                CollisionBounds.at(SaveCollisionObjects).origin_x=position_x;
+                CollisionBounds.at(SaveCollisionObjects).origin_y=terrain->GetHeight(Vector3(position_x,0.0f,position_z))+ObjectStaticModelCenter.y_;
+                CollisionBounds.at(SaveCollisionObjects).origin_z=position_z;
+                CollisionBounds.at(SaveCollisionObjects).lod=0.0f;
+
+                /// Save object
+                SaveCollisionObjects++;
+
+                /// Set Rock position
+                ObjectStaticNode->SetPosition(selectPosition);
+                ObjectStaticNode->SetRotation(Quaternion(Vector3::UP, terrain->GetNormal(Vector3(position_x,0.0f,position_z))));
+                ObjectStaticNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
+            }
+        }
+    }
+    while(olddistance<=lengthlimitdistance);
+
+
+    return 1;
+}
+

@@ -175,7 +175,7 @@ bool Procedural::GenerateProceduralTerrain(const terrain_rule &terrainrule)
     generateDiamondMethod1(diamondinput1,width_,height_);
 
     /// Scale perlin
-    GenerateScale(perlininput1,.5f);
+    GenerateScale(perlininput1,.9f);
 
     controloutput1= GenerateSelectBuild2(0.0f, 1.0f, 0.1f,GenerateAdd(flatplane,perlininput1),diamondinput1,controlinput1);
 

@@ -86,6 +86,7 @@
 //#include <time>
 #include <locale>
 #include <ctime>
+#include <cmath>
 #include <iomanip>
 #include <fstream>
 #include <cstdlib>
@@ -177,6 +178,44 @@ string ConvertUIntToString(unsigned int val)
     return(str);
 }
 
+float cutoff(float inputvalue, float pointmid, float range);
+
+float cutoff(float inputvalue, float pointmid, float range)
+{
+
+    /// Create valuables to calculate
+    float midpoint=pointmid;
+
+    float midpoint_low=midpoint-range;
+    float midpoint_max=midpoint+range;
+
+    float midpoint_range;
+    float result;
+
+    if(midpoint_low<0){ midpoint_low=0;}
+
+    if(midpoint_max>1){midpoint_max=1;}
+
+    midpoint_range=midpoint_max-midpoint_low;
+
+    /// Calculate value to range
+
+    if(inputvalue<midpoint_low)
+    {
+        result=0;
+    }
+    else if(inputvalue>midpoint_max)
+    {
+        result=1;
+    }
+    else
+    {
+        result=(inputvalue-midpoint_low)/midpoint_range;
+    }
+
+    return result;
+}
+
 
 /// Strign to Float
 float StringToFloat(string buffer)
@@ -203,6 +242,18 @@ bool intersects( range a, range b )
     return a.second >= b.first ;
 }
 
+Vector3 NormalizedToWorld(Image *height, Terrain *terrain, Vector2 normalized);
+
+Vector3 NormalizedToWorld(Image *height, Terrain *terrain, Vector2 normalized)
+{
+if(!terrain || !height) return Vector2(0,0);
+Vector3 spacing=terrain->GetSpacing();
+int patchSize=terrain->GetPatchSize();
+IntVector2 numPatches=IntVector2((height->GetWidth()-1) / patchSize, (height->GetHeight()-1) / patchSize);
+Vector2 patchWorldSize=Vector2(spacing.x_*(float)(patchSize*numPatches.x_), spacing.z_*(float)(patchSize*numPatches.y_));
+Vector2 patchWorldOrigin=Vector2(-0.5f * patchWorldSize.x_, -0.5f * patchWorldSize.y_);
+return Vector3(patchWorldOrigin.x_+normalized.x_*patchWorldSize.x_, 0, patchWorldOrigin.y_+normalized.y_*patchWorldSize.y_);
+}
 
 /// Main program execution code
 void ExistenceClient::Start()
@@ -3075,6 +3126,7 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
         /// Copy rule
         terrainrule.worldtype=(float)atoi(argument[3].c_str());
+        terrainrule.subworldtype=(float)atoi(argument[3].c_str());
         terrainrule.moutainrange=(float)atof(argument[4].c_str());
         terrainrule.cratersdeep=(float)atof(argument[5].c_str());
 
@@ -3732,10 +3784,25 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     terrainbody->SetCollisionLayer(1);
     terrainshape->SetTerrain();
 
+
     /// Attempt to get terrain image
     Image * producedHeightMapImage = new Image(context_);
-    producedHeightMapImage -> SetSize(1024,1024, 1, 4);
+    producedHeightMapImage -> SetSize(2048,2048, 1, 4);
     producedHeightMapImage -> SetData(terrain -> GetData());
+
+    /// testing
+    float bw=2048.0f;
+    float bh=2048.0f;
+    float x=1024.0f;
+    float y=1024.0f;
+
+	Vector2 nworld=Vector2(x/bw, y/bh);
+    Vector3 worldvalue=NormalizedToWorld( producedHeightMapImage,terrain,nworld);
+    Vector3 normalvalue=terrain ->GetNormal(Vector3(worldvalue));
+    float steep=abs(normalvalue.DotProduct(Vector3(0,1,0)));
+
+    cout << steep;
+
 
     Vector3 position(0.0f,0.0f);
     position.y_ = terrain->GetHeight(position) + 1.0f;
@@ -4359,7 +4426,8 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
             randomSpotz=((float)Spotz/100)-100.0f;
 
             /// Create rocks on paths
-            WorldBuildObjects -> CreateRockObjectAlongPath(randomSpotx,randomSpotz, 5, 100.0f);
+            //WorldBuildObjects -> CreateRockObjectAlongPath(randomSpotx,randomSpotz, 5, 100.0f);
+            WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_ROCKS, randomSpotx,randomSpotz, 5, 100.0f);
         }
 
 
@@ -4376,7 +4444,8 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
             randomSpotz=((float)Spotz/100)-100.0f;
 
             /// Create rocks on paths
-            WorldBuildObjects -> CreateTreeObjectAlongPath(randomSpotx,randomSpotz, 8, 100.0f);
+            //WorldBuildObjects -> CreateTreeObjectAlongPath(randomSpotx,randomSpotz, 8, 100.0f);
+            WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_TREES, randomSpotx,randomSpotz, 8, 100.0f);
         }
         break;
     default:
