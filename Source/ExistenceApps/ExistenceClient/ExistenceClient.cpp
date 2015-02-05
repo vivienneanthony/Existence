@@ -178,35 +178,41 @@ string ConvertUIntToString(unsigned int val)
     return(str);
 }
 
-float cutoff(float inputvalue, float pointmid, float range);
+float cutoff(float inputvalue, float pointmid, float range,bool debug);
 
-float cutoff(float inputvalue, float pointmid, float range)
+/// Fuction Cutoff
+/// Take input from a slope for lerping to gradiant
+float cutoff(float inputvalue, float pointmid, float range, bool debug)
 {
-
     /// Create valuables to calculate
     float midpoint=pointmid;
 
     float midpoint_low=midpoint-range;
-    float midpoint_max=midpoint+range;
+    float midpoint_high=midpoint+range;
+    float midpoint_range=midpoint_range=midpoint_high-midpoint_low;
 
-    float midpoint_range;
     float result;
 
-    if(midpoint_low<0){ midpoint_low=0;}
+    /// Double check for overaflow
+    if(midpoint_low<0.0f)
+    {
+        midpoint_low=0.0f;
+    }
+    if(midpoint_high>1.0f)
+    {
+        midpoint_high=1.0f;
+    }
 
-    if(midpoint_max>1){midpoint_max=1;}
 
-    midpoint_range=midpoint_max-midpoint_low;
-
-    /// Calculate value to range
-
-    if(inputvalue<midpoint_low)
+    /// Calculate gradiant based on lerp results
+    if(midpoint_low>inputvalue)
     {
         result=0;
     }
-    else if(inputvalue>midpoint_max)
+    else if(inputvalue>midpoint_high)
     {
         result=1;
+
     }
     else
     {
@@ -216,7 +222,7 @@ float cutoff(float inputvalue, float pointmid, float range)
     return result;
 }
 
-
+/// Function StringtoFloat
 /// Strign to Float
 float StringToFloat(string buffer)
 {
@@ -246,13 +252,13 @@ Vector3 NormalizedToWorld(Image *height, Terrain *terrain, Vector2 normalized);
 
 Vector3 NormalizedToWorld(Image *height, Terrain *terrain, Vector2 normalized)
 {
-if(!terrain || !height) return Vector2(0,0);
-Vector3 spacing=terrain->GetSpacing();
-int patchSize=terrain->GetPatchSize();
-IntVector2 numPatches=IntVector2((height->GetWidth()-1) / patchSize, (height->GetHeight()-1) / patchSize);
-Vector2 patchWorldSize=Vector2(spacing.x_*(float)(patchSize*numPatches.x_), spacing.z_*(float)(patchSize*numPatches.y_));
-Vector2 patchWorldOrigin=Vector2(-0.5f * patchWorldSize.x_, -0.5f * patchWorldSize.y_);
-return Vector3(patchWorldOrigin.x_+normalized.x_*patchWorldSize.x_, 0, patchWorldOrigin.y_+normalized.y_*patchWorldSize.y_);
+    if(!terrain || !height) return Vector2(0,0);
+    Vector3 spacing=terrain->GetSpacing();
+    int patchSize=terrain->GetPatchSize();
+    IntVector2 numPatches=IntVector2((height->GetWidth()-1) / patchSize, (height->GetHeight()-1) / patchSize);
+    Vector2 patchWorldSize=Vector2(spacing.x_*(float)(patchSize*numPatches.x_), spacing.z_*(float)(patchSize*numPatches.y_));
+    Vector2 patchWorldOrigin=Vector2(-0.5f * patchWorldSize.x_, -0.5f * patchWorldSize.y_);
+    return Vector3(patchWorldOrigin.x_+normalized.x_*patchWorldSize.x_, 0, patchWorldOrigin.y_+normalized.y_*patchWorldSize.y_);
 }
 
 /// Main program execution code
@@ -3102,6 +3108,8 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
             /// reset timer
             srand(timeseed);
+
+            return;
         }
         else
         {
@@ -3763,19 +3771,70 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     lightNode3->SetRotation(Quaternion(39.1376,-180,-180));
     lightNode3->SetPosition(Vector3(0.0f,3.0f,0.0f));
 
-    /// Generate Terrain
+    /// Define Terrain component information
     Node* terrainNode = scene_->CreateChild("Terrain");
 
     Terrain* terrain = terrainNode->CreateComponent<Terrain>();
     terrain->SetPatchSize(64);
-    terrain->SetSpacing(Vector3(2.0f, 0.8f, 2.0f)); /// Spacing between vertices and vertical resolution of the height map
+    terrain->SetSpacing(Vector3(1.0f, .5f, 1.0f)); /// Spacing between vertices and vertical resolution of the height map
     terrain->SetSmoothing(true);
     terrain->SetCastShadows(true);
 
-    /// generatescene
+    /// Generate Produracel map
     terrain->GenerateProceduralHeightMap(terrainrule);
 
-    terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainTriPlanar.xml"));
+    Image * producedHeightMapImage = new Image(context_);
+    producedHeightMapImage -> SetSize(2049,2049, 1, 4);
+    producedHeightMapImage -> SetData(terrain->GetData());
+
+    terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainEdit.xml"));
+
+    /// Define heightmap texture
+    int bw=2049,bh=2049;
+
+    Texture2D * blendtex=new Texture2D(context_);
+    blendtex -> SetNumLevels(1);
+    blendtex -> SetSize(0,0,0,TEXTURE_DYNAMIC);
+    terrain-> GetMaterial() -> SetTexture(TU_DIFFUSE ,blendtex);
+
+    /// Shared pointer for blend texture
+    SharedPtr<Image> blend;
+
+    blend = new Image(context_);
+    blend -> SetSize(bw,bh,1,4);
+    blend -> Clear(Color(1,0,0,0));
+
+    float steep=0.0f;
+    float steepforlerp=0.0f;
+
+    /// create blend here
+    for(unsigned int x=0; x<bw; x++)
+    {
+        for(unsigned int y=0; y<bh; y++)
+        {
+            Vector2 nworld=Vector2(x/(float)bw, y/(float)bh);
+            Vector3 worldvalue=NormalizedToWorld( producedHeightMapImage,terrain,nworld);
+            Vector3 normalvalue=terrain->GetNormal(worldvalue);
+
+            steep=1.0f-normalvalue.y_;
+            steepforlerp=cutoff(steep,0.05f,0.040f,false);
+
+            Color currentcolor = blend -> GetPixel(x,y);
+
+            int mixfactor=rand()%99;
+
+            float mix=(float)(mixfactor+1)/100;
+
+            Color resultcolor=currentcolor.Lerp(Color(0,0,mix,1.0f-mix), steepforlerp);
+
+            blend-> SetPixel(x,y,resultcolor);
+        }
+    }
+
+    /// Rotate image and assign texture
+    blend -> 	FlipVertical ();
+
+    blendtex ->SetData(blend, true);
 
     RigidBody* terrainbody = terrainNode->CreateComponent<RigidBody>();
 
@@ -3783,26 +3842,6 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
 
     terrainbody->SetCollisionLayer(1);
     terrainshape->SetTerrain();
-
-
-    /// Attempt to get terrain image
-    Image * producedHeightMapImage = new Image(context_);
-    producedHeightMapImage -> SetSize(2048,2048, 1, 4);
-    producedHeightMapImage -> SetData(terrain -> GetData());
-
-    /// testing
-    float bw=2048.0f;
-    float bh=2048.0f;
-    float x=1024.0f;
-    float y=1024.0f;
-
-	Vector2 nworld=Vector2(x/bw, y/bh);
-    Vector3 worldvalue=NormalizedToWorld( producedHeightMapImage,terrain,nworld);
-    Vector3 normalvalue=terrain ->GetNormal(Vector3(worldvalue));
-    float steep=abs(normalvalue.DotProduct(Vector3(0,1,0)));
-
-    cout << steep;
-
 
     Vector3 position(0.0f,0.0f);
     position.y_ = terrain->GetHeight(position) + 1.0f;
@@ -4098,6 +4137,70 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
 
         }
     }
+
+    /// parameters for zone related command - Old code
+    if(argument[1]=="pointsteep")
+    {
+        /// Get Terrain
+        Node* terrainNode = scene_->GetChild("Terrain",true);
+        Terrain * terrain = terrainNode -> GetComponent<Terrain>();
+
+        /// get testing values
+        float x_ =  StringToFloat(argument[3]);
+        float y_ =  StringToFloat(argument[4]);
+        float midpoint =  StringToFloat(argument[3]);
+        float range =  StringToFloat(argument[4]);
+
+        Image * producedHeightMapImage = new Image(context_);
+        producedHeightMapImage -> SetSize(2049,2049, 1, 4);
+        producedHeightMapImage -> SetData(terrain -> GetData());
+
+        /// Testing
+        float bw=2049.0f;
+        float bh=2049.0f;
+
+        /// Get steepness
+        Vector2 nworld=Vector2(x_/bw, y_/bh);
+        Vector3 worldvalue=NormalizedToWorld( producedHeightMapImage,terrain,nworld);
+
+        Vector3 normalvalue=terrain->GetNormal(worldvalue);
+        float steep=1.0f-abs(normalvalue.DotProduct(Vector3(0,1,0)));
+        float steepforlerp=cutoff(steep,midpoint, range,true);
+
+        std::ostringstream oss;
+        oss << " Steep" << steep << " "<< normalvalue.x_<< " " << normalvalue.y_ << " " << normalvalue.z_<< " " << steepforlerp;
+        std::string stringoutput = oss.str();
+
+        Print(stringoutput.c_str());
+    }
+
+    /// parameters for zone related command
+    if(argument[1]=="terrainsize")
+    {
+
+        /// Get Terrain
+        Node* terrainNode = scene_->GetChild("Terrain",true);
+        Terrain * terrain = terrainNode -> GetComponent<Terrain>();
+
+
+        if(terrain)
+        {
+
+            Vector3 spacing=terrain->GetSpacing();
+            int patchSize=terrain->GetPatchSize();
+
+            IntVector2 numPatches= terrain -> GetNumPatches ();
+
+            Vector2 patchWorldSize=Vector2(spacing.x_*(float)(patchSize*numPatches.x_), spacing.z_*(float)(patchSize*numPatches.y_));
+
+            String Output=String("Terrain Size"+terrain->GetNumVertices().ToString()+"Patch World Size"+patchWorldSize.ToString());
+
+            Print(Output);
+        }
+
+    }
+
+
     return 1;
 }
 
@@ -4305,8 +4408,7 @@ int ExistenceClient::ConsoleActionRenderer(const char * lineinput)
     return 1;
 }
 
-
-/// build world
+/// Build world
 int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
 {
     /// Define Resouces
@@ -4315,8 +4417,6 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
-
-
 
     /// Build world
     Node * WorldObjectNode = scene_-> CreateChild("WorldBuildNode");
@@ -4342,7 +4442,7 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
     unsigned int InitialRange=0;
     unsigned int  SpreadRange=0;
 
-    /// change parameters based on type
+    /// Change parameters based on type
     switch (terrainrule.worldtype)
     {
 
@@ -4362,7 +4462,9 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
         break;
     }
 
-    // I will need the number of plantings
+    float steep=0.0f;
+
+    /// create billboards
     for(unsigned int i=0; i<NumberOfPlantings; ++i)
     {
 
@@ -4400,20 +4502,34 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
             /// Select a possible position to place a plant
             Vector3 selectPosition=Vector3(randomSpotx,terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz)),randomSpotz);
 
+            Vector3 normalvalue=terrain -> GetNormal(Vector3(InitialSpotx+randomSpotx,0.0f,InitialSpotz+randomSpotz));
+
+            steep=1.0f-normalvalue.y_;
+
             bb->position_ =selectPosition;
             bb->size_ = Vector2(Random(0.2f) + 0.1f, Random(0.2f) + 0.1f);
+
             bb->enabled_ = true;
+
+            /// if slope is above .01
+            if(steep>.01)
+            {
+                bb->enabled_ = false;
+            }
         }
     }
 
     /// Initialize
     WorldBuildObjects -> Init();
 
-    /// Build environment based on terrain
+
+    WorldBuildObjects -> GenerateWorldObjects(0, terrainrule);
+
+/*    /// Build environment based on terrain
     switch(terrainrule.worldtype)
     {
     case WORLD_TERRAIN:
-        /// Plant rocks
+   /// Plant rocks
         for(unsigned int i=0; i<30; i++)
         {
 
@@ -4450,7 +4566,7 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
         break;
     default:
         break;
-    }
+    }*/
 
     /// Remove
     WorldObjectNode -> Remove();
@@ -4499,7 +4615,6 @@ int ExistenceClient::GenerateSceneUpdateEnvironment(terrain_rule terrainrule)
     {
     case WORLD_DESERT:
         skybox->SetMaterial(cache->GetResource<Material>("Materials/Skybox_Desert.xml"));
-        terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainTriPlanar-Desert.xml"));
 
         light1->SetColor(Color(1.0f, 0.843f, 0.482f));
         light1->SetBrightness(0.4f);
@@ -4515,12 +4630,8 @@ int ExistenceClient::GenerateSceneUpdateEnvironment(terrain_rule terrainrule)
         terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainTriPlanar-Ice.xml"));
         break;
     default:
-        terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainTriPlanar-Terrain.xml"));
         break;
     }
-
-
-
 
     return 1;
 }

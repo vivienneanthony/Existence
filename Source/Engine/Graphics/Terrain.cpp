@@ -1220,8 +1220,8 @@ bool Terrain::GenerateProceduralHeightMap(terrain_rule terrainrule)
 
     /// Temporary use rule seed to choose octaves - set base values
     unsigned int octaves= (rand()%2)+6;
-    unsigned int baseoctave=rand()%40;
-    unsigned int basepersistencerandom = (rand()%40)+10;
+    unsigned int baseoctave=rand()%30+10;
+    unsigned int basepersistencerandom = (rand()%50)+10;
     float basepersistence=(float)basepersistencerandom/100;
 
 
@@ -1236,12 +1236,12 @@ bool Terrain::GenerateProceduralHeightMap(terrain_rule terrainrule)
     float octave8 = (float) octave7*basepersistence;
 
     /// Initilalize procedural
-    proceduralMap -> Initialize(2048,2048);
+    proceduralMap -> Initialize(2049,2049);
     proceduralMap -> SetOffSets(0,0);
-    proceduralImage -> SetSize(2048,2048, 1, 4);
+    proceduralImage -> SetSize(2049,2049, 1, 4);
 
     /// Test procedual generation
-    proceduralMap -> SetOctaves(octaves,.25f,true,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
+    proceduralMap -> SetOctaves(octaves,.45f,true,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
     proceduralMap -> GenerateProceduralTerrain(terrainrule);
 
     /// Copy Procedual to Image Data
@@ -1249,6 +1249,8 @@ bool Terrain::GenerateProceduralHeightMap(terrain_rule terrainrule)
     proceduralImageCreated = proceduralImage -> GetData();
 
     proceduralImage->SavePNG(String("/media/home2/vivienne/Existence/Bin/TerrainImage.png"));
+
+    SetHeightMap(proceduralImage);
 
     success = SetHeightMapInternal(proceduralImage, true);
 

@@ -165,21 +165,45 @@ bool Procedural::GenerateProceduralTerrain(const terrain_rule &terrainrule)
     {
         for(unsigned int y=0;y<height_;y++)
         {
-            flatplane[x+(y*width_)]=0.5f;
+            flatplane[x+(y*width_)]=0.2f;
         }
     }
 
     /// Generate noise - Currently 8 octaves
     generatePerlinNoise1(perlininput1, 8,0.0f,0.0f,0.0f,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
-    generateControlPerlinNoise1(controlinput1,4,0.0f,0.0f,0.0f,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
+    generateControlPerlinNoise1(controlinput1,5,0.0f,0.0f,0.0f,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
     generateDiamondMethod1(diamondinput1,width_,height_);
 
     /// Scale perlin
-    GenerateScale(perlininput1,.9f);
+    GenerateScale(perlininput1,.40f);
 
     controloutput1= GenerateSelectBuild2(0.0f, 1.0f, 0.1f,GenerateAdd(flatplane,perlininput1),diamondinput1,controlinput1);
 
+    GenerateScale(controloutput1, .95);
+
+    /// Temporary use rule seed to choose octaves - set base values
+    unsigned int octaves= (rand()%2)+6;
+    unsigned int baseoctave=rand()%40;
+    unsigned int basepersistencerandom = (rand()%50)+10;
+    float basepersistence=(float)basepersistencerandom/100;
+
+    /// Set base values of Octaves
+    float octave1 = (float)(50+baseoctave)/100;
+    float octave2 = (float) octave1*basepersistence;
+    float octave3 = (float) octave2*basepersistence;
+    float octave4 = (float) octave3*basepersistence;
+    float octave5 = (float) octave4*basepersistence;
+    float octave6 = (float) octave5*basepersistence;
+    float octave7 = (float) octave6*basepersistence;
+    float octave8 = (float) octave7*basepersistence;
+
+    generatePerlinNoise1(perlininput1, 8,0.0f,0.0f,0.0f,0,0,0,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
+
+    GenerateScale(perlininput1, .05);
+
     /// Scale output to 0 to 1
+    controloutput1=GenerateAdd(controloutput1, perlininput1);
+
     GenerateBuild(controloutput1,perlinOutput); /// Produce finals 0 to 1 for image - converting to RGBA
 
     /// Point pixelData to perlininput1 memory
@@ -257,8 +281,8 @@ bool Procedural::generatePerlinNoise1(float * inputData1, const unsigned &octave
                 }
                 else
                 {
-                    //Set initial noise
-                    //Set high and low point
+                    /// Set initial noise
+                    /// Set high and low point
                     tempdata_[index]= noise;
                     if(tempdata_[index]>highfloat)
                     {
@@ -357,7 +381,8 @@ bool Procedural::generateDiamondMethod1 (float * inputData1, const float &maxYco
 {
     //an initial seed value for the corners of the data
     float SEED = 0.4f;
-    static const unsigned int DATA_SIZE=width_+1;
+    //static const unsigned int DATA_SIZE=width_+1;
+    static const unsigned int DATA_SIZE=width_;
     std::vector< std::vector<float> > diamond( DATA_SIZE, std::vector<float>(DATA_SIZE) );
 
     //initialise the values of the corners++

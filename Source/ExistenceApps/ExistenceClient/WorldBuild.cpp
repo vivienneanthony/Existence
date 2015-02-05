@@ -25,12 +25,14 @@
 #include "StaticModel.h"
 #include "Terrain.h"
 
-
 #include <iostream>
 #include <cmath>
 #include <algorithm>
 #include <utility>
+
 #include "WorldBuild.h"
+#include "../../Engine/Procedural/Procedural.h"
+
 
 using namespace std;
 
@@ -47,6 +49,8 @@ WorldBuild::WorldBuild(Context* context) :
     LogicComponent (context)
 {
     //ctor
+    // Only the physics update event is needed: unsubscribe from the rest for optimization
+    SetUpdateEventMask(USE_FIXEDUPDATE);
 }
 
 WorldBuild::~WorldBuild()
@@ -64,11 +68,8 @@ void WorldBuild::RegisterObject(Context* context)
 int WorldBuild::Init(void)
 {
     /// Allocate memory
-    //WorldOjectCollisionMap * CollisionBounds = new WorldOjectCollisionMap[300];
     CollisionBounds.clear();
-    CollisionBounds.resize(1000);
     SaveCollisionObjects=0;
-
 }
 
 /// Computer distance
@@ -80,8 +81,84 @@ float  WorldBuild::ComputeDistance(int x1, int y1, int x2, int y2)
     return sqrt((xrange*xrange)+(yrange*yrange));
 }
 
+
+/// Move world building here
+int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terrainrule)
+{
+    /// Get resources
+    /// Get Needed SubSystems
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+
+    Scene * scene_;
+
+    scene_ = this -> GetScene();
+
+    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Terrain * terrain = terrainNode -> GetComponent<Terrain>();
+
+    /// Get terrain size
+    Vector3 spacing=terrain->GetSpacing();
+    int patchSize=terrain->GetPatchSize();
+    IntVector2 numPatches= terrain -> GetNumPatches ();
+
+    /// Get actual size
+    Vector2 patchWorldSize=Vector2(spacing.x_*(float)(patchSize*numPatches.x_), spacing.z_*(float)(patchSize*numPatches.y_));
+
+/// Generate procedural map
+    Procedural * WeightMap = new Procedural();
+    Image *WeightMapImage = new Image(context_);
+
+    /// Create a weightmap image
+    WeightMap->Initialize(patchWorldSize.x_+1, patchWorldSize.y_+1);
+    WeightMapImage->SetSize(patchWorldSize.x_+1, patchWorldSize.y_+1,1,4);
+    WeightMap->SetOctaves(4,0.25f,false,1.0,0.6,0.4,0.3,0.2,0.1,0.1,0.1);
+
+    WeightMapImage->SetData(WeightMap->GetImage());
+
+    Image * terrainHeightMap= new Image(context_);
+
+    terrainHeightMap->SetSize(patchWorldSize.x_+1, patchWorldSize.y_+1,1,4);
+    terrainHeightMap ->SetData(terrain -> GetHeightMap () -> GetData());
+
+    terrainHeightMap -> FlipVertical();
+
+    int Spotx=0;
+    int Spotz=0;
+
+    float randomSpotx=0.0f;
+    float randomSpotz=0.0f;
+
+    // Plant rocks
+    for(unsigned int i=0; i<500; i++)
+    {
+
+        /// Pick a random spotskx
+        Spotx=rand()%1024;
+        Spotz=rand()%1024;
+
+        /// Calculat z,x location
+        //randomSpotx=((float)Spotx/100)-768.0f;
+        //randomSpotz=((float)Spotz/100)-768.0f;
+
+        randomSpotx=(float)Spotx-512.0f;
+        randomSpotz=(float)Spotz-512.0f;
+
+        /// Create rocks on paths
+        CreateTreeObjectAlongPath(patchWorldSize.x_, patchWorldSize.y_,randomSpotx,randomSpotz, 5, 100.0f, terrainHeightMap);
+    }
+
+
+
+    return 0;
+
+}
+
+
 /// Create rocks along a path
-int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobjects, float length)
+int WorldBuild::CreateRockObjectAlongPath( float x, float z, float numberofobjects, float length)
 {
     /// Get Needed SubSystems
     ResourceCache* cache = GetSubsystem<ResourceCache>();
@@ -98,9 +175,7 @@ int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobject
 
     Terrain* terrain = terrainNode->GetComponent<Terrain>();
 
-    //cout << "\r\nSave" << SaveCollisionObjects;
-    //cout << "\r\nBounds" << CollisionBounds.size();
-    //cout << "another path";
+
 
     /// Need variables
     float lengthlimitdistance= length;
@@ -121,7 +196,6 @@ int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobject
     float newposition_x=0.0f;
     float newposition_z=0.0f;
     float olddistance=0.0f;
-
 
     position_x=origin_x;
     position_z=origin_z;
@@ -168,6 +242,8 @@ int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobject
             break;
         }
 
+
+
         /// If distance less then current distance then while continue loop
         if(ComputeDistance(position_x+difference_x, origin_x, position_z+difference_z,origin_z)<olddistance)
         {
@@ -183,8 +259,7 @@ int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobject
             position_x=newposition_x;
             position_z=newposition_z;
 
-            /// Get distance
-            olddistance=ComputeDistance(position_x, origin_x, position_z, origin_z);
+
 
             /// Try this method to use percentange
             if(olddistance/lengthlimitdistance>(objectsdistance*objectincrement)/lengthlimitdistance)
@@ -251,7 +326,7 @@ int WorldBuild::CreateRockObjectAlongPath(float x, float z, float numberofobject
 
 
 /// Create rocks along a path
-int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobjects, float length)
+int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, float x, float z, float numberofobjects, float length, Image * terrainHeightMap)
 {
     /// Get Needed SubSystems
     ResourceCache* cache = GetSubsystem<ResourceCache>();
@@ -267,11 +342,6 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
     Node* terrainNode = scene_ ->GetChild("Terrain",true);
 
     Terrain* terrain = terrainNode->GetComponent<Terrain>();
-
-    //cout << "\r\nSave" << SaveCollisionObjects;
-    //cout << "\r\nBounds" << CollisionBounds.size();
-    //cout << "another path";
-
 
     /// Need variables
     float lengthlimitdistance= length;
@@ -295,6 +365,13 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
 
     position_x=origin_x;
     position_z=origin_z;
+
+    float worldsize_xlow=-(worldsize_x/2);
+    float worldsize_ylow=-(worldsize_y/2);
+
+    float worldsize_xhigh=worldsize_x/2;
+    float worldsize_yhigh=worldsize_y/2;
+
 
     do
     {
@@ -345,6 +422,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
         }
         else
         {
+
             /// Create a new position
             newposition_x=position_x+difference_x;
             newposition_z=position_z+difference_z;
@@ -355,6 +433,36 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
 
             /// Get distance
             olddistance=ComputeDistance(position_x, origin_x, position_z, origin_z);
+
+            /// Prevent out of bounds
+            if(position_x>worldsize_xhigh||position_x<worldsize_xlow)
+            {
+                continue;
+            }
+
+            if(position_z>worldsize_yhigh||position_z<worldsize_ylow)
+            {
+                continue;
+            }
+
+            float xposition=position_x+1024.0f;
+            float zposition=position_z+1024.0f;
+
+            Color terrainHeightvalue=terrainHeightMap->GetPixel(xposition, zposition);
+
+            if(terrainHeightvalue.r_<.50)
+            {
+                continue;
+            }
+
+            Vector3 normalvalue=terrain -> GetNormal(Vector3(xposition+1.0f,0.0f,zposition+1.0f));
+
+            float steep=1.0f-normalvalue.y_;
+
+            if(steep>.009)
+            {
+                continue;
+            }
 
             /// Try this method to use percentange
             if(olddistance/lengthlimitdistance>(objectsdistance*objectincrement)/lengthlimitdistance)
@@ -410,16 +518,16 @@ int WorldBuild::CreateTreeObjectAlongPath(float x, float z, float numberofobject
                 Vector3 selectPosition=Vector3(position_x,terrain->GetHeight(Vector3(position_x,0.0f,position_z))+staticmodelboxcenter.y_,position_z);
 
                 /// Save coordinates
-                CollisionBounds.at(SaveCollisionObjects).size_x=staticmodelboxcenter.x_;
-                CollisionBounds.at(SaveCollisionObjects).size_y=staticmodelboxcenter.y_;
-                CollisionBounds.at(SaveCollisionObjects).size_z=staticmodelboxcenter.z_;
-                CollisionBounds.at(SaveCollisionObjects).origin_x=position_x;
-                CollisionBounds.at(SaveCollisionObjects).origin_z=terrain->GetHeight(Vector3(position_x,0.0f,position_z))+staticmodelboxcenter.y_;
-                CollisionBounds.at(SaveCollisionObjects).origin_z=position_z;
-                CollisionBounds.at(SaveCollisionObjects).lod=0.0f;
+                /*        CollisionBounds.at(SaveCollisionObjects).size_x=staticmodelboxcenter.x_;
+                        CollisionBounds.at(SaveCollisionObjects).size_y=staticmodelboxcenter.y_;
+                        CollisionBounds.at(SaveCollisionObjects).size_z=staticmodelboxcenter.z_;
+                        CollisionBounds.at(SaveCollisionObjects).origin_x=position_x;
+                        CollisionBounds.at(SaveCollisionObjects).origin_z=terrain->GetHeight(Vector3(position_x,0.0f,position_z))+staticmodelboxcenter.y_;
+                        CollisionBounds.at(SaveCollisionObjects).origin_z=position_z;
+                        CollisionBounds.at(SaveCollisionObjects).lod=0.0f;
 
-                /// Save object
-                SaveCollisionObjects++;
+                        /// Save object
+                        SaveCollisionObjects++;*/
 
                 /// Set Rock position
                 RockNode->SetPosition(selectPosition);
@@ -453,10 +561,6 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
 
     Terrain* terrain = terrainNode->GetComponent<Terrain>();
 
-    //cout << "\r\nSave" << SaveCollisionObjects;
-    //cout << "\r\nBounds" << CollisionBounds.size();
-    //cout << "another path";
-
 
     /// Need variables
     float lengthlimitdistance= length;
@@ -477,6 +581,9 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
     float newposition_x=0.0f;
     float newposition_z=0.0f;
     float olddistance=0.0f;
+
+
+    float steep=1.0f;
 
     position_x=origin_x;
     position_z=origin_z;
@@ -523,7 +630,6 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
             break;
         }
 
-
         /// If distance less then current distance then while continue loop
         if(ComputeDistance(position_x+difference_x, origin_x, position_z+difference_z,origin_z)<olddistance)
         {
@@ -541,6 +647,18 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
 
             /// Get distance
             olddistance=ComputeDistance(position_x, origin_x, position_z, origin_z);
+
+            Vector3 normalvalue=terrain->GetNormal(Vector3(position_x,0,position_z));
+
+            //steep = (float)1.0f - fabs(normalvalue.DotProduct(Vector3(0,1,0)));
+            steep= 1.0f - normalvalue.y_;
+
+
+            if(steep>.01)
+            {
+                continue;
+            }
+
 
             /// Try this method to use percentange
             if(olddistance/lengthlimitdistance>(objectsdistance*objectincrement)/lengthlimitdistance)
@@ -631,17 +749,18 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
                 /// Select a possible position to place a Rock
                 Vector3 selectPosition=Vector3(position_x,terrain->GetHeight(Vector3(position_x,0.0f,position_z))+ObjectStaticModelCenter.y_,position_z);
 
-                /// Save collisions
-                CollisionBounds.at(SaveCollisionObjects).size_x=ObjectStaticModelCenter.x_;
-                CollisionBounds.at(SaveCollisionObjects).size_y=ObjectStaticModelCenter.y_;
-                CollisionBounds.at(SaveCollisionObjects).size_z=ObjectStaticModelCenter.z_;
-                CollisionBounds.at(SaveCollisionObjects).origin_x=position_x;
-                CollisionBounds.at(SaveCollisionObjects).origin_y=terrain->GetHeight(Vector3(position_x,0.0f,position_z))+ObjectStaticModelCenter.y_;
-                CollisionBounds.at(SaveCollisionObjects).origin_z=position_z;
-                CollisionBounds.at(SaveCollisionObjects).lod=0.0f;
 
-                /// Save object
-                SaveCollisionObjects++;
+                /// Save collisions
+                /*            CollisionBounds.at(SaveCollisionObjects).size_x=ObjectStaticModelCenter.x_;
+                            CollisionBounds.at(SaveCollisionObjects).size_y=ObjectStaticModelCenter.y_;
+                            CollisionBounds.at(SaveCollisionObjects).size_z=ObjectStaticModelCenter.z_;
+                            CollisionBounds.at(SaveCollisionObjects).origin_x=position_x;
+                            CollisionBounds.at(SaveCollisionObjects).origin_y=terrain->GetHeight(Vector3(position_x,0.0f,position_z))+ObjectStaticModelCenter.y_;
+                            CollisionBounds.at(SaveCollisionObjects).origin_z=position_z;
+                            CollisionBounds.at(SaveCollisionObjects).lod=0.0f;
+
+                            /// Save object
+                            SaveCollisionObjects++;*/
 
                 /// Set Rock position
                 ObjectStaticNode->SetPosition(selectPosition);

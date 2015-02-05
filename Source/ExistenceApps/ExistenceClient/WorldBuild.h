@@ -1,7 +1,10 @@
 #ifndef WORLDBUILD_H
 #define WORLDBUILD_H
 
+#include "Image.h"
 #include <vector>
+#include "../../Engine/Procedural/Procedural.h"
+#include "../../Engine/Procedural/Rules.h"
 
 using namespace Urho3D;
 using namespace std;
@@ -45,8 +48,9 @@ public:
 
     /// public will remove
     int CreateRockObjectAlongPath(float x, float z, float numberofobjects, float length);
-    int CreateTreeObjectAlongPath(float x, float z, float numberofobjects, float length);
+    int CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, float x, float z, float numberofobjects, float length, Image * terrainHeightMap);
     int CreateObjectsAlongPath(int objecttypes, float x, float z, float numberofobjects, float length);
+    int GenerateWorldObjects(const time_t &timeseed,  terrain_rule terrainrule);
 
 protected:
 
@@ -57,8 +61,12 @@ private:
     int SaveCollisionObjects;
 
     /// Set world limit of objects to test for collision
-    //WorldOjectCollisionMap  * CollisionBounds;
     vector <WorldOjectCollisionMap> CollisionBounds;;
+
+    /// Generate procedural map
+    Procedural * WeightMap;
+    Image *WeightMapImage;
+
 };
 
 #endif // WORLDBUILD_H
