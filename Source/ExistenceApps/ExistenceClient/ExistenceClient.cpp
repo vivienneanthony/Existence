@@ -50,6 +50,7 @@
 #include "XMLFile.h"
 #include "XMLElement.h"
 #include "Deserializer.h"
+#include "Cursor.h"
 #include "FileSystem.h"
 #include "ListView.h"
 #include "Console.h"
@@ -271,6 +272,10 @@ void ExistenceClient::Start()
     XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
     FileSystem * filesystem = GetSubsystem<FileSystem>();
 
+    UI* ui = GetSubsystem<UI>();
+
+
+
     /// create variables (urho3d)
     String additionresourcePath;
 
@@ -287,6 +292,10 @@ void ExistenceClient::Start()
     ExistenceGameState.SetUIState(UI_NONE);
     ExistenceGameState.SetGameState(STATE_MAIN);
 
+    /// Set the loaded style as default style
+    uiRoot_->SetDefaultStyle(style);
+
+    CreateCursor();
 
     /// Set game active status
     accountexist=false;
@@ -303,14 +312,14 @@ void ExistenceClient::Start()
     /// Enable OS cursor
     GetSubsystem<Input>()->SetMouseVisible(true);
 
-    /// Set the loaded style as default style
-    uiRoot_->SetDefaultStyle(style);
-
     /// load account
     LoadAccount();
 
     /// Star+t Login UI
     LoginUI(accountexist);
+
+
+
 
     /// Finally subscribe to the update event. Note that by subscribing events at this point we have already missed some events
     /// like the ScreenMode event sent by the Graphics subsystem when opening the application window. To catch those as well we
@@ -1914,6 +1923,29 @@ void ExistenceClient::HandleUpdate(StringHash eventType, VariantMap& eventData)
             character_->controls_.Set(CTRL_FIRE, input->GetKeyDown('Q'));
 
             character_->controls_.Set(CTRL_JUMP, input->GetKeyDown(KEY_SPACE));
+
+            /// Get character information
+            Node * characterNode = scene_->GetChild("Character",true);
+
+            RigidBody* body = characterNode->GetComponent<RigidBody>();
+
+            Node * firstpersonCameraNode = characterNode -> GetChild("CameraFirstPerson",true);
+
+            float YAW_SENSITIVITY=.5;
+
+            /// Updaw character yaw and povement
+            character_->controls_.yaw_ +=(float)input->GetMouseMoveX() * YAW_SENSITIVITY;
+            character_->controls_.pitch_ +=(float)input->GetMouseMoveY() * YAW_SENSITIVITY;
+
+            character_->controls_.yaw_ = Clamp(character_->controls_.yaw_, -80.0f, 80.0f);
+            character_->controls_.pitch_ = Clamp(character_->controls_.pitch_, -80.0f, 80.0f);
+
+            /// Copy yaw and pitch
+            float yaw_=character_->controls_.yaw_;
+            float pitch_=character_->controls_.pitch_;
+
+            firstpersonCameraNode->SetRotation(Quaternion(pitch_,yaw_, 0.0f));
+
         }
     }
 
@@ -1936,6 +1968,9 @@ void ExistenceClient::HandleKeyDown(StringHash eventType, VariantMap& eventData)
                 Console* console = GetSubsystem<Console>();
 
                 console -> SetVisible(false);
+
+                UI* ui = GetSubsystem<UI>();
+                ui->GetCursor()->SetVisible(true);
 
                 ExistenceGameState.SetConsoleState(false);
 
@@ -2819,6 +2854,8 @@ void ExistenceClient::HandleInput(const String& input)
 
             eraseScene();
 
+            GetSubsystem<Input>()->SetMouseVisible(true);
+
             /// set ui state to none
             ExistenceGameState.SetUIState(UI_CHARACTERSELECTIONINTERFACE);
             ExistenceGameState.SetGameState(STATE_MAIN);
@@ -3044,9 +3081,6 @@ void ExistenceClient::loadSceneCreationCreation( const char * lineinput)
     SharedPtr<Viewport> viewport(new Viewport(context_, scene_, cameraNode_->GetComponent<Camera>()));
     renderer->SetViewport(0, viewport);
 
-
-
-
     return;
 }
 
@@ -3064,6 +3098,8 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+    Input* input = GetSubsystem<Input>();
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
@@ -3091,6 +3127,10 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
     time_t timeseed;
     time_t tempseed;
 
+
+    GetSubsystem<Input>()->SetMouseVisible(false);
+
+
     /// Run trhrough arugments - first check if GENERATE
     if(argument[1]=="generate")
     {
@@ -3108,6 +3148,9 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
             /// reset timer
             srand(timeseed);
+
+
+            GetSubsystem<Input>()->SetMouseVisible(true);
 
             return;
         }
@@ -3128,6 +3171,8 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
             }
 
         }
+
+
 
         /// Copy rule information
         terrain_rule terrainrule;
@@ -3192,6 +3237,7 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
         /// load dummy scene
         loadDummyScene();
     }
+
 
 
     /// Get the Camera Node and setup the viewport
@@ -3273,6 +3319,8 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
     UpdatePlayerInfoBar();
 
+
+     ui->GetCursor()->SetVisible(true);
 
     return;
 }
@@ -3531,6 +3579,12 @@ void ExistenceClient::CreateCharacter(void)
     effectRenderPath->SetEnabled("Bloom", false);
     viewport->SetRenderPath(effectRenderPath);
 
+
+
+    character_->controls_.pitch_ = cameraNode_->GetRotation().PitchAngle();
+    character_->controls_.yaw_ = cameraNode_->GetRotation().YawAngle();
+
+
     return;
 }
 
@@ -3737,8 +3791,6 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     Light* light = lightNode->CreateComponent<Light>();
     light->SetLightType(LIGHT_DIRECTIONAL);
     light->SetCastShadows(false);
-    //light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
-    //light->SetShadowCascade(CascadeParameters(10.0f, 50.0f, 200.0f, 0.0f, 0.8f));
     light->SetSpecularIntensity(0.4f);
     light->SetBrightness(.8);
     light->SetColor(Color(0.251f, 0.612f, 1.0f));
@@ -3750,8 +3802,6 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     Light* light2 = lightNode2->CreateComponent<Light>();
     light2->SetLightType(LIGHT_DIRECTIONAL);
     light2->SetCastShadows(true);
-    //light2->SetShadowBias(BiasParameters(0.00025f, 0.5f));
-    //light2->SetShadowCascade(CascadeParameters(10.0f, 50.0f, 200.0f, 0.0f, 0.8f));
     light2->SetSpecularIntensity(.3f);
     light2->SetBrightness(.6);
     light2->SetColor(Color(1.0f, 1.0f,.95f));
@@ -4525,48 +4575,48 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
 
     WorldBuildObjects -> GenerateWorldObjects(0, terrainrule);
 
-/*    /// Build environment based on terrain
-    switch(terrainrule.worldtype)
-    {
-    case WORLD_TERRAIN:
-   /// Plant rocks
-        for(unsigned int i=0; i<30; i++)
+    /*    /// Build environment based on terrain
+        switch(terrainrule.worldtype)
         {
+        case WORLD_TERRAIN:
+       /// Plant rocks
+            for(unsigned int i=0; i<30; i++)
+            {
 
-            /// Pick a random spotskx
-            Spotx=rand()%20000;
-            Spotz=rand()%20000;
+                /// Pick a random spotskx
+                Spotx=rand()%20000;
+                Spotz=rand()%20000;
 
-            /// Calculat z,x location
-            randomSpotx=((float)Spotx/100)-100.0f;
-            randomSpotz=((float)Spotz/100)-100.0f;
+                /// Calculat z,x location
+                randomSpotx=((float)Spotx/100)-100.0f;
+                randomSpotz=((float)Spotz/100)-100.0f;
 
-            /// Create rocks on paths
-            //WorldBuildObjects -> CreateRockObjectAlongPath(randomSpotx,randomSpotz, 5, 100.0f);
-            WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_ROCKS, randomSpotx,randomSpotz, 5, 100.0f);
-        }
+                /// Create rocks on paths
+                //WorldBuildObjects -> CreateRockObjectAlongPath(randomSpotx,randomSpotz, 5, 100.0f);
+                WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_ROCKS, randomSpotx,randomSpotz, 5, 100.0f);
+            }
 
 
-        /// Plant rocks
-        for(unsigned int i=0; i<100; i++)
-        {
+            /// Plant rocks
+            for(unsigned int i=0; i<100; i++)
+            {
 
-            /// Pick a random spot
-            Spotx=rand()%20000;
-            Spotz=rand()%20000;
+                /// Pick a random spot
+                Spotx=rand()%20000;
+                Spotz=rand()%20000;
 
-            /// Calculat z,x location
-            randomSpotx=((float)Spotx/100)-100.0f;
-            randomSpotz=((float)Spotz/100)-100.0f;
+                /// Calculat z,x location
+                randomSpotx=((float)Spotx/100)-100.0f;
+                randomSpotz=((float)Spotz/100)-100.0f;
 
-            /// Create rocks on paths
-            //WorldBuildObjects -> CreateTreeObjectAlongPath(randomSpotx,randomSpotz, 8, 100.0f);
-            WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_TREES, randomSpotx,randomSpotz, 8, 100.0f);
-        }
-        break;
-    default:
-        break;
-    }*/
+                /// Create rocks on paths
+                //WorldBuildObjects -> CreateTreeObjectAlongPath(randomSpotx,randomSpotz, 8, 100.0f);
+                WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_TREES, randomSpotx,randomSpotz, 8, 100.0f);
+            }
+            break;
+        default:
+            break;
+        }*/
 
     /// Remove
     WorldObjectNode -> Remove();
@@ -4614,15 +4664,17 @@ int ExistenceClient::GenerateSceneUpdateEnvironment(terrain_rule terrainrule)
     switch (terrainrule.worldtype)
     {
     case WORLD_DESERT:
+        /// Set light and skybox material
         skybox->SetMaterial(cache->GetResource<Material>("Materials/Skybox_Desert.xml"));
 
-        light1->SetColor(Color(1.0f, 0.843f, 0.482f));
-        light1->SetBrightness(0.4f);
+        light1->SetColor(Color(.994, 0.795f, 0.685f));
+        light1->SetBrightness(0.55f);
 
-        light2->SetColor(Color(1.0f, 0.843f, 0.482f));
-        light2->SetBrightness(0.6f);
+        light2->SetColor(Color(.855f, 0.902f, 0.822f));
+        light2->SetBrightness(0.1f);
 
         zone->SetFogColor(Color(0.302f, 0.259f, 0.259f));
+        zone->SetAmbientColor(Color(0.5f,0.5f,0.5f));
 
         break;
     case WORLD_ICE:
@@ -4635,3 +4687,32 @@ int ExistenceClient::GenerateSceneUpdateEnvironment(terrain_rule terrainrule)
 
     return 1;
 }
+
+
+int  ExistenceClient::CreateCursor(void)
+{
+
+    /// Define Resouces
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+    // Create a Cursor UI element because we want to be able to hide and show it at will. When hidden, the mouse cursor will
+    // control the camera, and when visible, it will point the raycast target
+    XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
+
+    SharedPtr<Cursor> cursor(new Cursor(context_));
+
+    cursor->SetStyleAuto(style);
+    ui->SetCursor(cursor);
+
+    // Set starting position of the cursor at the rendering window center
+    cursor->SetPosition(graphics->GetWidth() / 2, graphics->GetHeight() / 2);
+
+
+    return 1;
+
+}
+

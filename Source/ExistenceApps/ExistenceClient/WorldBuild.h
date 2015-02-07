@@ -63,9 +63,6 @@ private:
     /// Set world limit of objects to test for collision
     vector <WorldOjectCollisionMap> CollisionBounds;;
 
-    /// Generate procedural map
-    Procedural * WeightMap;
-    Image *WeightMapImage;
 
 };
 

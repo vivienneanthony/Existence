@@ -148,6 +148,8 @@ private:
 
     int LoadAccountPlayers(void);
 
+    int CreateCursor(void);
+
     int ConsoleActionEnvironment(const char * lineinput);
     int ConsoleActionCamera(const char * lineinput);
     int ConsoleActionDebug(const char * lineinput);

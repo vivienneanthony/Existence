@@ -107,7 +107,7 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
     /// Get actual size
     Vector2 patchWorldSize=Vector2(spacing.x_*(float)(patchSize*numPatches.x_), spacing.z_*(float)(patchSize*numPatches.y_));
 
-/// Generate procedural map
+    /// Generate procedural map
     Procedural * WeightMap = new Procedural();
     Image *WeightMapImage = new Image(context_);
 
@@ -455,7 +455,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
                 continue;
             }
 
-            Vector3 normalvalue=terrain -> GetNormal(Vector3(xposition+1.0f,0.0f,zposition+1.0f));
+            Vector3 normalvalue=terrain -> GetNormal(Vector3(xposition,0.0f,zposition));
 
             float steep=1.0f-normalvalue.y_;
 
@@ -517,24 +517,10 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
                 /// Select a possible position to place a Rock
                 Vector3 selectPosition=Vector3(position_x,terrain->GetHeight(Vector3(position_x,0.0f,position_z))+staticmodelboxcenter.y_,position_z);
 
-                /// Save coordinates
-                /*        CollisionBounds.at(SaveCollisionObjects).size_x=staticmodelboxcenter.x_;
-                        CollisionBounds.at(SaveCollisionObjects).size_y=staticmodelboxcenter.y_;
-                        CollisionBounds.at(SaveCollisionObjects).size_z=staticmodelboxcenter.z_;
-                        CollisionBounds.at(SaveCollisionObjects).origin_x=position_x;
-                        CollisionBounds.at(SaveCollisionObjects).origin_z=terrain->GetHeight(Vector3(position_x,0.0f,position_z))+staticmodelboxcenter.y_;
-                        CollisionBounds.at(SaveCollisionObjects).origin_z=position_z;
-                        CollisionBounds.at(SaveCollisionObjects).lod=0.0f;
-
-                        /// Save object
-                        SaveCollisionObjects++;*/
-
                 /// Set Rock position
                 RockNode->SetPosition(selectPosition);
                 RockNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
 
-                /// Output X, Y
-                //cout << position_x << " " << position_z << "\r\n";
             }
         }
     }
