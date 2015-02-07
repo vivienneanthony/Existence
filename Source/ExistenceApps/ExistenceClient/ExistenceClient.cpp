@@ -297,6 +297,8 @@ void ExistenceClient::Start()
 
     CreateCursor();
 
+    ui->GetCursor()->SetVisible(true);
+
     /// Set game active status
     accountexist=false;
 
@@ -3127,7 +3129,7 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
     time_t tempseed;
 
 
-    GetSubsystem<Input>()->SetMouseVisible(false);
+   GetSubsystem<Input>()->SetMouseVisible(false);
 
 
     /// Run trhrough arugments - first check if GENERATE
@@ -3321,6 +3323,17 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
     /// use UI cursor
     /// Enable OS cursor
     ui->GetCursor()->SetVisible(true);
+
+
+   if(ui->GetCursor()->IsVisible())
+      {
+          Print ("Cursor Exist");
+
+          Print(ui->GetCursor()->GetAppliedStyle());
+      }else
+      {
+          Print ("Cursor Does Not Exist");
+      }
 
     return;
 }
@@ -3539,7 +3552,6 @@ void ExistenceClient::CreateCharacter(void)
     /// Set the rigidbody to signal collision also when in rest, so that we get ground collisions properly
     body->SetCollisionEventMode(COLLISION_ALWAYS);
 
-
     /// Set a capsule shape for collision
     CollisionShape* shape = objectNode->CreateComponent<CollisionShape>();
 
@@ -3559,6 +3571,20 @@ void ExistenceClient::CreateCharacter(void)
     Camera* cameraObject = cameraNode_->CreateComponent<Camera>();
     cameraObject->SetOrthographic(0);
     cameraObject->SetZoom(1);
+
+
+    Node * crossboxNode = objectNode ->CreateChild("CrossBox");
+
+    /// Set an initial position for the camera scene node above the plane
+    crossboxNode->SetPosition(Vector3(0.0f,staticmodelboxcenter.y_+.75f,1.0f));
+    crossboxNode->SetRotation(Quaternion(0.0,0.0,0.0));
+
+    /// Get static model and bounding box, calculate offset
+    StaticModel * crossboxModel = crossboxNode->CreateComponent<StaticModel>();
+
+    crossboxModel ->SetModel(cache->GetResource<Model>("Resources/Models/CrossBox.mdl"));
+    crossboxModel ->ApplyMaterialList("Resources/Models/CrossBox.txt");
+
 
     /// Set camera to first person
     ExistenceGameState.SetCameraMode(CAMERAMODE_FIRSTPERSON);
@@ -4705,12 +4731,11 @@ int  ExistenceClient::CreateCursor(void)
 
     SharedPtr<Cursor> cursor(new Cursor(context_));
 
-    cursor->SetStyleAuto(style);
     ui->SetCursor(cursor);
+    cursor->SetStyle("Cursor",style);
 
     // Set starting position of the cursor at the rendering window center
     cursor->SetPosition(graphics->GetWidth() / 2, graphics->GetHeight() / 2);
-
 
     return 1;
 
