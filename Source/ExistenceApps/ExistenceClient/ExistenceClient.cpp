@@ -1970,7 +1970,6 @@ void ExistenceClient::HandleKeyDown(StringHash eventType, VariantMap& eventData)
                 console -> SetVisible(false);
 
                 UI* ui = GetSubsystem<UI>();
-                ui->GetCursor()->SetVisible(true);
 
                 ExistenceGameState.SetConsoleState(false);
 
@@ -3319,8 +3318,9 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
     UpdatePlayerInfoBar();
 
-
-     ui->GetCursor()->SetVisible(true);
+    /// use UI cursor
+    /// Enable OS cursor
+    ui->GetCursor()->SetVisible(true);
 
     return;
 }

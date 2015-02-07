@@ -22344,4 +22344,60 @@
 		<gender gender="88" />
 		<personalitytrait personalitytrait="0" />
 	</character>
+	<character character="character">
+		<firstname firstname="Nexath" />
+		<middlename middlename="Loe" />
+		<lastname lastname="Xath" />
+		<reputation1 reputation1="0" />
+		<reputation2 reputation2="0" />
+		<reputation3 reputation3="0" />
+		<reputation4 reputation4="0" />
+		<experience experience="0" />
+		<alienrace alienrace="1" />
+		<alienalliancealigned alienalliancealigned="false" />
+		<gender gender="42" />
+		<personalitytrait personalitytrait="0" />
+	</character>
+	<character character="character">
+		<firstname firstname="Nexmma" />
+		<middlename middlename="Rloe" />
+		<lastname lastname="Nuliel" />
+		<reputation1 reputation1="0" />
+		<reputation2 reputation2="0" />
+		<reputation3 reputation3="0" />
+		<reputation4 reputation4="0" />
+		<experience experience="0" />
+		<alienrace alienrace="1" />
+		<alienalliancealigned alienalliancealigned="false" />
+		<gender gender="98" />
+		<personalitytrait personalitytrait="0" />
+	</character>
+	<character character="character">
+		<firstname firstname="Nuc" />
+		<middlename middlename="Aloeel" />
+		<lastname lastname="Ruluc" />
+		<reputation1 reputation1="0" />
+		<reputation2 reputation2="0" />
+		<reputation3 reputation3="0" />
+		<reputation4 reputation4="0" />
+		<experience experience="0" />
+		<alienrace alienrace="1" />
+		<alienalliancealigned alienalliancealigned="false" />
+		<gender gender="8" />
+		<personalitytrait personalitytrait="0" />
+	</character>
+	<character character="character">
+		<firstname firstname="L'lucaxob" />
+		<middlename middlename="A'rthuc" />
+		<lastname lastname="Jesuc" />
+		<reputation1 reputation1="0" />
+		<reputation2 reputation2="0" />
+		<reputation3 reputation3="0" />
+		<reputation4 reputation4="0" />
+		<experience experience="0" />
+		<alienrace alienrace="1" />
+		<alienalliancealigned alienalliancealigned="false" />
+		<gender gender="8" />
+		<personalitytrait personalitytrait="0" />
+	</character>
 </characters>
