@@ -25,14 +25,15 @@ public:
     /// Point pixelData to perlininput1 memory
     unsigned char * GetImage(void);
 
-protected:
+private:
+    bool GenerateOrlen2DNoise1(float * inputData1, int x, int y, int iterations);
     bool GenerateBuild(float * inputData1, unsigned * output);
     /// Create a perlin noise input date - Version 2
-    bool generatePerlinNoise1(float * inputData1, const unsigned &octaves, const float &xOffset, const float &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8);
+    bool generatePerlinNoise1(float * inputData1, const unsigned &octaves, const int &xOffset, const int  &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8);
     /// Create a displacemeent input data noise version 1
     bool generateDiamondMethod1(float * inputData1, const float &maxYcoords,const float &minYcoords);
     /// Create a control perlin noise input date
-    bool generateControlPerlinNoise1(float * inputData1, const unsigned &octaves, const float &xOffset, const float &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8);
+    bool generateControlPerlinNoise1(float * inputData1, const unsigned &octaves, const int &xOffset, const int &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8);
     /// Scale input data
     bool GenerateScale(float *inputData1,const float scale);
     /// Select to build new output data - version 1
@@ -52,14 +53,15 @@ private:
     /// required data
     unsigned int width_;
     unsigned int height_;
-    unsigned int offsetx_;
-    unsigned int offsety_;
+    int offsetx_;
+    int offsety_;
     unsigned int components_;
     unsigned int depth_;
 
     /// octave information
     bool oct_override;
     float oct_persistence;
+
     float oct_octaves;
     float oct_o1;
     float oct_o2;

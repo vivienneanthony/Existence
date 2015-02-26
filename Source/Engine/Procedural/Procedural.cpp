@@ -20,6 +20,10 @@
 /// STB
 #include <stb_perlin.h>
 
+#include "OlsenNoise2D.h"
+#include "RandomNumberGenerator.h"
+
+/// Might not be needed
 using namespace std;
 using namespace procedural;
 
@@ -73,50 +77,29 @@ bool Procedural::SetOffSets(const int &offsetx, const int &offsety)
 
 bool Procedural::SetOctaves(const unsigned &octaves, const float &opersistence, const bool &ooverride, const float &o1, const float &o2, const float &o3, const  float &o4, const float &o5, const float &o6, const float &o7, const float &o8)
 {
-    /// Set octaves based on overrride
-    if(ooverride==true)
-    {
-        /// Set general octave information
-        oct_override=ooverride;
-        oct_persistence=opersistence;
-        oct_octaves=octaves;
+    /// Set general octave information
+    oct_override=ooverride;
+    oct_persistence=opersistence;
+    oct_octaves=octaves;
 
-        /// Set octave values overrided
-        oct_o1=o1;
-        oct_o2=o2;
-        oct_o3=o3;
-        oct_o4=o4;
-        oct_o5=o5;
-        oct_o6=o6;
-        oct_o7=o7;
-        oct_o8=o8;
-    }
-    else
-    {
-        /// Set general octave information
-        oct_override=ooverride;
-        oct_octaves=octaves;
-        oct_persistence=opersistence;
-
-        /// Set octave values based of persistence
-        oct_o1=o1;
-        oct_o2=o1*opersistence;
-        oct_o3=o2*opersistence;
-        oct_o4=o3*opersistence;
-        oct_o5=o4*opersistence;
-        oct_o6=o5*opersistence;
-        oct_o7=o6*opersistence;
-        oct_o8=o7*opersistence;
-
-    }
+    /// Set octave values overrided
+    oct_o1=o1;
+    oct_o2=o2;
+    oct_o3=o3;
+    oct_o4=o4;
+    oct_o5=o5;
+    oct_o6=o6;
+    oct_o7=o7;
+    oct_o8=o8;
 }
 
 
 // standard perlin generation
-bool Procedural::GenerateProceduralPerlin(const float &scale)
+bool Procedural::GenerateProceduralPerlin( const float &scale)
 {
+
     /// Generate noise - Currently 8 octaves
-    generatePerlinNoise1(perlininput1,oct_octaves,0.0f,0.0f,0.0f,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
+    generatePerlinNoise1(perlininput1,oct_octaves,offsetx_, offsety_,0,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
 
     /// Scale perlin
     GenerateScale(perlininput1,scale);
@@ -132,7 +115,7 @@ bool Procedural::GenerateProceduralPerlin(const float &scale)
 
 
 // standard perlin generation
-bool Procedural::GenerateProceduralDiamond(const float &scale)
+bool Procedural::GenerateProceduralDiamond( const float &scale)
 {
     /// Generate noise - Currently 8 octaves
     generateDiamondMethod1(diamondinput1,1, 0);
@@ -161,50 +144,135 @@ bool Procedural::GenerateProceduralTerrain(const terrain_rule &terrainrule)
     unsigned int dataSizeFloats =  (width_*height_)*sizeof(float);
     flatplane = ( float *) malloc(dataSizeFloats);
 
-    for(unsigned int x=0;x<width_;x++)
+    for(unsigned int x=0; x<width_; x++)
     {
-        for(unsigned int y=0;y<height_;y++)
+        for(unsigned int y=0; y<height_; y++)
         {
-            flatplane[x+(y*width_)]=0.2f;
+            flatplane[x+(y*width_)]=0.5f;
         }
     }
 
-    /// Generate noise - Currently 8 octaves
-    generatePerlinNoise1(perlininput1, 8,0.0f,0.0f,0.0f,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
-    generateControlPerlinNoise1(controlinput1,5,0.0f,0.0f,0.0f,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
-    generateDiamondMethod1(diamondinput1,width_,height_);
+    /// Replacement random generator here
+    RandomNumberGenerator RandomGenerator;
 
-    /// Scale perlin
-    GenerateScale(perlininput1,.40f);
-
-    controloutput1= GenerateSelectBuild2(0.0f, 1.0f, 0.1f,GenerateAdd(flatplane,perlininput1),diamondinput1,controlinput1);
-
-    GenerateScale(controloutput1, .95);
+    RandomGenerator.SetRandomSeed(terrainrule.creationtime+1);
 
     /// Temporary use rule seed to choose octaves - set base values
-    unsigned int octaves= (rand()%2)+6;
-    unsigned int baseoctave=rand()%40;
-    unsigned int basepersistencerandom = (rand()%50)+10;
-    float basepersistence=(float)basepersistencerandom/100;
+    int octaves= 0;
+
+    int baseoctave=0;
+    int basepersistencerandom =0;
+    float basepersistence=0;
 
     /// Set base values of Octaves
-    float octave1 = (float)(50+baseoctave)/100;
-    float octave2 = (float) octave1*basepersistence;
-    float octave3 = (float) octave2*basepersistence;
-    float octave4 = (float) octave3*basepersistence;
-    float octave5 = (float) octave4*basepersistence;
-    float octave6 = (float) octave5*basepersistence;
-    float octave7 = (float) octave6*basepersistence;
-    float octave8 = (float) octave7*basepersistence;
+    float octave1 = 0;
+    float octave2 = 0;
+    float octave3 = 0;
+    float octave4 = 0;
+    float octave5 = 0;
+    float octave6 = 0;
+    float octave7 = 0;
+    float octave8 = 0;
 
-    generatePerlinNoise1(perlininput1, 8,0.0f,0.0f,0.0f,0,0,0,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
+    /// Advane create terrain base on
+    switch (terrainrule.worldtype)
+    {
 
-    GenerateScale(perlininput1, .05);
+    case WORLD_DESERT:
+        /// Produce different valllles for corols
+        octaves= RandomGenerator.RandRange(2)+6;
+        baseoctave=RandomGenerator.RandRange(20);
+        basepersistencerandom = RandomGenerator.RandRange(20)+10;
+        basepersistence=(float)basepersistencerandom/100;
 
-    /// Scale output to 0 to 1
-    controloutput1=GenerateAdd(controloutput1, perlininput1);
+        /// Set base values of Octaves
+        octave1 = (float)(50+baseoctave)/100;
+        octave2 = (float) octave1*basepersistence;
+        octave3 = (float) octave2*basepersistence;
+        octave4 = (float) octave3*basepersistence;
+        octave5 = (float) octave4*basepersistence;
+        octave6 = (float) octave5*basepersistence;
+        octave7 = (float) octave6*basepersistence;
+        octave8 = (float) octave7*basepersistence;
 
-    GenerateBuild(controloutput1,perlinOutput); /// Produce finals 0 to 1 for image - converting to RGBA
+        /// Generate noise - Currently 8 octaves
+        generatePerlinNoise1(perlininput1, oct_octaves,octaves, offsetx_,offsety_,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
+        generateControlPerlinNoise1(controlinput1,octaves,octaves, offsetx_,offsety_,0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
+        GenerateOrlen2DNoise1(diamondinput1, offsetx_,offsety_, 7);
+
+        /// Scale perlin
+        GenerateScale(perlininput1,.025f);
+
+        controloutput1= GenerateSelectBuild2(0.0f, 1.0f, 0.3f,perlininput1,diamondinput1,controlinput1);
+
+        GenerateScale(controloutput1, .45);
+
+        /// Scale output to 0 to 1
+        controloutput1=GenerateAdd(flatplane,controloutput1);
+
+        GenerateBuild(controloutput1,perlinOutput); /// Produce finals 0 to 1 for image - converting to RGBA
+        break;
+
+    default:
+        /// Produce different valllles for corols
+        octaves= RandomGenerator.RandRange(2)+6;
+        baseoctave=RandomGenerator.RandRange(20);
+        basepersistencerandom = RandomGenerator.RandRange(20)+10;
+        basepersistence=(float)basepersistencerandom/100;
+
+        /// Set base values of Octaves
+        octave1 = (float)(10+baseoctave)/100;
+        octave2 = (float) octave1*basepersistence;
+        octave3 = (float) octave2*basepersistence;
+        octave4 = (float) octave3*basepersistence;
+        octave5 = (float) octave4*basepersistence;
+        octave6 = (float) octave5*basepersistence;
+        octave7 = (float) octave6*basepersistence;
+        octave8 = (float) octave7*basepersistence;
+
+
+        /// Generate noise - Currently 8 octaves
+        generatePerlinNoise1(perlininput1, oct_octaves,offsetx_,offsety_,0.0f, 0,0,0,oct_o1,oct_o2,oct_o3,oct_o4,oct_o5,oct_o6,oct_o7,oct_o8);
+        generateControlPerlinNoise1(controlinput1,octaves, offsetx_,offsety_,0.0f, 0,0,0,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
+        GenerateOrlen2DNoise1(diamondinput1, offsetx_,offsety_, 7);
+
+        /// Scale perlin
+        GenerateScale(perlininput1,.1f);
+        GenerateScale(flatplane,.2);
+
+        controloutput1= GenerateSelectBuild2(0.0f, 1.0f, 0.15f,GenerateAdd(flatplane,perlininput1),diamondinput1,controlinput1);
+
+        GenerateScale(controloutput1, .978);
+
+        /// Temporary use rule seed to choose octaves - set base values
+        octaves= (rand()%2)+6;
+        baseoctave=rand()%20;
+        basepersistencerandom = (rand()%50)+10;
+        basepersistence=(float)basepersistencerandom/100;
+
+        /// Set base values of Octaves
+        octave1 = (float)(10+baseoctave)/100;
+        octave2 = (float) octave1*basepersistence;
+        octave3 = (float) octave2*basepersistence;
+        octave4 = (float) octave3*basepersistence;
+        octave5 = (float) octave4*basepersistence;
+        octave6 = (float) octave5*basepersistence;
+        octave7 = (float) octave6*basepersistence;
+        octave8 = (float) octave7*basepersistence;
+
+        generatePerlinNoise1(perlininput1, 8,offsetx_,offsety_,0.0f,0,0,0,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
+
+        GenerateScale(perlininput1, .2);
+
+        /// Scale output to 0 to 1
+        controloutput1=GenerateAdd(controloutput1, perlininput1);
+
+        GenerateBuild(controloutput1,perlinOutput); /// Produce finals 0 to 1 for image - converting to RGBA
+        break;
+
+    }
+
+    GenerateBuild(controlinput1,perlinOutput); /// Produce finals 0 to 1 for image - converting to RGBA
 
     /// Point pixelData to perlininput1 memory
     pixelData = (unsigned char *) perlinOutput;
@@ -228,7 +296,7 @@ unsigned Procedural::rgba32ToUInt(unsigned r, unsigned g, unsigned b, unsigned a
 }
 
 
-bool Procedural::generatePerlinNoise1(float * inputData1, const unsigned &octaves, const float &xOffset, const float &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8)
+bool Procedural::generatePerlinNoise1(float * inputData1, const unsigned &octaves, const int &xOffset, const int &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8)
 {
     float mag[] = {o1, o2, o3, o4, o5, o6, o7, o8};
 
@@ -244,6 +312,7 @@ bool Procedural::generatePerlinNoise1(float * inputData1, const unsigned &octave
     float lowfloat=0.0f;
     float highfloat=0.0f;
 
+
     for (unsigned o = 0; o<octaves; o++)
     {
         float oSize = (o+1) << o;
@@ -258,7 +327,7 @@ bool Procedural::generatePerlinNoise1(float * inputData1, const unsigned &octave
                 /// scale perlin based on octave size
                 float hx = (float)x / (float)width_;
                 float hy = (float)y / (float)height_;
-                float noise = stb_perlin_noise3(x*oxDiv,y*oyDiv,zOffset,xWrap,yWrap,zWrap);
+                float noise = stb_perlin_noise3((x*oxDiv)+xOffset,(y*oyDiv)+yOffset,zOffset,xWrap,yWrap,zWrap);
 
                 int index = x+(y*width_);
 
@@ -573,7 +642,7 @@ float * Procedural::GenerateSubtract(float *inputData1, float *inputData2)
     return OutputData;
 }
 
-bool Procedural::generateControlPerlinNoise1(float * inputData1,const unsigned &octaves, const float &xOffset, const float &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8)
+bool Procedural::generateControlPerlinNoise1(float * inputData1,const unsigned &octaves, const int  &xOffset, const int  &yOffset, const float &zOffset,const int &xWrap,const int &yWrap,const int &zWrap,const float &o1, const float &o2,const float &o3, const float &o4, const float &o5, const float &o6, const float &o7, const float &o8)
 {
     float mag[] = {o1, o2, o3, o4, o5, o6, o7, o8};
 
@@ -589,21 +658,39 @@ bool Procedural::generateControlPerlinNoise1(float * inputData1,const unsigned &
     float lowfloat=0.0f;
     float highfloat=0.0f;
 
-    for (unsigned o = 0; o<octaves; o++)
+    int newoctaves=0;
+
+    if(octaves<3)
+    {
+        newoctaves=3;
+    }
+    else if(octaves>4)
+    {
+        newoctaves=4;
+    }
+    else
+    {
+        newoctaves=octaves;
+    }
+
+
+    for (unsigned o = 0; o<newoctaves; o++)
     {
         float oSize = (o+1) << o;
 
         float oxDiv = oSize / width_;
         float oyDiv = oSize / height_;
 
+
         for(unsigned x = 0; x<width_; x++)
         {
             for(unsigned y = 0; y<height_; y++)
             {
                 /// scale perlin based on octave size
-                float hx = (float)x / (float)width_;
-                float hy = (float)y / (float)height_;
-                float noise = stb_perlin_noise3(x*oxDiv,y*oyDiv,zOffset,xWrap,yWrap,zWrap);
+                //float hx = (float)x / (float)width_;
+                //float hy = (float)y / (float)height_;
+                float noise = stb_perlin_noise3((float)(x*oxDiv)+xOffset,(float)(y*oyDiv)+yOffset, zOffset,xWrap,yWrap,zWrap);
+
 
                 int index = x+(y*width_);
 
@@ -653,7 +740,7 @@ bool Procedural::generateControlPerlinNoise1(float * inputData1,const unsigned &
             int index = x+(y*width_);
             /// slower but scales the value range from 0.0f to 1.0f
             tempdata_[index]= (((tempdata_[index] - lowfloat) * NewRange) / OldRange) + NewMin;
-            tempdata_[index]-=0.5f;
+            //tempdata_[index]-=0.5f;
         }
     }
 
@@ -820,5 +907,44 @@ bool Procedural::GenerateClamp(float * inputData1, const float &lowerBound, cons
         }
     }
     return 1;
+}
+
+bool Procedural::GenerateOrlen2DNoise1(float * inputData1, int x, int y, int iterations)
+{
+    /// allocate memory
+    float * tempdata_;
+    tempdata_ = (float *) malloc ((width_*height_)*sizeof(float));
+
+    int * generated_;
+    generated_ = (int *) malloc ((width_*height_)*sizeof(int));
+
+    /// Generate
+    OlsenNoise2D orlenNoise;
+
+    /// Generate
+    generated_=orlenNoise.olsennoise(iterations, x,y, width_, height_);
+
+
+    /// loop through all the values then scale down by number of octaves
+    for(int x = 0; x<width_; x++)
+    {
+        for(int y = 0; y<height_; y++)
+        {
+            /// slower but scales the value range from 0.0f to 1.0f
+            tempdata_[x+(y*width_)]=(float)generated_[x+(y*width_)]/255;
+
+
+        }
+    }
+
+
+    /// copy memory
+    memmove (inputData1, tempdata_,  (width_*height_)*sizeof(float));
+
+    /// free memory
+    free(tempdata_);
+    free(generated_);
+
+    return true;
 }
 

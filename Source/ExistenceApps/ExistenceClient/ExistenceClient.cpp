@@ -67,10 +67,10 @@
 #include "Skybox.h"
 #include "Sprite.h"
 #include "StaticModelGroup.h"
-#include "../../Engine/Procedural/Procedural.h"
 #include "BillboardSet.h"
 #include "Random.h"
 #include "RenderPath.h"
+#include "Color.h"
 
 #include "GameStateHandler.h"
 #include "Account.h"
@@ -95,6 +95,9 @@
 #include <utility>
 #include <algorithm>
 
+#include "../../Engine/Procedural/Procedural.h"
+#include "../../Engine/Procedural/ProceduralTerrain.h"
+#include "../../Engine/Procedural/RandomNumberGenerator.h"
 
 #include "ExistenceClient.h"
 
@@ -114,6 +117,7 @@ ExistenceClient::ExistenceClient(Context* context) :
     Character::RegisterObject(context);
     GameObject::RegisterObject(context);
     WorldBuild::RegisterObject(context);
+    ProceduralTerrain::RegisterObject(context);
 }
 
 vector<string> split(const string& s, const string& delim, const bool keep_empty = true)
@@ -331,8 +335,6 @@ void ExistenceClient::Start()
     /// Randomize timer
     srand (time(NULL));
 
-
-
     return;
 }
 
@@ -452,13 +454,7 @@ void ExistenceClient::SetupScreenViewport()
     SharedPtr<Viewport> viewport(new Viewport(context_, scene_, cameraNode_->GetComponent<Camera>()));
     renderer->SetViewport(0, viewport);
 
-    /*SharedPtr<RenderPath> effectRenderPath = viewport->GetRenderPath()->Clone();
-    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/Bloom.xml"));
 
-    /// Make the bloom mixing parameter more pronounced
-    effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.9f, 0.2f));
-    effectRenderPath->SetEnabled("Bloom", false);
-    viewport->SetRenderPath(effectRenderPath);*/
 
     return;
 }
@@ -3088,8 +3084,6 @@ void ExistenceClient::loadSceneCreationCreation( const char * lineinput)
 
 
 
-
-
 /// Load a scene
 void ExistenceClient::loadScene(const int mode, const char * lineinput)
 {
@@ -3104,7 +3098,7 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[10];
+    string argument[40];
 
     /// create a idx
     int idx = 0;
@@ -3116,81 +3110,88 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
     stringstream ssin(argumentsstring);
 
     /// loop through arguments
-    while (ssin.good() && idx < 10)
+    while (ssin.good() && idx < 40)
     {
         ssin >> argument[idx];
         ++idx;
     }
 
     int testgenerate=1;
+    int padded=0;
 
-    /// get current time
-    time_t timeseed;
-    time_t tempseed;
+    GetSubsystem<Input>()->SetMouseVisible(false);
 
-
-   GetSubsystem<Input>()->SetMouseVisible(false);
-
+    unsigned long long int creationtime = 0; /// Default
 
     /// Run trhrough arugments - first check if GENERATE
     if(argument[1]=="generate")
     {
 
-        if(argument[2]=="now")
+        if(argument[2]=="random")
         {
             /// get current time
-            time(&timeseed);
-
+            creationtime = 0;
         }
         else if(argument[2]=="reset")
         {
             /// get current time
-            time(&timeseed);
+            time_t tempseed = time(NULL);
 
-            /// reset timer
-            srand(timeseed);
-
+            creationtime = static_cast<unsigned long int> (tempseed);
 
             GetSubsystem<Input>()->SetMouseVisible(true);
 
             return;
         }
-        else
+        else if(argument[2] =="datetime")
         {
-            /// Convert time and change timespeed if valid
-            if(tempseed = ConvertStringToTime(argument[2].c_str(), timeseed))
-            {
-                timeseed=tempseed;
 
-                /// reset timer
-                srand(tempseed);
+            /// get current time
+            time_t tempseed = time(NULL);
+
+            /// Convert time and change timespeed if valid
+            if(tempseed = ConvertStringToTime(argument[3].c_str(), tempseed))
+            {
+                creationtime = static_cast<unsigned long long int > (tempseed);
             }
             else
             {
-                /// get current time
-                time(&timeseed);
+
+                creationtime = static_cast<unsigned long long int > (tempseed);
             }
-
+            padded=1;
         }
+        else if(argument[2]=="seed")
+        {
+            std::string::size_type sz;   // alias of size_t
 
+            creationtime=atoi(argument[3].c_str());
+            padded=1;
+        }
+        else
+        {
+
+            /// get current time
+            creationtime = 0;
+        }
 
 
         /// Copy rule information
         terrain_rule terrainrule;
 
         /// Copy rule
-        terrainrule.worldtype=(float)atoi(argument[3].c_str());
-        terrainrule.subworldtype=(float)atoi(argument[3].c_str());
-        terrainrule.moutainrange=(float)atof(argument[4].c_str());
-        terrainrule.cratersdeep=(float)atof(argument[5].c_str());
+        terrainrule.worldtype=(int)atoi(argument[3+padded].c_str());
+        terrainrule.subworldtype=(int)atoi(argument[4+padded].c_str());
+        terrainrule.sealevel=(float)atof(argument[5+padded].c_str());
 
         /// Set timeseed
-        terrainrule.timeseed=timeseed;   /// temporary
+        /// terrainrule.timeseed=timeseed;   /// temporary
+        terrainrule.creationtime=creationtime; /// new for randomizing
 
         /// generate a seen
-        GenerateScene(timeseed, terrainrule);
+        GenerateScene(terrainrule);
     }
-    /// Run trhrough arugments - first check if FILE
+/// Run trhrough arugments - first check if FILE
     else if (argument[1]=="file")
     {
         /// Create variables (urho3d)
@@ -3241,7 +3242,7 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
 
 
-    /// Get the Camera Node and setup the viewport
+/// Get the Camera Node and setup the viewport
     if((cameraNode_ = scene_->GetChild("Camera")))
     {
 
@@ -3266,23 +3267,23 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
     }
 
-    /// Setup viewport
+/// Setup viewport
     SharedPtr<Viewport> viewport(new Viewport(context_, scene_, cameraNode_->GetComponent<Camera>()));
     renderer->SetViewport(0, viewport);
 
 
-    /// Loop through the whole scene and get the root Node
+/// Loop through the whole scene and get the root Node
     Node * RootNode = scene_ -> GetParent();
 
-    /// Get node list
+/// Get node list
     PODVector <Node *> NodesVector;
     scene_ -> GetChildren (NodesVector, true);
 
-    /// Set necessary objects
+/// Set necessary objects
     Node * OrphanNode;
     String Nodename;
 
-    /// loop nodes
+/// loop nodes
     for(int i=0; i < NodesVector.Size(); i++)
     {
         /// Do nothing like copy the node vector to a node
@@ -3294,24 +3295,24 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
         OrphanNodeGameObject -> SetLifetime(-1);
     }
 
-    /// Create a character
-    /// Copy character information to player
+/// Create a character
+/// Copy character information to player
     CreateCharacter();
 
-    /// Load main UI area
+/// Load main UI area
     loadSceneUI();
 
-    /// rest of UI
+/// rest of UI
     loadHUDFile("Resources/UI/MainTopBarWindow.xml",0,0);
     loadHUDFile("Resources/UI/PlayerInfoWindow.xml",0,34);
 
-    /// Get player info  name from temporary list and put it into the character object
+/// Get player info  name from temporary list and put it into the character object
     Text* PlayerNameText = (Text*)ui->GetRoot()->GetChild("PlayerNameText", true);
 
-    /// Get level text
+/// Get level text
     string levelstext=levels[0];
 
-    /// Set hud sting to level and character name
+/// Set hud sting to level and character name
     string username="(0) "+levelstext+" "+character_->GetPlayerInfo().lastname;
 
     String playername(username.c_str());
@@ -3320,20 +3321,21 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
     UpdatePlayerInfoBar();
 
-    /// use UI cursor
-    /// Enable OS cursor
+/// use UI cursor
+/// Enable OS cursor
     ui->GetCursor()->SetVisible(true);
 
 
-   if(ui->GetCursor()->IsVisible())
-      {
-          Print ("Cursor Exist");
+    if(ui->GetCursor()->IsVisible())
+    {
+        Print ("Cursor Exist");
 
-          Print(ui->GetCursor()->GetAppliedStyle());
-      }else
-      {
-          Print ("Cursor Does Not Exist");
-      }
+        Print(ui->GetCursor()->GetAppliedStyle());
+    }
+    else
+    {
+        Print ("Cursor Does Not Exist");
+    }
 
     return;
 }
@@ -3599,13 +3601,13 @@ void ExistenceClient::CreateCharacter(void)
 
     effectRenderPath = viewport->GetRenderPath() -> Clone();
     effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/Bloom.xml"));
+    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
 
     /// Make the bloom mixing parameter more pronounced
     effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.9f, 0.6f));
     effectRenderPath->SetEnabled("Bloom", false);
+    effectRenderPath->SetEnabled("FXAA3", false);
     viewport->SetRenderPath(effectRenderPath);
-
-
 
     character_->controls_.pitch_ = cameraNode_->GetRotation().PitchAngle();
     character_->controls_.yaw_ = cameraNode_->GetRotation().YawAngle();
@@ -3769,7 +3771,7 @@ int ExistenceClient::LoadCharacterMesh(String nodename, unsigned int alienrace, 
 }
 
 // code to handle actual commans
-void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrainrule)
+void ExistenceClient::GenerateScene(terrain_rule terrainrule)
 {
 
     /// Define Resouces
@@ -3786,6 +3788,19 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     scene_-> CreateComponent<Octree>();
     scene_-> CreateComponent<PhysicsWorld>();
     scene_-> CreateComponent<DebugRenderer>();
+
+
+    /// test creation
+    if(terrainrule.creationtime==0)
+    {
+        int pick1=rand() % 1024;
+        int pick2=rand() % 1024;
+
+        terrainrule.creationtime=(unsigned long long int)pick1*pick2;
+
+        cout << "\r\nDebug: terrainrule " << terrainrule.creationtime << endl;
+    }
+
 
     /// Create skybox. The Skybox component is used like StaticModel, but it will be always located at the camera, giving the
     /// illusion of the box planes being far away. Use just the ordinary Box model and a suitable material, whose shader will
@@ -3856,6 +3871,41 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     terrain->SetSmoothing(true);
     terrain->SetCastShadows(true);
 
+    /// Addcomponent
+    ProceduralTerrain * terrainProcedural = terrainNode->CreateComponent<ProceduralTerrain>();
+
+    /// Replacement random generator here
+    RandomNumberGenerator RandomGenerator;
+
+    RandomGenerator.SetRandomSeed(terrainrule.creationtime);
+
+    /// Temporary use rule seed to choose octaves - set base values
+    int octaves= RandomGenerator.RandRange(2)+6;
+
+    int baseoctave=RandomGenerator.RandRange(30)+10;
+    int basepersistencerandom = RandomGenerator.RandRange(50)+10;
+    float basepersistence=(float)basepersistencerandom/100;
+
+    /// Set base values of Octaves
+    float octave1 = (float)(50+baseoctave)/100;
+    float octave2 = (float) octave1*basepersistence;
+    float octave3 = (float) octave2*basepersistence;
+    float octave4 = (float) octave3*basepersistence;
+    float octave5 = (float) octave4*basepersistence;
+    float octave6 = (float) octave5*basepersistence;
+    float octave7 = (float) octave6*basepersistence;
+    float octave8 = (float) octave7*basepersistence;
+    bool override=false;
+    float persistence=basepersistence;
+
+
+    /// Set component
+    terrainProcedural -> Initialize();
+    terrainProcedural -> SetDimensions(2048,2048);
+    terrainProcedural -> SetWorldType(terrainrule.worldtype, terrainrule.subworldtype, terrainrule.sealevel, terrainrule.creationtime);
+    terrainProcedural -> SetOctaves(override, octaves,  persistence, octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
+
+
     /// Generate Produracel map
     terrain->GenerateProceduralHeightMap(terrainrule);
 
@@ -3864,6 +3914,14 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     producedHeightMapImage -> SetData(terrain->GetData());
 
     terrain->SetMaterial(cache->GetResource<Material>("Materials/TerrainEdit.xml"));
+
+    /// Get heightmap for texture blend
+    Image * terrainHeightMap= new Image(context_);
+
+    terrainHeightMap->SetSize(2049, 2049,1,4);
+    terrainHeightMap ->SetData(terrain -> GetHeightMap () -> GetData());
+
+    terrainHeightMap -> FlipVertical();
 
     /// Define heightmap texture
     int bw=2049,bh=2049;
@@ -3888,6 +3946,41 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
     {
         for(unsigned int y=0; y<bh; y++)
         {
+
+            Color terrainHeightvalue=terrainHeightMap->GetPixel(x,y);
+
+            switch(terrainrule.worldtype)
+            {
+            case WORLD_DESERT:
+            {
+
+
+                Color currentcolor = blend -> GetPixel(x,y);
+                Color resultcolor=currentcolor.Lerp(Color(0.0f,1.0f,0.0f,0.0f), 1.0f);
+                blend-> SetPixel(x,y,resultcolor);
+            }
+            break;
+            default:
+                /// Compare to sealavel
+                if(terrainHeightvalue.r_<terrainrule.sealevel)
+                {
+
+                    Color currentcolor = blend -> GetPixel(x,y);
+
+                    //               float mix=1.0f-((float)terrainHeightvalue.r_/terrainrule.sealevel);
+                    float mix=(float)terrainHeightvalue.r_/terrainrule.sealevel;
+
+                    float sterpforlerp=cutoff(mix,0.05f,0.040f,false);
+
+                    Color resultcolor=currentcolor.Lerp(Color(0.0f,1.0f,0.0f,0.0f), sterpforlerp);
+
+                    blend-> SetPixel(x,y,resultcolor);
+
+                }
+                break;
+            }
+
+            /// blend cliff
             Vector2 nworld=Vector2(x/(float)bw, y/(float)bh);
             Vector3 worldvalue=NormalizedToWorld( producedHeightMapImage,terrain,nworld);
             Vector3 normalvalue=terrain->GetNormal(worldvalue);
@@ -3901,9 +3994,12 @@ void ExistenceClient::GenerateScene(const time_t &timeseed,  terrain_rule terrai
 
             float mix=(float)(mixfactor+1)/100;
 
+            // Color resultcolor=currentcolor.Lerp(Color(0,0,mix,1.0f-mix), steepforlerp);
             Color resultcolor=currentcolor.Lerp(Color(0,0,mix,1.0f-mix), steepforlerp);
 
             blend-> SetPixel(x,y,resultcolor);
+
+
         }
     }
 
@@ -4481,6 +4577,14 @@ int ExistenceClient::ConsoleActionRenderer(const char * lineinput)
         effectRenderPath->ToggleEnabled("Bloom");
     }
 
+    /// parameters for debug related command
+    if(argument[1]=="fxaa3")
+    {
+        RenderPath* effectRenderPath = GetSubsystem<Renderer>()->GetViewport(0)->GetRenderPath();
+
+        effectRenderPath->ToggleEnabled("FXAA3");
+    }
+
     return 1;
 }
 
@@ -4501,148 +4605,10 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
     Node* terrainNode = scene_->GetChild("Terrain",true);
     Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
-    /// Define random point variables
-    float Spotx=0.0f;
-    float Spotz=0.0f;
-    float InitialSpotx=0.0f;
-    float InitialSpotz=0.0f;
-
-
-    float randomSpotx=0.0f;
-    float randomSpotz=0.0f;
-    float InitialrandomSpotx=0.0f;
-    float InitialrandomSpotz=0.0f;
-
-    int NumberOfPlantingsGrowth=0;
-    int NumberOfPlantings=0;
-    unsigned int InitialRange=0;
-    unsigned int  SpreadRange=0;
-
-    /// Change parameters based on type
-    switch (terrainrule.worldtype)
-    {
-
-    case WORLD_DESERT:
-        NumberOfPlantingsGrowth=25;
-        NumberOfPlantings=50;
-        InitialRange=100;
-        SpreadRange=100;
-        break;
-    case WORLD_TERRAIN:
-        NumberOfPlantingsGrowth=250;
-        NumberOfPlantings=500;
-        InitialRange=100;
-        SpreadRange=60;
-        break;
-    default:
-        break;
-    }
-
-    float steep=0.0f;
-
-    /// create billboards
-    for(unsigned int i=0; i<NumberOfPlantings; ++i)
-    {
-
-        /// Pick random values
-        InitialSpotx=rand()%(InitialRange*100);
-        InitialSpotz=rand()%(InitialRange*100);
-
-        InitialSpotx=((float)InitialSpotx/100)-(InitialRange/2);
-        InitialSpotz=((float)InitialSpotz/100)-(InitialRange/2);
-
-        Node* GrassInitialNode = scene_->CreateChild("GrassBillboardSetNode");
-        GrassInitialNode->SetPosition(Vector3(InitialrandomSpotx,0.0f,InitialrandomSpotz));
-        BillboardSet* billboardObject = GrassInitialNode->CreateComponent<BillboardSet>();
-        billboardObject->SetNumBillboards(NumberOfPlantingsGrowth);
-
-        billboardObject->SetMaterial(cache->GetResource<Material>("Resources/Materials/Grass.xml"));
-        billboardObject->SetSorted(true);
-        billboardObject->SetCastShadows(true);
-
-        /// Create X number of nodes per billboard
-        for (unsigned int j = 0; j < NumberOfPlantingsGrowth; ++j)
-        {
-
-            Spotx=rand()%(SpreadRange*100);
-            Spotz=rand()%(SpreadRange*100);
-
-            randomSpotx=((float)Spotx/100)-(SpreadRange/2);
-            randomSpotz=((float)Spotz/100)-(SpreadRange/2);
-
-            randomSpotx=InitialSpotx+randomSpotx;
-            randomSpotz=InitialSpotz+randomSpotz;
-
-            Billboard* bb = billboardObject->GetBillboard(j);
-
-            /// Select a possible position to place a plant
-            Vector3 selectPosition=Vector3(randomSpotx,terrain->GetHeight(Vector3(randomSpotx,0.0f,randomSpotz)),randomSpotz);
-
-            Vector3 normalvalue=terrain -> GetNormal(Vector3(InitialSpotx+randomSpotx,0.0f,InitialSpotz+randomSpotz));
-
-            steep=1.0f-normalvalue.y_;
-
-            bb->position_ =selectPosition;
-            bb->size_ = Vector2(Random(0.2f) + 0.1f, Random(0.2f) + 0.1f);
-
-            bb->enabled_ = true;
-
-            /// if slope is above .01
-            if(steep>.01)
-            {
-                bb->enabled_ = false;
-            }
-        }
-    }
-
     /// Initialize
-    WorldBuildObjects -> Init();
-
+    WorldBuildObjects -> Initialize();
 
     WorldBuildObjects -> GenerateWorldObjects(0, terrainrule);
-
-    /*    /// Build environment based on terrain
-        switch(terrainrule.worldtype)
-        {
-        case WORLD_TERRAIN:
-       /// Plant rocks
-            for(unsigned int i=0; i<30; i++)
-            {
-
-                /// Pick a random spotskx
-                Spotx=rand()%20000;
-                Spotz=rand()%20000;
-
-                /// Calculat z,x location
-                randomSpotx=((float)Spotx/100)-100.0f;
-                randomSpotz=((float)Spotz/100)-100.0f;
-
-                /// Create rocks on paths
-                //WorldBuildObjects -> CreateRockObjectAlongPath(randomSpotx,randomSpotz, 5, 100.0f);
-                WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_ROCKS, randomSpotx,randomSpotz, 5, 100.0f);
-            }
-
-
-            /// Plant rocks
-            for(unsigned int i=0; i<100; i++)
-            {
-
-                /// Pick a random spot
-                Spotx=rand()%20000;
-                Spotz=rand()%20000;
-
-                /// Calculat z,x location
-                randomSpotx=((float)Spotx/100)-100.0f;
-                randomSpotz=((float)Spotz/100)-100.0f;
-
-                /// Create rocks on paths
-                //WorldBuildObjects -> CreateTreeObjectAlongPath(randomSpotx,randomSpotz, 8, 100.0f);
-                WorldBuildObjects -> CreateObjectsAlongPath(WORLDBUILD_TREES, randomSpotx,randomSpotz, 8, 100.0f);
-            }
-            break;
-        default:
-            break;
-        }*/
 
     /// Remove
     WorldObjectNode -> Remove();
@@ -4714,7 +4680,6 @@ int ExistenceClient::GenerateSceneUpdateEnvironment(terrain_rule terrainrule)
     return 1;
 }
 
-
 int  ExistenceClient::CreateCursor(void)
 {
 
@@ -4725,8 +4690,8 @@ int  ExistenceClient::CreateCursor(void)
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
 
-    // Create a Cursor UI element because we want to be able to hide and show it at will. When hidden, the mouse cursor will
-    // control the camera, and when visible, it will point the raycast target
+    /// Create a Cursor UI element because we want to be able to hide and show it at will. When hidden, the mouse cursor will
+    /// control the camera, and when visible, it will point the raycast target
     XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
 
     SharedPtr<Cursor> cursor(new Cursor(context_));
@@ -4734,10 +4699,15 @@ int  ExistenceClient::CreateCursor(void)
     ui->SetCursor(cursor);
     cursor->SetStyle("Cursor",style);
 
-    // Set starting position of the cursor at the rendering window center
+    /// Set starting position of the cursor at the rendering window center
     cursor->SetPosition(graphics->GetWidth() / 2, graphics->GetHeight() / 2);
 
     return 1;
 
 }
+
+
+
+
+
 

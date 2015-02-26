@@ -26,7 +26,7 @@ void CreateSpawnEditor()
     if (spawnWindow !is null)
         return;
 
-    spawnWindow = ui.LoadLayout(cache.GetResource("XMLFile", "UI/EditorSpawnWindow.xml"));
+    spawnWindow = LoadEditorUI("UI/EditorSpawnWindow.xml");
     ui.root.AddChild(spawnWindow);
     spawnWindow.opacity = uiMaxOpacity;
 
@@ -88,7 +88,7 @@ void HideSpawnEditor()
 
 void PickSpawnObject()
 {
-    @resourcePicker = GetResourcePicker(ShortStringHash("Node"));
+    @resourcePicker = GetResourcePicker(StringHash("Node"));
     if (resourcePicker is null)
         return;
 
@@ -318,7 +318,7 @@ void SpawnObject()
         return;
     IntRect view = activeViewport.viewport.rect;
 
-    for (uint i = 0; i < spawnCount; i++)
+    for (uint i = 0; i < spawnCount; ++i)
     {
         Ray cameraRay = GetActiveViewportCameraRay();
 

@@ -7,13 +7,16 @@
 #include "Scripts/Editor/EditorUIElement.as"
 #include "Scripts/Editor/EditorGizmo.as"
 #include "Scripts/Editor/EditorMaterial.as"
+#include "Scripts/Editor/EditorParticleEffect.as"
 #include "Scripts/Editor/EditorSettings.as"
 #include "Scripts/Editor/EditorPreferences.as"
 #include "Scripts/Editor/EditorToolBar.as"
 #include "Scripts/Editor/EditorSecondaryToolbar.as"
 #include "Scripts/Editor/EditorUI.as"
 #include "Scripts/Editor/EditorImport.as"
+#include "Scripts/Editor/EditorResourceBrowser.as"
 #include "Scripts/Editor/EditorSpawn.as"
+#include "Scripts/Editor/EditorSoundType.as"
 
 String configFileName;
 
@@ -32,7 +35,9 @@ void Start()
         return;
     }
 
-    SubscribeToEvent("Update", "HandleUpdate");
+    // Use the first frame to setup when the resolution is initialized
+    SubscribeToEvent("Update", "FirstFrame");
+
     SubscribeToEvent(input, "ExitRequested", "HandleExitRequested");
 
     // Disable Editor auto exit, check first if it is OK to exit
@@ -47,7 +52,10 @@ void Start()
     input.mouseVisible = true;
     // Use system clipboard to allow transport of text in & out from the editor
     ui.useSystemClipboard = true;
+}
 
+void FirstFrame()
+{
     // Create root scene node
     CreateScene();
     // Load editor settings and preferences
@@ -58,6 +66,10 @@ void Start()
     CreateRootUIElement();
     // Load the initial scene if provided
     ParseArguments();
+    // Switch to real frame handler after initialization
+    SubscribeToEvent("Update", "HandleUpdate");
+    SubscribeToEvent("ReloadFinished", "HandleReloadFinished");
+    SubscribeToEvent("ReloadFailed", "HandleReloadFailed");
 }
 
 void Stop()
@@ -91,6 +103,7 @@ void HandleUpdate(StringHash eventType, VariantMap& eventData)
 {
     float timeStep = eventData["TimeStep"].GetFloat();
 
+    DoResourceBrowserWork();
     UpdateView(timeStep);
     UpdateViewports(timeStep);
     UpdateStats(timeStep);
@@ -98,6 +111,35 @@ void HandleUpdate(StringHash eventType, VariantMap& eventData)
     UpdateTestAnimation(timeStep);
     UpdateGizmo();
     UpdateDirtyUI();
+
+    // Handle Particle Editor looping.
+    if (particleEffectWindow !is null and particleEffectWindow.visible)
+    {
+        if (!particleEffectEmitter.emitting)
+        {
+            if (particleResetTimer == 0.0f)
+                particleResetTimer = editParticleEffect.maxTimeToLive + 0.2f;
+            else
+            {
+                particleResetTimer = Max(particleResetTimer - timeStep, 0.0f);
+                if (particleResetTimer <= 0.0001f)
+                {
+                    particleEffectEmitter.Reset();
+                    particleResetTimer = 0.0f;
+                }
+            }
+        }
+    }
+}
+
+void HandleReloadFinished(StringHash eventType, VariantMap& eventData)
+{
+    attributesFullDirty = true;
+}
+
+void HandleReloadFailed(StringHash eventType, VariantMap& eventData)
+{
+    attributesFullDirty = true;
 }
 
 void LoadConfig()
@@ -121,6 +163,8 @@ void LoadConfig()
     XMLElement viewElem = configElem.GetChild("view");
     XMLElement resourcesElem = configElem.GetChild("resources");
     XMLElement consoleElem = configElem.GetChild("console");
+    XMLElement varNamesElem = configElem.GetChild("varnames");
+    XMLElement soundTypesElem = configElem.GetChild("soundtypes");
 
     if (!cameraElem.isNull)
     {
@@ -131,6 +175,7 @@ void LoadConfig()
         if (cameraElem.HasAttribute("limitrotation")) limitRotation = cameraElem.GetBool("limitrotation");
         if (cameraElem.HasAttribute("mousewheelcameraposition")) mouseWheelCameraPosition = cameraElem.GetBool("mousewheelcameraposition");
         if (cameraElem.HasAttribute("viewportmode")) viewportMode = cameraElem.GetUInt("viewportmode");
+        if (cameraElem.HasAttribute("mouseorbitmode")) mouseOrbitMode = cameraElem.GetInt("mouseorbitmode");
         UpdateViewParameters();
     }
 
@@ -173,6 +218,7 @@ void LoadConfig()
 
     if (!renderingElem.isNull)
     {
+        if (renderingElem.HasAttribute("renderpath")) renderPathName = renderingElem.GetAttribute("renderpath");
         if (renderingElem.HasAttribute("texturequality")) renderer.textureQuality = renderingElem.GetInt("texturequality");
         if (renderingElem.HasAttribute("materialquality")) renderer.materialQuality = renderingElem.GetInt("materialquality");
         if (renderingElem.HasAttribute("shadowresolution")) SetShadowResolution(renderingElem.GetInt("shadowresolution"));
@@ -225,6 +271,13 @@ void LoadConfig()
         // Console does not exist yet at this point, so store the string in a global variable
         if (consoleElem.HasAttribute("commandinterpreter")) consoleCommandInterpreter = consoleElem.GetAttribute("commandinterpreter");
     }
+
+    if (!varNamesElem.isNull)
+        globalVarNames = varNamesElem.GetVariantMap();
+
+    if (!soundTypesElem.isNull)
+        LoadSoundTypes(soundTypesElem);
+
 }
 
 void SaveConfig()
@@ -240,6 +293,8 @@ void SaveConfig()
     XMLElement viewElem = configElem.CreateChild("view");
     XMLElement resourcesElem = configElem.CreateChild("resources");
     XMLElement consoleElem = configElem.CreateChild("console");
+    XMLElement varNamesElem = configElem.CreateChild("varnames");
+    XMLElement soundTypesElem = configElem.CreateChild("soundtypes");
 
     cameraElem.SetFloat("nearclip", viewNearClip);
     cameraElem.SetFloat("farclip", viewFarClip);
@@ -248,6 +303,7 @@ void SaveConfig()
     cameraElem.SetBool("limitrotation", limitRotation);
     cameraElem.SetBool("mousewheelcameraposition", mouseWheelCameraPosition);
     cameraElem.SetUInt("viewportmode", viewportMode);
+    cameraElem.SetInt("mouseorbitmode", mouseOrbitMode);
 
     objectElem.SetFloat("newnodedistance", newNodeDistance);
     objectElem.SetFloat("movestep", moveStep);
@@ -269,6 +325,7 @@ void SaveConfig()
 
     if (renderer !is null && graphics !is null)
     {
+        renderingElem.SetAttribute("renderpath", renderPathName);
         renderingElem.SetInt("texturequality", renderer.textureQuality);
         renderingElem.SetInt("materialquality", renderer.materialQuality);
         renderingElem.SetInt("shadowresolution", GetShadowResolution());
@@ -308,5 +365,20 @@ void SaveConfig()
 
     consoleElem.SetAttribute("commandinterpreter", console.commandInterpreter);
 
+    varNamesElem.SetVariantMap(globalVarNames);
+
+    SaveSoundTypes(soundTypesElem);
+
     config.Save(File(configFileName, FILE_WRITE));
+}
+
+void MakeBackup(const String&in fileName)
+{
+    fileSystem.Rename(fileName, fileName + ".old");
+}
+
+void RemoveBackup(bool success, const String&in fileName)
+{
+    if (success)
+        fileSystem.Delete(fileName + ".old");
 }

@@ -5,6 +5,7 @@
 #include <vector>
 #include "../../Engine/Procedural/Procedural.h"
 #include "../../Engine/Procedural/Rules.h"
+#include "../../Engine/Procedural/RandomNumberGenerator.h"
 
 using namespace Urho3D;
 using namespace std;
@@ -44,13 +45,14 @@ public:
     /// Register object factory and attributes.
     static void RegisterObject(Context* context);
 
-    int Init(void);
+    int Initialize(void);
 
     /// public will remove
     int CreateRockObjectAlongPath(float x, float z, float numberofobjects, float length);
     int CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, float x, float z, float numberofobjects, float length, Image * terrainHeightMap);
-    int CreateObjectsAlongPath(int objecttypes, float x, float z, float numberofobjects, float length);
+    int CreateObjectsAlongPath(int objecttypes, float worldsize_x, float worldsize_y, float x, float z, float numberofobjects, float length, Image * terrainHeightMap);
     int GenerateWorldObjects(const time_t &timeseed,  terrain_rule terrainrule);
+    int GenerateGrass2( float worldsize_x, float worldsize_y, Image * terrainHeightMap);
 
 protected:
 
@@ -62,8 +64,8 @@ private:
 
     /// Set world limit of objects to test for collision
     vector <WorldOjectCollisionMap> CollisionBounds;;
-
-
+    terrain_rule terrainrules;
+    RandomNumberGenerator RandomRule;
 };
 
 #endif // WORLDBUILD_H

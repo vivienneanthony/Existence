@@ -24,6 +24,7 @@
 #include "CollisionShape.h"
 #include "StaticModel.h"
 #include "Terrain.h"
+#include "BillboardSet.h"
 
 #include <iostream>
 #include <cmath>
@@ -32,6 +33,8 @@
 
 #include "WorldBuild.h"
 #include "../../Engine/Procedural/Procedural.h"
+#include "../../Engine/Procedural/ProceduralTerrain.h"
+
 
 
 using namespace std;
@@ -65,11 +68,18 @@ void WorldBuild::RegisterObject(Context* context)
     context->RegisterFactory<WorldBuild>();
 }
 
-int WorldBuild::Init(void)
+int WorldBuild::Initialize(void)
 {
     /// Allocate memory
     CollisionBounds.clear();
     SaveCollisionObjects=0;
+
+    /// Clear rules
+    terrainrules.creationtime=0;
+    terrainrules.sealevel=0;
+    terrainrules.worldtype=0;
+    terrainrules.subworldtype=0;
+
 }
 
 /// Computer distance
@@ -92,10 +102,8 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
 
-    Scene * scene_;
-
-    scene_ = this -> GetScene();
-
+    /// Get scene and terrain node
+    Scene * scene_ = this -> GetScene();
     Node* terrainNode = scene_->GetChild("Terrain",true);
     Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
@@ -106,6 +114,43 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
 
     /// Get actual size
     Vector2 patchWorldSize=Vector2(spacing.x_*(float)(patchSize*numPatches.x_), spacing.z_*(float)(patchSize*numPatches.y_));
+
+    bool success = false;
+    bool hasComponent = false;
+
+    /// Check component
+    proceduralterrain proceduralterraindefaults;
+
+    /// Check for the current node
+    if(terrainNode)
+    {
+        ProceduralTerrain * proceduralComponent = terrainNode-> GetComponent<ProceduralTerrain>();
+
+        /// Set hasComponent to true
+        if(proceduralComponent)
+        {
+            /// Set has components
+            hasComponent=true;
+            /// Get component values
+            proceduralterraindefaults = proceduralComponent -> Get();
+        }
+    }
+
+    /// if a component exist use the terrain rule imation
+    if(hasComponent)
+    {
+        terrainrules.sealevel=proceduralterraindefaults.sealevel;
+        terrainrules.subworldtype=proceduralterraindefaults.subworldtype;
+        terrainrules.worldtype=proceduralterraindefaults.worldtype;
+        terrainrules.creationtime=proceduralterraindefaults.creationtime;
+    }
+    else
+    {
+        terrainrules.sealevel=terrainrule.sealevel;
+        terrainrules.subworldtype=terrainrule.subworldtype;
+        terrainrules.worldtype=terrainrule.worldtype;
+        terrainrules.creationtime=terrainrule.creationtime;
+    }
 
     /// Generate procedural map
     Procedural * WeightMap = new Procedural();
@@ -131,23 +176,34 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
     float randomSpotx=0.0f;
     float randomSpotz=0.0f;
 
-    // Plant rocks
-    for(unsigned int i=0; i<500; i++)
+    /// initialize rule on seed
+    RandomRule.SetRandomSeed(terrainrules.creationtime+2);
+
+    cout << "\r\nWorldBuild Seed" << terrainrules.creationtime+2<<endl;
+    switch (terrainrules.worldtype)
     {
+        /// world type terrain
+    case WORLD_TERRAIN:
+        /// Generate grass
+        GenerateGrass2(patchWorldSize.x_, patchWorldSize.y_,terrainHeightMap);
 
-        /// Pick a random spotskx
-        Spotx=rand()%1024;
-        Spotz=rand()%1024;
+        // Plant rocks
+        for(unsigned int i=0; i<600; i++)
+        {
 
-        /// Calculat z,x location
-        //randomSpotx=((float)Spotx/100)-768.0f;
-        //randomSpotz=((float)Spotz/100)-768.0f;
+            /// Pick a random spotskx
+            Spotx=RandomRule.RandRange(1024);
+            Spotz=RandomRule.RandRange(1024);
 
-        randomSpotx=(float)Spotx-512.0f;
-        randomSpotz=(float)Spotz-512.0f;
+            randomSpotx=(float)Spotx-512.0f;
+            randomSpotz=(float)Spotz-512.0f;
 
-        /// Create rocks on paths
-        CreateTreeObjectAlongPath(patchWorldSize.x_, patchWorldSize.y_,randomSpotx,randomSpotz, 5, 100.0f, terrainHeightMap);
+            /// Create rocks on paths
+            CreateObjectsAlongPath(WORLDBUILD_TREES, patchWorldSize.x_, patchWorldSize.y_,randomSpotx,randomSpotz, 6, 100.0f, terrainHeightMap);
+        }
+        break;
+    default:
+        break;
     }
 
 
@@ -156,7 +212,7 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
 
 }
 
-
+/// Old code
 /// Create rocks along a path
 int WorldBuild::CreateRockObjectAlongPath( float x, float z, float numberofobjects, float length)
 {
@@ -166,16 +222,10 @@ int WorldBuild::CreateRockObjectAlongPath( float x, float z, float numberofobjec
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
 
-    /// Try to get the node information;
-    Scene * scene_;
-
-    scene_ = this -> GetScene();
-
-    Node* terrainNode = scene_ ->GetChild("Terrain",true);
-
-    Terrain* terrain = terrainNode->GetComponent<Terrain>();
-
-
+    /// Get scene and terrain node
+    Scene * scene_ = this -> GetScene();
+    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
     /// Need variables
     float lengthlimitdistance= length;
@@ -203,7 +253,7 @@ int WorldBuild::CreateRockObjectAlongPath( float x, float z, float numberofobjec
     do
     {
         /// Pick a random directoin
-        int direction=rand()%8+1;
+        int direction=RandomRule.RandRange(8)+1;
 
         /// Select coordinate change based on random direction
         switch (direction)
@@ -271,7 +321,7 @@ int WorldBuild::CreateRockObjectAlongPath( float x, float z, float numberofobjec
 
                 StaticModel * RockStaticModel = RockNode->CreateComponent<StaticModel>();
 
-                int pick= rand()%2+1;
+                int pick= RandomRule.RandRange(2)+1;
 
                 if(pick==1)
                 {
@@ -311,7 +361,7 @@ int WorldBuild::CreateRockObjectAlongPath( float x, float z, float numberofobjec
                 /// Set Rock position
                 RockNode->SetPosition(selectPosition);
                 RockNode->SetRotation(Quaternion(Vector3::UP, terrain->GetNormal(Vector3(position_x,0.0f,position_z))));
-                RockNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
+                RockNode->SetRotation(Quaternion(RandomRule.RandRange(360),Vector3(0.0f,1.0f,0.0f)));
 
                 /// Output X, Y
                 //cout << position_x << " " << position_z << "\r\n";
@@ -324,7 +374,7 @@ int WorldBuild::CreateRockObjectAlongPath( float x, float z, float numberofobjec
     return 1;
 }
 
-
+/// Old code
 /// Create rocks along a path
 int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, float x, float z, float numberofobjects, float length, Image * terrainHeightMap)
 {
@@ -334,14 +384,10 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
 
-    /// Try to get the node information;
-    Scene * scene_;
-
-    scene_ = this -> GetScene();
-
-    Node* terrainNode = scene_ ->GetChild("Terrain",true);
-
-    Terrain* terrain = terrainNode->GetComponent<Terrain>();
+    /// Get scene and terrain node
+    Scene * scene_ = this -> GetScene();
+    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
     /// Need variables
     float lengthlimitdistance= length;
@@ -376,7 +422,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
     do
     {
         /// Pick a random directoin
-        int direction=rand()%8+1;
+        int direction=RandomRule.RandRange(8)+1;
 
         /// Select coordinate change based on random direction
         switch (direction)
@@ -450,7 +496,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
 
             Color terrainHeightvalue=terrainHeightMap->GetPixel(xposition, zposition);
 
-            if(terrainHeightvalue.r_<.50)
+            if(terrainHeightvalue.r_<terrainrules.sealevel)
             {
                 continue;
             }
@@ -476,7 +522,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
                 StaticModel * RockStaticModelBase = RockNode->CreateComponent<StaticModel>();
                 StaticModel * RockStaticModelLeaves = RockNode->CreateComponent<StaticModel>();
 
-                int pick= rand()%3+1;
+                int pick= RandomRule.RandRange(3)+1;
 
                 switch (pick)
                 {
@@ -519,7 +565,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
 
                 /// Set Rock position
                 RockNode->SetPosition(selectPosition);
-                RockNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
+                RockNode->SetRotation(Quaternion(RandomRule.RandRange(350),Vector3(0.0f,1.0f,0.0f)));
 
             }
         }
@@ -530,7 +576,7 @@ int WorldBuild::CreateTreeObjectAlongPath(float worldsize_x, float worldsize_y, 
     return 1;
 }
 
-int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float numberofobjects, float length)
+int WorldBuild::CreateObjectsAlongPath(int objecttypes, float worldsize_x, float worldsize_y, float x, float z, float numberofobjects, float length, Image * terrainHeightMap)
 {
     /// Get Needed SubSystems
     ResourceCache* cache = GetSubsystem<ResourceCache>();
@@ -538,15 +584,10 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
 
-    /// Try to get the node information;
-    Scene * scene_;
-
-    scene_ = this -> GetScene();
-
-    Node* terrainNode = scene_ ->GetChild("Terrain",true);
-
-    Terrain* terrain = terrainNode->GetComponent<Terrain>();
-
+    /// Get scene and terrain node
+    Scene * scene_ = this -> GetScene();
+    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
     /// Need variables
     float lengthlimitdistance= length;
@@ -568,16 +609,19 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
     float newposition_z=0.0f;
     float olddistance=0.0f;
 
-
-    float steep=1.0f;
-
     position_x=origin_x;
     position_z=origin_z;
+
+    float worldsize_xlow=-(worldsize_x/2);
+    float worldsize_ylow=-(worldsize_y/2);
+
+    float worldsize_xhigh=worldsize_x/2;
+    float worldsize_yhigh=worldsize_y/2;
 
     do
     {
         /// Pick a random directoin
-        int direction=rand()%8+1;
+        int direction=RandomRule.RandRange(8)+1;
 
         /// Select coordinate change based on random direction
         switch (direction)
@@ -634,13 +678,32 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
             /// Get distance
             olddistance=ComputeDistance(position_x, origin_x, position_z, origin_z);
 
-            Vector3 normalvalue=terrain->GetNormal(Vector3(position_x,0,position_z));
+            /// Prevent out of bounds
+            if(position_x>worldsize_xhigh||position_x<worldsize_xlow)
+            {
+                continue;
+            }
 
-            //steep = (float)1.0f - fabs(normalvalue.DotProduct(Vector3(0,1,0)));
-            steep= 1.0f - normalvalue.y_;
+            if(position_z>worldsize_yhigh||position_z<worldsize_ylow)
+            {
+                continue;
+            }
 
+            float xposition=position_x+1024.0f;
+            float zposition=position_z+1024.0f;
 
-            if(steep>.01)
+            Color terrainHeightvalue=terrainHeightMap->GetPixel(xposition, zposition);
+
+            if(terrainHeightvalue.r_<terrainrules.sealevel+0.01f)
+            {
+                continue;
+            }
+
+            Vector3 normalvalue=terrain -> GetNormal(Vector3(xposition,0.0f,zposition));
+
+            float steep=1.0f-normalvalue.y_;
+
+            if(steep>.009)
             {
                 continue;
             }
@@ -665,7 +728,7 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
                 {
                 case WORLDBUILD_ROCKS:
                     /// Pick random
-                    pick= rand()%2+1;
+                    pick= RandomRule.RandRange(2)+1;
 
                     if(pick==1)
                     {
@@ -682,7 +745,7 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
                     break;
                 case WORLDBUILD_TREES:
                     /// Pick Random
-                    pick= rand()%3+1;
+                    pick= RandomRule.RandRange(3)+1;
 
                     switch (pick)
                     {
@@ -751,7 +814,7 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
                 /// Set Rock position
                 ObjectStaticNode->SetPosition(selectPosition);
                 ObjectStaticNode->SetRotation(Quaternion(Vector3::UP, terrain->GetNormal(Vector3(position_x,0.0f,position_z))));
-                ObjectStaticNode->SetRotation(Quaternion(Random(360),Vector3(0.0f,1.0f,0.0f)));
+                ObjectStaticNode->SetRotation(Quaternion(RandomRule.RandRange(360),Vector3(0.0f,1.0f,0.0f)));
             }
         }
     }
@@ -760,4 +823,149 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float x, float z, float 
 
     return 1;
 }
+
+
+int WorldBuild::GenerateGrass2(float worldsize_x, float worldsize_y, Image * terrainHeightMap)
+{
+
+/// Get Needed SubSystems
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+
+    /// Get scene and terrain node
+    Scene * scene_ = this -> GetScene();
+    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Terrain * terrain = terrainNode -> GetComponent<Terrain>();
+
+    /// Define random point variables
+    float GrowthSpotx=0;
+    float GrowthSpotz=0;
+    int InitialSpotx=0;
+    int InitialSpotz=0;
+
+    int TerrainInitialSpotx=0;
+    int TerrainInitialSpotz=0;
+    float TerrainGrowthSpotx=0.0f;
+    float TerrainGrowthSpotz=0.0f;
+
+    float GowthRandomSpotx=0;
+    float GowthRandomSpotz=0;
+    int InitialrandomSpotx=0;
+    int InitialrandomSpotz=0;
+
+    int NumberOfPlantingsGrowth=0;
+    int NumberOfPlantings=0;
+    unsigned int InitialRange=0;
+    unsigned int  SpreadRange=0;
+
+    float HeightMapxposition;
+    float HeightMapzposition;
+
+
+    int j=0;
+    bool failattempts;
+
+    /// Change parameters based on type
+    switch (terrainrules.worldtype)
+    {
+
+    case WORLD_DESERT:
+        NumberOfPlantingsGrowth=25;
+        NumberOfPlantings=50;
+        InitialRange=100;
+        SpreadRange=100;
+        break;
+    case WORLD_TERRAIN:
+        NumberOfPlantingsGrowth=500;
+        NumberOfPlantings=1200;
+        InitialRange=1024;
+        SpreadRange=32;
+        break;
+    default:
+        break;
+    }
+
+    float steep=0.0f;
+
+    /// create billboards
+    for(unsigned int i=0; i<NumberOfPlantings; ++i)
+    {
+
+        /// Pick random values
+        InitialSpotx=RandomRule.RandRange(InitialRange);
+        InitialSpotz=RandomRule.RandRange(InitialRange);
+
+        TerrainInitialSpotx=InitialSpotx+(InitialRange/2);
+        TerrainInitialSpotz=InitialSpotz+(InitialRange/2);
+
+        Node* GrassInitialNode = scene_->CreateChild("GrassBillboardSetNode");
+        GrassInitialNode->SetPosition(Vector3(InitialrandomSpotx,0.0f,InitialrandomSpotz));
+        BillboardSet* billboardObject = GrassInitialNode->CreateComponent<BillboardSet>();
+        billboardObject->SetNumBillboards(NumberOfPlantingsGrowth);
+
+        billboardObject->SetMaterial(cache->GetResource<Material>("Resources/Materials/Grass.xml"));
+        billboardObject->SetSorted(true);
+        billboardObject->SetCastShadows(true);
+
+        /// reset
+        failattempts=false;
+        j=0;
+
+        HeightMapxposition=floor(TerrainInitialSpotx+.5)+0.0f;
+        HeightMapzposition=floor(TerrainInitialSpotz+.5)+0.0f;
+
+        Color terrainHeightvalue=terrainHeightMap->GetPixel((int)HeightMapxposition,(int)HeightMapzposition);
+
+        Vector3 normalvalue=terrain -> GetNormal(Vector3(TerrainGrowthSpotx,0.0f,TerrainGrowthSpotz));
+
+        float steep=(float)1.0f-normalvalue.y_;
+
+        if(steep>.099)
+        {
+            failattempts=true;
+        }
+
+
+        if(terrainrules.sealevel>0.0f)
+        {
+            if(terrainHeightvalue.r_<terrainrules.sealevel+0.01f)
+            {
+                failattempts=true;
+            }
+        }
+
+        if(failattempts==false)
+        {
+            for(unsigned int j=0; j<NumberOfPlantingsGrowth; ++j)
+            {
+                GrowthSpotx=RandomRule.RandRange(SpreadRange*100);
+                GrowthSpotz=RandomRule.RandRange(SpreadRange*100);
+
+                GowthRandomSpotx=((float)GrowthSpotx/100)-(SpreadRange/2);
+                GowthRandomSpotz=((float)GrowthSpotz/100)-(SpreadRange/2);
+
+                TerrainGrowthSpotx=TerrainInitialSpotx+GowthRandomSpotx-1024;
+                TerrainGrowthSpotz=TerrainInitialSpotz+GowthRandomSpotz-1024;
+
+                Billboard* bb = billboardObject->GetBillboard(j);
+
+                /// Select a possible position to place a plant
+                Vector3 selectPosition=Vector3(TerrainGrowthSpotx,terrain->GetHeight(Vector3(TerrainGrowthSpotx,0.0f,TerrainGrowthSpotz)),TerrainGrowthSpotz);
+
+                bb->position_ =selectPosition;
+                bb->size_ = Vector2(Random(0.3f) + 0.1f, Random(0.3f) + 0.1f);
+
+                bb->enabled_ = true;
+            }
+
+        }
+
+
+    }
+
+    return 1;
+}
+
 

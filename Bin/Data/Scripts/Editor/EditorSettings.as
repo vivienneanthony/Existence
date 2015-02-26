@@ -8,7 +8,7 @@ void CreateEditorSettingsDialog()
     if (settingsDialog !is null)
         return;
     
-    settingsDialog = ui.LoadLayout(cache.GetResource("XMLFile", "UI/EditorSettingsDialog.xml"));
+    settingsDialog = LoadEditorUI("UI/EditorSettingsDialog.xml");
     ui.root.AddChild(settingsDialog);
     settingsDialog.opacity = uiMaxOpacity;
     settingsDialog.height = 440;
@@ -40,6 +40,9 @@ void UpdateEditorSettingsDialog()
     CheckBox@ mouseWheelCameraPositionToggle = settingsDialog.GetChild("MouseWheelCameraPositionToggle", true);
     mouseWheelCameraPositionToggle.checked = mouseWheelCameraPosition;
 
+    DropDownList@ mouseOrbitEdit = settingsDialog.GetChild("MouseOrbitEdit", true);
+    mouseOrbitEdit.selection = mouseOrbitMode;
+
     LineEdit@ distanceEdit = settingsDialog.GetChild("DistanceEdit", true);
     distanceEdit.text = String(newNodeDistance);
 
@@ -69,6 +72,11 @@ void UpdateEditorSettingsDialog()
 
     DropDownList@ pickModeEdit = settingsDialog.GetChild("PickModeEdit", true);
     pickModeEdit.selection = pickMode;
+
+    LineEdit@ renderPathNameEdit = settingsDialog.GetChild("RenderPathNameEdit", true);
+    renderPathNameEdit.text = renderPathName;
+
+    Button@ pickRenderPathButton = settingsDialog.GetChild("PickRenderPathButton", true);
 
     DropDownList@ textureQualityEdit = settingsDialog.GetChild("TextureQualityEdit", true);
     textureQualityEdit.selection = renderer.textureQuality;
@@ -106,6 +114,7 @@ void UpdateEditorSettingsDialog()
         SubscribeToEvent(speedEdit, "TextFinished", "EditCameraSpeed");
         SubscribeToEvent(limitRotationToggle, "Toggled", "EditLimitRotation");
         SubscribeToEvent(mouseWheelCameraPositionToggle, "Toggled", "EditMouseWheelCameraPosition");
+        SubscribeToEvent(mouseOrbitEdit, "ItemSelected", "EditMouseOrbitMode");
         SubscribeToEvent(distanceEdit, "TextChanged", "EditNewNodeDistance");
         SubscribeToEvent(distanceEdit, "TextFinished", "EditNewNodeDistance");
         SubscribeToEvent(moveStepEdit, "TextChanged", "EditMoveStep");
@@ -122,6 +131,8 @@ void UpdateEditorSettingsDialog()
         SubscribeToEvent(importOptionsEdit, "TextChanged", "EditImportOptions");
         SubscribeToEvent(importOptionsEdit, "TextFinished", "EditImportOptions");
         SubscribeToEvent(pickModeEdit, "ItemSelected", "EditPickMode");
+        SubscribeToEvent(renderPathNameEdit, "TextFinished", "EditRenderPathName");
+        SubscribeToEvent(pickRenderPathButton, "Released", "PickRenderPath");
         SubscribeToEvent(textureQualityEdit, "ItemSelected", "EditTextureQuality");
         SubscribeToEvent(materialQualityEdit, "ItemSelected", "EditMaterialQuality");
         SubscribeToEvent(shadowResolutionEdit, "ItemSelected", "EditShadowResolution");
@@ -194,6 +205,12 @@ void EditMouseWheelCameraPosition(StringHash eventType, VariantMap& eventData)
 {
     CheckBox@ edit = eventData["Element"].GetPtr();
     mouseWheelCameraPosition = edit.checked;
+}
+
+void EditMouseOrbitMode(StringHash eventType, VariantMap& eventData)
+{
+    DropDownList@ edit = eventData["Element"].GetPtr();
+    mouseOrbitMode = edit.selection;
 }
 
 void EditNewNodeDistance(StringHash eventType, VariantMap& eventData)
@@ -271,6 +288,26 @@ void EditPickMode(StringHash eventType, VariantMap& eventData)
 {
     DropDownList@ edit = eventData["Element"].GetPtr();
     pickMode = edit.selection;
+}
+
+void EditRenderPathName(StringHash eventType, VariantMap& eventData)
+{
+    LineEdit@ edit = eventData["Element"].GetPtr();
+    SetRenderPath(edit.text);
+}
+
+void PickRenderPath(StringHash eventType, VariantMap& eventData)
+{
+    CreateFileSelector("Load render path", "Load", "Cancel", uiRenderPathPath, uiRenderPathFilters, uiRenderPathFilter);
+    SubscribeToEvent(uiFileSelector, "FileSelected", "HandleLoadRenderPath");
+}
+
+void HandleLoadRenderPath(StringHash eventType, VariantMap& eventData)
+{
+    CloseFileSelector(uiRenderPathFilter, uiRenderPathPath);
+    SetRenderPath(GetResourceNameFromFullName(ExtractFileName(eventData)));
+    LineEdit@ renderPathNameEdit = settingsDialog.GetChild("RenderPathNameEdit", true);
+    renderPathNameEdit.text = renderPathName;
 }
 
 void EditTextureQuality(StringHash eventType, VariantMap& eventData)

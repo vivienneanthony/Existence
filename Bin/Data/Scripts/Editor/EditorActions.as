@@ -121,7 +121,7 @@ class ReparentNodeAction : EditAction
     {
         multiple = true;
         newParentID = newParent.id;
-        for(uint i = 0; i < nodes.length; i++)
+        for(uint i = 0; i < nodes.length; ++i)
         {
             Node@ node = nodes[i];
             nodeList.Push(node.id);
@@ -320,6 +320,8 @@ class EditAttributeAction : EditAction
                 SetUIElementModified(target);
             else
                 SetSceneModified();
+                
+            EditScriptAttributes(target, attrIndex);
         }
     }
 
@@ -339,6 +341,8 @@ class EditAttributeAction : EditAction
                 SetUIElementModified(target);
             else
                 SetSceneModified();
+                
+            EditScriptAttributes(target, attrIndex);
         }
     }
 }
@@ -362,11 +366,11 @@ class ResetAttributesAction : EditAction
         {
             // Special handling for UIElement to preserve the internal variables containing the element's generated ID among others
             UIElement@ element = target;
-            Array<ShortStringHash> keys = element.vars.keys;
+            Array<StringHash> keys = element.vars.keys;
             for (uint i = 0; i < keys.length; ++i)
             {
                 // If variable name is empty (or unregistered) then it is an internal variable and should be preserved
-                String name = GetVariableName(keys[i]);
+                String name = GetVarName(keys[i]);
                 if (name.empty)
                     internalVars[keys[i]] = element.vars[keys[i]];
             }
@@ -391,7 +395,7 @@ class ResetAttributesAction : EditAction
     void SetInternalVars(UIElement@ element)
     {
         // Revert back internal variables
-        Array<ShortStringHash> keys = internalVars.keys;
+        Array<StringHash> keys = internalVars.keys;
         for (uint i = 0; i < keys.length; ++i)
             element.vars[keys[i]] = internalVars[keys[i]];
 
@@ -477,14 +481,14 @@ class ToggleNodeEnabledAction : EditAction
     {
         Node@ node = editorScene.GetNode(nodeID);
         if (node !is null)
-            node.SetEnabled(undoValue, true);
+            node.SetEnabledRecursive(undoValue);
     }
 
     void Redo()
     {
         Node@ node = editorScene.GetNode(nodeID);
         if (node !is null)
-            node.SetEnabled(!undoValue, true);
+            node.SetEnabledRecursive(!undoValue);
     }
 }
 
@@ -754,13 +758,13 @@ class EditMaterialAction : EditAction
     XMLFile@ oldState;
     XMLFile@ newState;
     WeakHandle material;
-    
+
     void Define(Material@ material_, XMLFile@ oldState_)
     {
         material = material_;
         oldState = oldState_;
         newState = XMLFile();
-        
+
         XMLElement materialElem = newState.CreateRoot("material");
         material_.Save(materialElem);
     }
@@ -784,4 +788,121 @@ class EditMaterialAction : EditAction
             RefreshMaterialEditor();
         }
     }
+}
+
+class EditParticleEffectAction : EditAction
+{
+    XMLFile@ oldState;
+    XMLFile@ newState;
+    WeakHandle particleEffect;
+    ParticleEmitter@ particleEmitter;
+
+    void Define(ParticleEmitter@ particleEmitter_, ParticleEffect@ particleEffect_, XMLFile@ oldState_)
+    {
+        particleEmitter = particleEmitter_;
+        particleEffect = particleEffect_;
+        oldState = oldState_;
+        newState = XMLFile();
+
+        XMLElement particleElem = newState.CreateRoot("particleeffect");
+        particleEffect_.Save(particleElem);
+    }
+
+    void Undo()
+    {
+        ParticleEffect@ effect = particleEffect.Get();
+        if (effect !is null)
+        {
+            effect.Load(oldState.root);
+            particleEmitter.ApplyEffect();
+            RefreshParticleEffectEditor();
+        }
+    }
+
+    void Redo()
+    {
+        ParticleEffect@ effect = particleEffect.Get();
+        if (effect !is null)
+        {
+            effect.Load(newState.root);
+            particleEmitter.ApplyEffect();
+            RefreshParticleEffectEditor();
+        }
+    }
+}
+
+class AssignMaterialAction : EditAction
+{
+    WeakHandle model;
+    Array<String> oldMaterials;
+    String newMaterialName;
+
+    void Define(StaticModel@ model_, Array<String> oldMaterials_, Material@ newMaterial_)
+    {
+        model = model_;
+        oldMaterials = oldMaterials_;
+        newMaterialName = newMaterial_.name;
+    }
+
+    void Undo()
+    {
+        StaticModel@ staticModel = model.Get();
+        if (staticModel is null)
+            return;
+
+        for(uint i=0; i<oldMaterials.length; ++i)
+        {
+            Material@ material = cache.GetResource("Material", oldMaterials[i]);
+            staticModel.materials[i] = material;
+        }
+    }
+
+    void Redo()
+    {
+        StaticModel@ staticModel = model.Get();
+        if (staticModel is null)
+            return;
+
+        Material@ material = cache.GetResource("Material", newMaterialName);
+        staticModel.material = material;
+    }
+}
+
+class AssignModelAction : EditAction
+{
+    WeakHandle staticModel;
+    String oldModel;
+    String newModel;
+
+    void Define(StaticModel@ staticModel_, Model@ oldModel_, Model@ newModel_)
+    {
+        staticModel = staticModel_;
+        oldModel = oldModel_.name;
+        newModel = newModel_.name;
+    }
+
+    void Undo()
+    {
+        StaticModel@ staticModel_ = staticModel.Get();
+        if (staticModel_ is null)
+            return;
+
+        Model@ model = cache.GetResource("Model", oldModel);
+        if (model is null)
+            return;
+        staticModel_.model = model;
+    }
+
+    void Redo()
+    {
+        StaticModel@ staticModel_ = staticModel.Get();
+        if (staticModel_ is null)
+            return;
+
+        Model@ model = cache.GetResource("Model", newModel);
+        if (model is null)
+            return;
+        staticModel_.model = model;
+    }
+
 }

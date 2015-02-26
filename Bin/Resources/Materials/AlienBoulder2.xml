@@ -1,0 +1,8 @@
+<material>
+  <technique name="Techniques/Diff.xml"/>
+  <texture name="Textures/Rock1.png" unit="diffuse"/>
+  <parameter name="MatDiffColor" value="0.312428 0.279899 0.310367 1"/>
+  <parameter name="MatSpecColor" value="0.01 0.01 0.01 50"/>
+  <cull value="none"/>
+  <shadowcull value="none"/>
+</material>

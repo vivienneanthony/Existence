@@ -41,8 +41,15 @@
 #include "../Procedural/Interp.h"
 #include "../Procedural/Rules.h"
 #include "../Procedural/Procedural.h"
+#include "../Procedural/RandomNumberGenerator.h"
+#include "ProceduralTerrain.h"
 
 #include "DebugNew.h"
+
+#include <iostream>
+
+using namespace std;
+
 
 namespace Urho3D
 {
@@ -620,7 +627,7 @@ void Terrain::CreateGeometry()
         numPatches_ = IntVector2((heightMap_->GetWidth() - 1) / patchSize_, (heightMap_->GetHeight() - 1) / patchSize_);
         numVertices_ = IntVector2(numPatches_.x_ * patchSize_ + 1, numPatches_.y_ * patchSize_ + 1);
         patchWorldOrigin_ = Vector2(-0.5f * (float)numPatches_.x_ * patchWorldSize_.x_, -0.5f * (float)numPatches_.y_ *
-            patchWorldSize_.y_);
+                                    patchWorldSize_.y_);
         if (numVertices_ != lastNumVertices_ || lastSpacing_ != spacing_ || patchSize_ != lastPatchSize_ )
             updateAll = true;
         unsigned newDataSize = numVertices_.x_ * numVertices_.y_;
@@ -733,7 +740,7 @@ void Terrain::CreateGeometry()
                 for (int x = 0; x < numVertices_.x_; ++x)
                 {
                     float newHeight = ((float)src[imgRow * (numVertices_.y_ - 1 - z) + imgComps * x] + (float)src[imgRow *
-                        (numVertices_.y_ - 1 - z) + imgComps * x + 1] / 256.0f) * spacing_.y_;
+                                       (numVertices_.y_ - 1 - z) + imgComps * x + 1] / 256.0f) * spacing_.y_;
 
                     if (updateAll)
                         *dest = newHeight;
@@ -783,7 +790,7 @@ void Terrain::CreateGeometry()
                     }
 
                     patchNode->SetPosition(Vector3(patchWorldOrigin_.x_ + (float)x * patchWorldSize_.x_, 0.0f, patchWorldOrigin_.y_ +
-                        (float)z * patchWorldSize_.y_));
+                                                   (float)z * patchWorldSize_.y_));
 
                     TerrainPatch* patch = patchNode->GetComponent<TerrainPatch>();
                     if (!patch)
@@ -838,10 +845,10 @@ void Terrain::CreateGeometry()
                         for (int x = startX; x <= endX; ++x)
                         {
                             float smoothedHeight = (
-                                GetSourceHeight(x - 1, z - 1) + GetSourceHeight(x, z - 1) * 2.0f + GetSourceHeight(x + 1, z - 1) +
-                                GetSourceHeight(x - 1, z) * 2.0f + GetSourceHeight(x, z) * 4.0f + GetSourceHeight(x + 1, z) * 2.0f +
-                                GetSourceHeight(x - 1, z + 1) + GetSourceHeight(x, z + 1) * 2.0f + GetSourceHeight(x + 1, z + 1)
-                            ) / 16.0f;
+                                                       GetSourceHeight(x - 1, z - 1) + GetSourceHeight(x, z - 1) * 2.0f + GetSourceHeight(x + 1, z - 1) +
+                                                       GetSourceHeight(x - 1, z) * 2.0f + GetSourceHeight(x, z) * 4.0f + GetSourceHeight(x + 1, z) * 2.0f +
+                                                       GetSourceHeight(x - 1, z + 1) + GetSourceHeight(x, z + 1) * 2.0f + GetSourceHeight(x + 1, z + 1)
+                                                   ) / 16.0f;
 
                             heightData_[z * numVertices_.x_ + x] = smoothedHeight;
                         }
@@ -1095,13 +1102,13 @@ Vector3 Terrain::GetRawNormal(int x, int z) const
     float up = 0.5f * (spacing_.x_ + spacing_.z_);
 
     return (Vector3(0.0f, up, nSlope) +
-        Vector3(-neSlope, up, neSlope) +
-        Vector3(-eSlope, up, 0.0f) +
-        Vector3(-seSlope, up, -seSlope) +
-        Vector3(0.0f, up, -sSlope) +
-        Vector3(swSlope, up, -swSlope) +
-        Vector3(wSlope, up, 0.0f) +
-        Vector3(nwSlope, up, nwSlope)).Normalized();
+            Vector3(-neSlope, up, neSlope) +
+            Vector3(-eSlope, up, 0.0f) +
+            Vector3(-seSlope, up, -seSlope) +
+            Vector3(0.0f, up, -sSlope) +
+            Vector3(swSlope, up, -swSlope) +
+            Vector3(wSlope, up, 0.0f) +
+            Vector3(nwSlope, up, nwSlope)).Normalized();
 }
 
 void Terrain::CalculateLodErrors(TerrainPatch* patch)
@@ -1149,7 +1156,7 @@ void Terrain::SetNeighbors(TerrainPatch* patch)
 {
     const IntVector2& coords = patch->GetCoordinates();
     patch->SetNeighbors(GetPatch(coords.x_, coords.y_ + 1), GetPatch(coords.x_, coords.y_ - 1),
-        GetPatch(coords.x_ - 1, coords.y_), GetPatch(coords.x_ + 1, coords.y_));
+                        GetPatch(coords.x_ - 1, coords.y_), GetPatch(coords.x_ + 1, coords.y_));
 }
 
 bool Terrain::SetHeightMapInternal(Image* image, bool recreateNow)
@@ -1217,45 +1224,181 @@ bool Terrain::GenerateProceduralHeightMap(terrain_rule terrainrule)
     Image * proceduralImage = new Image(context_);
 
     bool success = false;
+    bool hasComponent = false;
 
-    /// Temporary use rule seed to choose octaves - set base values
-    unsigned int octaves= (rand()%2)+6;
-    unsigned int baseoctave=rand()%30+10;
-    unsigned int basepersistencerandom = (rand()%50)+10;
-    float basepersistence=(float)basepersistencerandom/100;
+    /// Check component
+    proceduralterrain proceduralterraindefaults;
 
+    Node * thisNode = this->GetNode();
+
+    /// Check for the current node
+    if(thisNode)
+    {
+        ProceduralTerrain * proceduralComponent = thisNode-> GetComponent<ProceduralTerrain>();
+
+        /// Set hasComponent to true
+        if(proceduralComponent)
+        {
+            /// Set has components
+            hasComponent=true;
+            /// Get component values
+            proceduralterraindefaults = proceduralComponent -> Get();
+        }
+    }
+
+
+
+    /// Declare values
+    unsigned int octaves;
+    unsigned int baseoctave;
+    unsigned int basepersistencerandom;
+    float basepersistence;
+
+    unsigned int width;
+    unsigned int height;
 
     /// Set base values of Octaves
-    float octave1 = (float)(50+baseoctave)/100;
-    float octave2 = (float) octave1*basepersistence;
-    float octave3 = (float) octave2*basepersistence;
-    float octave4 = (float) octave3*basepersistence;
-    float octave5 = (float) octave4*basepersistence;
-    float octave6 = (float) octave5*basepersistence;
-    float octave7 = (float) octave6*basepersistence;
-    float octave8 = (float) octave7*basepersistence;
+    float octave1;
+    float octave2;
+    float octave3;
+    float octave4;
+    float octave5;
+    float octave6;
+    float octave7;
+    float octave8;
+
+    float persistence;
+    bool override;
+
+    /// change settings based on components
+    if(hasComponent)
+    {
+
+        if(proceduralterraindefaults.width==0)
+        {
+            width=2048+1;
+        }
+
+        if(proceduralterraindefaults.height==0)
+        {
+            height=2048+1;
+        }
+
+        /// If override is false then use internal
+        if(proceduralterraindefaults.oct_override==true)
+        {
+            /// Replacement random generator here
+            RandomNumberGenerator RandomGenerator;
+
+            RandomGenerator.SetRandomSeed(terrainrule.creationtime);
+
+            /// Temporary use rule seed to choose octaves - set base values
+            octaves= RandomGenerator.RandRange(2)+6;
+
+            baseoctave=RandomGenerator.RandRange(30)+10;
+            basepersistencerandom = RandomGenerator.RandRange(50)+10;
+            basepersistence=(float)basepersistencerandom/100;
+
+            /// Set base values of Octaves
+            octave1 = (float)(50+baseoctave)/100;
+            octave2 = (float) octave1*basepersistence;
+            octave3 = (float) octave2*basepersistence;
+            octave4 = (float) octave3*basepersistence;
+            octave5 = (float) octave4*basepersistence;
+            octave6 = (float) octave5*basepersistence;
+            octave7 = (float) octave6*basepersistence;
+            octave8 = (float) octave7*basepersistence;
+
+
+            override=true;
+        }
+        else
+        {
+            width=proceduralterraindefaults.width+1;
+            height=proceduralterraindefaults.height+1;
+
+            override=proceduralterraindefaults.oct_override;
+            persistence=proceduralterraindefaults.oct_persistence;
+            octaves=proceduralterraindefaults.oct_octaves;
+
+            octave1=proceduralterraindefaults.oct_o1;
+            octave2=proceduralterraindefaults.oct_o2;
+            octave3=proceduralterraindefaults.oct_o3;
+            octave4=proceduralterraindefaults.oct_o4;
+            octave5=proceduralterraindefaults.oct_o5;
+            octave6=proceduralterraindefaults.oct_o6;
+            octave7=proceduralterraindefaults.oct_o7;
+            octave8=proceduralterraindefaults.oct_o8;
+
+
+            override=false;
+        }
+
+        persistence=basepersistence;
+    }
+    else
+    {
+        width=2048+1;
+        height=2048+1;
+
+        /// Replacement random generator here
+        RandomNumberGenerator RandomGenerator;
+
+        RandomGenerator.SetRandomSeed(terrainrule.creationtime);
+
+        /// Temporary use rule seed to choose octaves - set base values
+        octaves= RandomGenerator.RandRange(2)+6;
+
+        baseoctave=RandomGenerator.RandRange(30)+10;
+        basepersistencerandom = RandomGenerator.RandRange(50)+10;
+        basepersistence=(float)basepersistencerandom/100;
+
+        /// Set base values of Octaves
+        octave1 = (float)(50+baseoctave)/100;
+        octave2 = (float) octave1*basepersistence;
+        octave3 = (float) octave2*basepersistence;
+        octave4 = (float) octave3*basepersistence;
+        octave5 = (float) octave4*basepersistence;
+        octave6 = (float) octave5*basepersistence;
+        octave7 = (float) octave6*basepersistence;
+        octave8 = (float) octave7*basepersistence;
+
+        persistence=basepersistence;
+        override=true;
+    }
+
+    /// if a component exist use the terrain rule imation
+    if(hasComponent)
+    {
+        terrainrule.sealevel=proceduralterraindefaults.sealevel;
+        terrainrule.subworldtype=proceduralterraindefaults.subworldtype;
+        terrainrule.worldtype=proceduralterraindefaults.worldtype;
+    }
+
+    cout << "[Debug : TerrainCreation] - Seed " << terrainrule.creationtime << endl;
 
     /// Initilalize procedural
-    proceduralMap -> Initialize(2049,2049);
+    proceduralMap -> Initialize(width, height);
     proceduralMap -> SetOffSets(0,0);
-    proceduralImage -> SetSize(2049,2049, 1, 4);
+    proceduralImage -> SetSize(width, height, 1, 4);
 
     /// Test procedual generation
-    proceduralMap -> SetOctaves(octaves,.45f,true,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
+    proceduralMap -> SetOctaves(octaves,persistence,override,octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
     proceduralMap -> GenerateProceduralTerrain(terrainrule);
 
     /// Copy Procedual to Image Data
     proceduralImage -> SetData(proceduralMap -> GetImage());
     proceduralImageCreated = proceduralImage -> GetData();
 
-    proceduralImage->SavePNG(String("/media/home2/vivienne/Existence/Bin/TerrainImage.png"));
-
     SetHeightMap(proceduralImage);
 
     success = SetHeightMapInternal(proceduralImage, true);
+
+    proceduralImage->SavePNG("terrain.png");
 
     return success;
 }
 
 
 }
+

@@ -157,6 +157,7 @@ if (NOT WIN32 AND NOT ANDROID)
     endif ()
 endif ()
 
+
 # Add targets
 foreach (TARGET FreeType JO LZ4 PugiXml SDL StanHull STB)
     add_subdirectory (ThirdParty/${TARGET})

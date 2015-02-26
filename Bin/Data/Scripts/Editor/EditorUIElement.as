@@ -12,12 +12,9 @@ Array<XMLFile@> uiElementCopyBuffer;
 
 bool suppressUIElementChanges = false;
 
-// Registered UIElement user variable reverse mappings
-VariantMap uiElementVarNames;
-
-const ShortStringHash FILENAME_VAR("FileName");
-const ShortStringHash MODIFIED_VAR("Modified");
-const ShortStringHash CHILD_ELEMENT_FILENAME_VAR("ChildElemFileName");
+const StringHash FILENAME_VAR("FileName");
+const StringHash MODIFIED_VAR("Modified");
+const StringHash CHILD_ELEMENT_FILENAME_VAR("ChildElemFileName");
 
 void ClearUIElementSelection()
 {
@@ -246,6 +243,7 @@ bool SaveUILayout(const String&in fileName)
 
     ui.cursor.shape = CS_BUSY;
 
+    MakeBackup(fileName);
     File file(fileName, FILE_WRITE);
     if (!file.open)
     {
@@ -260,6 +258,8 @@ bool SaveUILayout(const String&in fileName)
     XMLFile@ elementData = XMLFile();
     XMLElement rootElem = elementData.CreateRoot("element");
     bool success = element.SaveXML(rootElem);
+    RemoveBackup(success, fileName);
+
     if (success)
     {
         FilterInternalVars(rootElem);
@@ -349,6 +349,7 @@ bool SaveChildUIElement(const String&in fileName)
 
     ui.cursor.shape = CS_BUSY;
 
+    MakeBackup(fileName);
     File file(fileName, FILE_WRITE);
     if (!file.open)
     {
@@ -359,6 +360,8 @@ bool SaveChildUIElement(const String&in fileName)
     XMLFile@ elementData = XMLFile();
     XMLElement rootElem = elementData.CreateRoot("element");
     bool success = editUIElement.SaveXML(rootElem);
+    RemoveBackup(success, fileName);
+    
     if (success)
     {
         FilterInternalVars(rootElem);
@@ -413,7 +416,7 @@ void FilterInternalVars(XMLElement source)
     XMLElement resultElem = resultSet.firstResult;
     while (resultElem.notNull)
     {
-        String name = GetVariableName(resultElem.GetUInt("hash"));
+        String name = GetVarName(resultElem.GetUInt("hash"));
         if (name.empty)
         {
             XMLElement parent = resultElem.parent;
@@ -442,7 +445,7 @@ void RegisterUIElementVar(XMLElement source)
     while (resultAttr.notNull)
     {
         String name = resultAttr.GetAttribute();
-        uiElementVarNames[name] = name;
+        globalVarNames[name] = name;
         resultAttr = resultAttr.nextResult;
     }
 }
@@ -530,7 +533,7 @@ void ResetDuplicateID(UIElement@ element)
         ResetDuplicateID(element.children[i]);
 }
 
-bool UIElementPaste()
+bool UIElementPaste(bool duplication = false)
 {
     ui.cursor.shape = CS_BUSY;
 
@@ -543,12 +546,26 @@ bool UIElementPaste()
     for (uint i = 0; i < uiElementCopyBuffer.length; ++i)
     {
         XMLElement rootElem = uiElementCopyBuffer[i].root;
-        if (editUIElement.LoadChildXML(rootElem, null))
+
+        UIElement@ pasteElement;
+
+        if (!duplication)
+            pasteElement = editUIElement;
+        else
         {
-            UIElement@ element = editUIElement.children[editUIElement.numChildren - 1];
+            if (editUIElement.parent !is null)
+                pasteElement = editUIElement.parent;
+            else
+                pasteElement = editUIElement;
+        }
+
+        if (pasteElement.LoadChildXML(rootElem, null))
+        {
+            UIElement@ element = pasteElement.children[pasteElement.numChildren - 1];
+
             ResetDuplicateID(element);
             UpdateHierarchyItem(element);
-            SetUIElementModified(editUIElement);
+            SetUIElementModified(pasteElement);
 
             // Create an undo action
             CreateUIElementAction action;
@@ -560,6 +577,18 @@ bool UIElementPaste()
     SaveEditActionGroup(group);
 
     suppressUIElementChanges = false;
+
+    return true;
+}
+
+bool UIElementDuplicate()
+{
+    ui.cursor.shape = CS_BUSY;
+
+    Array<XMLFile@> copy = uiElementCopyBuffer;
+    UIElementCopy();
+    UIElementPaste(true);
+    uiElementCopyBuffer = copy;
 
     return true;
 }

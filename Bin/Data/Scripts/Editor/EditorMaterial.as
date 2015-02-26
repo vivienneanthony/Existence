@@ -17,7 +17,7 @@ void CreateMaterialEditor()
     if (materialWindow !is null)
         return;
 
-    materialWindow = ui.LoadLayout(cache.GetResource("XMLFile", "UI/EditorMaterialWindow.xml"));
+    materialWindow = LoadEditorUI("UI/EditorMaterialWindow.xml");
     ui.root.AddChild(materialWindow);
     materialWindow.opacity = uiMaxOpacity;
 
@@ -94,6 +94,7 @@ void InitMaterialPreview()
     materialPreview = materialWindow.GetChild("MaterialPreview", true);
     materialPreview.SetFixedHeight(100);
     materialPreview.SetView(previewScene, camera);
+    materialPreview.viewport.renderPath = renderPath;
     materialPreview.autoUpdate = false;
 
     SubscribeToEvent(materialPreview, "DragMove", "RotateMaterialPreview");
@@ -156,12 +157,12 @@ void RefreshMaterialTechniques(bool fullUpdate = true)
         for (uint i = 0; i < editMaterial.numTechniques; ++i)
         {
             TechniqueEntry entry = editMaterial.techniqueEntries[i];
-    
+
             UIElement@ container = UIElement();
             container.SetLayout(LM_HORIZONTAL, 4);
             container.SetFixedHeight(ATTR_HEIGHT);
             list.AddItem(container);
-        
+
             LineEdit@ nameEdit = CreateAttributeLineEdit(container, null, i, 0);
             nameEdit.name = "TechniqueNameEdit" + String(i);
 
@@ -169,7 +170,7 @@ void RefreshMaterialTechniques(bool fullUpdate = true)
             SubscribeToEvent(pickButton, "Released", "PickMaterialTechnique");
             Button@ openButton = CreateResourcePickerButton(container, null, i, 0, "Open");
             SubscribeToEvent(openButton, "Released", "OpenResource");
-    
+
             if (entry.technique !is null)
                 nameEdit.text = entry.technique.name;
 
@@ -179,7 +180,7 @@ void RefreshMaterialTechniques(bool fullUpdate = true)
             container2.SetLayout(LM_HORIZONTAL, 4);
             container2.SetFixedHeight(ATTR_HEIGHT);
             list.AddItem(container2);
-    
+
             Text@ text = container2.CreateChild("Text");
             text.style = "EditorAttributeText";
             text.text = "Quality";
@@ -187,7 +188,7 @@ void RefreshMaterialTechniques(bool fullUpdate = true)
             attrEdit.text = String(entry.qualityLevel);
             SubscribeToEvent(attrEdit, "TextChanged", "EditTechniqueQuality");
             SubscribeToEvent(attrEdit, "TextFinished", "EditTechniqueQuality");
-    
+
             text = container2.CreateChild("Text");
             text.style = "EditorAttributeText";
             text.text = "LOD Distance";
@@ -218,19 +219,19 @@ void RefreshMaterialTextures(bool fullUpdate = true)
     {
         ListView@ list = materialWindow.GetChild("TextureList", true);
         list.RemoveAllItems();
-    
+
         for (uint i = 0; i < MAX_MATERIAL_TEXTURE_UNITS; ++i)
         {
             String tuName = GetTextureUnitName(TextureUnit(i));
             tuName[0] = ToUpper(tuName[0]);
 
             UIElement@ parent = CreateAttributeEditorParentWithSeparatedLabel(list, "Unit " + i + " " + tuName, i, 0, false);
-            
+
             UIElement@ container = UIElement();
             container.SetLayout(LM_HORIZONTAL, 4, IntRect(10, 0, 4, 0));
             container.SetFixedHeight(ATTR_HEIGHT);
             parent.AddChild(container);
-    
+
             LineEdit@ nameEdit = CreateAttributeLineEdit(container, null, i, 0);
             nameEdit.name = "TextureNameEdit" + String(i);
 
@@ -294,6 +295,9 @@ void RefreshMaterialShaderParameters()
             attrEdit.vars["Coordinate"] = j;
             attrEdit.vars["Name"] = parameterNames[i];
             attrEdit.text = coordValues[j];
+
+            CreateDragSlider(attrEdit);
+
             SubscribeToEvent(attrEdit, "TextChanged", "EditShaderParameter");
             SubscribeToEvent(attrEdit, "TextFinished", "EditShaderParameter");
         }
@@ -351,7 +355,7 @@ void EditMaterialName(StringHash eventType, VariantMap& eventData)
 
 void PickEditMaterial()
 {
-    @resourcePicker = GetResourcePicker(ShortStringHash("Material"));
+    @resourcePicker = GetResourcePicker(StringHash("Material"));
     if (resourcePicker is null)
         return;
 
@@ -408,8 +412,10 @@ void SaveMaterial()
     if (fullName.empty)
         return;
 
+    MakeBackup(fullName);
     File saveFile(fullName, FILE_WRITE);
-    editMaterial.Save(saveFile);
+    bool success = editMaterial.Save(saveFile);
+    RemoveBackup(success, fullName);
 }
 
 void SaveMaterialAs()
@@ -417,7 +423,7 @@ void SaveMaterialAs()
     if (editMaterial is null)
         return;
 
-    @resourcePicker = GetResourcePicker(ShortStringHash("Material"));
+    @resourcePicker = GetResourcePicker(StringHash("Material"));
     if (resourcePicker is null)
         return;
 
@@ -450,10 +456,12 @@ void SaveMaterialAsDone(StringHash eventType, VariantMap& eventData)
     if (GetExtension(fullName).empty && filter != "*.*")
         fullName = fullName + filter.Substring(1);
 
+    MakeBackup(fullName);
     File saveFile(fullName, FILE_WRITE);
     if (editMaterial.Save(saveFile))
     {
         saveFile.Close();
+        RemoveBackup(true, fullName);
 
         // Load the new resource to update the name in the editor
         Material@ newMat = cache.GetResource("Material", GetResourceNameFromFullName(fullName));
@@ -552,7 +560,7 @@ void PickMaterialTexture(StringHash eventType, VariantMap& eventData)
     UIElement@ button = eventData["Element"].GetPtr();
     resourcePickIndex = button.vars["Index"].GetUInt();
 
-    @resourcePicker = GetResourcePicker(ShortStringHash("Texture2D"));
+    @resourcePicker = GetResourcePicker(StringHash("Texture2D"));
     if (resourcePicker is null)
         return;
 
@@ -597,7 +605,7 @@ void EditMaterialTexture(StringHash eventType, VariantMap& eventData)
     LineEdit@ attrEdit = eventData["Element"].GetPtr();
     String textureName = attrEdit.text.Trimmed();
     uint index = attrEdit.vars["Index"].GetUInt();
-    
+
     BeginMaterialEdit();
 
     if (!textureName.empty)
@@ -643,7 +651,7 @@ void PickMaterialTechnique(StringHash eventType, VariantMap& eventData)
     UIElement@ button = eventData["Element"].GetPtr();
     resourcePickIndex = button.vars["Index"].GetUInt();
 
-    @resourcePicker = GetResourcePicker(ShortStringHash("Technique"));
+    @resourcePicker = GetResourcePicker(StringHash("Technique"));
     if (resourcePicker is null)
         return;
 
@@ -814,10 +822,12 @@ void EndMaterialEdit()
 {
     if (editMaterial is null)
         return;
-
-    EditMaterialAction@ action = EditMaterialAction();
-    action.Define(editMaterial, oldMaterialState);
-    SaveEditAction(action);
-
+    if (!dragEditAttribute)
+    {
+        EditMaterialAction@ action = EditMaterialAction();
+        action.Define(editMaterial, oldMaterialState);
+        SaveEditAction(action);
+    }
+    
     materialPreview.QueueUpdate();
 }

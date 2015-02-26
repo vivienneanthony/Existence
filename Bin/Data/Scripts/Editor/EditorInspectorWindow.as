@@ -9,9 +9,9 @@ bool attributesDirty = false;
 bool attributesFullDirty = false;
 
 const String STRIKED_OUT = "——";   // Two unicode EM DASH (U+2014)
-const ShortStringHash NODE_IDS_VAR("NodeIDs");
-const ShortStringHash COMPONENT_IDS_VAR("ComponentIDs");
-const ShortStringHash UI_ELEMENT_IDS_VAR("UIElementIDs");
+const StringHash NODE_IDS_VAR("NodeIDs");
+const StringHash COMPONENT_IDS_VAR("ComponentIDs");
+const StringHash UI_ELEMENT_IDS_VAR("UIElementIDs");
 const int LABEL_WIDTH = 30;
 
 // Constants for accessing xmlResources
@@ -23,6 +23,14 @@ const uint STYLE_RES = 2;
 uint nodeContainerIndex = M_MAX_UNSIGNED;
 uint componentContainerStartIndex = 0;
 uint elementContainerIndex = M_MAX_UNSIGNED;
+
+// Script Attribute session storage
+VariantMap scriptAttributes;
+const uint SCRIPTINSTANCE_ATTRIBUTE_IGNORE = 5;
+const uint LUASCRIPTINSTANCE_ATTRIBUTE_IGNORE = 4;
+
+// Node or UIElement hash-to-varname reverse mapping
+VariantMap globalVarNames;
 
 void InitXMLResources()
 {
@@ -110,7 +118,7 @@ void CreateAttributeInspectorWindow()
     InitVectorStructs();
     InitXMLResources();
 
-    attributeInspectorWindow = ui.LoadLayout(cache.GetResource("XMLFile", "UI/EditorInspectorWindow.xml"));
+    attributeInspectorWindow = LoadEditorUI("UI/EditorInspectorWindow.xml");
     parentContainer = attributeInspectorWindow.GetChild("ParentContainer");
     ui.root.AddChild(attributeInspectorWindow);
     int height = Min(ui.root.height - 60, 500);
@@ -118,6 +126,8 @@ void CreateAttributeInspectorWindow()
     attributeInspectorWindow.SetPosition(ui.root.width - 10 - attributeInspectorWindow.width, 100);
     attributeInspectorWindow.opacity = uiMaxOpacity;
     attributeInspectorWindow.BringToFront();
+
+    UpdateAttributeInspector();
 
     SubscribeToEvent(attributeInspectorWindow.GetChild("CloseButton", true), "Released", "HideAttributeInspectorWindow");
     SubscribeToEvent(attributeInspectorWindow, "LayoutUpdated", "HandleWindowLayoutUpdated");
@@ -193,6 +203,9 @@ void UpdateAttributeInspector(bool fullUpdate = true)
     if (fullUpdate)
         DeleteAllContainers();
 
+    // Update all ScriptInstances/LuaScriptInstances
+    UpdateScriptInstances();
+
     if (!editNodes.empty)
     {
         UIElement@ container = GetNodeContainer();
@@ -251,7 +264,10 @@ void UpdateAttributeInspector(bool fullUpdate = true)
 
             Array<Serializable@> components;
             for (uint i = 0; i < numEditableComponents; ++i)
-                components.Push(editComponents[j * numEditableComponents + i]);
+            {
+                Component@ component = editComponents[j * numEditableComponents + i];
+                components.Push(component);
+            }
 
             UpdateAttributes(components, container.GetChild("AttributeList"), fullUpdate);
             SetAttributeEditorID(container.GetChild("ResetToDefault", true), components);
@@ -316,6 +332,61 @@ void UpdateAttributeInspector(bool fullUpdate = true)
     // Adjust size and position of manual-layout UI-elements, e.g. icons panel
     if (fullUpdate)
         HandleWindowLayoutUpdated();
+}
+
+void UpdateScriptInstances()
+{
+    Array<Component@>@ components = scene.GetComponents("ScriptInstance", true);
+    for (uint i = 0; i < components.length; i++)
+        UpdateScriptAttributes(components[i]);
+
+    components = scene.GetComponents("LuaScriptInstance", true);
+    for (uint i = 0; i < components.length; i++)
+        UpdateScriptAttributes(components[i]);
+}
+
+String GetComponentAttributeHash(Component@ component, uint index)
+{
+    // We won't consider the main attributes, as they won't reset when an error occurs.
+    if (component.typeName == "ScriptInstance")
+    {
+        if (index <= SCRIPTINSTANCE_ATTRIBUTE_IGNORE)
+            return "";
+    }
+    else
+    {
+        if (index <= LUASCRIPTINSTANCE_ATTRIBUTE_IGNORE)
+            return "";
+    }
+    AttributeInfo attributeInfo = component.attributeInfos[index];
+    Variant attribute = component.attributes[index];
+    return String(component.id) + "-" + attributeInfo.name + "-" + attribute.typeName;
+}
+
+void UpdateScriptAttributes(Component@ component)
+{
+    for (uint i = Min(SCRIPTINSTANCE_ATTRIBUTE_IGNORE, LUASCRIPTINSTANCE_ATTRIBUTE_IGNORE) + 1; i < component.numAttributes; i++)
+    {
+        Variant attribute = component.attributes[i];
+        // Component/node ID's are always unique within a scene, based on a simple increment.
+        // This makes for a simple method of mapping a components attributes unique and consistent.
+        // We will also use the type name in the hash to be able to recall and differentiate type changes.
+        String hash = GetComponentAttributeHash(component, i);
+        if (hash.empty)
+            continue;
+
+        if (!scriptAttributes.Contains(hash))
+        {
+            // set the initial value to the default value.
+            scriptAttributes[hash] = attribute;
+        }
+        else
+        {
+            // recall the previously stored value
+            component.attributes[i] = scriptAttributes[hash];
+        }
+    }
+    component.ApplyAttributes();
 }
 
 /// Update the attribute list of the node container.
@@ -577,6 +648,7 @@ void CreateNodeVariable(StringHash eventType, VariantMap& eventData)
 
     // Create scene variable
     editorScene.RegisterVar(newName);
+    globalVarNames[newName] = newName;
 
     Variant newValue = ExtractVariantType(eventData);
 
@@ -626,7 +698,7 @@ void CreateUIElementVariable(StringHash eventType, VariantMap& eventData)
         return;
 
     // Create UIElement variable
-    uiElementVarNames[newName] = newName;
+    globalVarNames[newName] = newName;
 
     Variant newValue = ExtractVariantType(eventData);
 
@@ -695,15 +767,15 @@ Variant ExtractVariantType(VariantMap& eventData)
     return Variant();   // This should not happen
 }
 
-/// Get back the human-readable variable name from the ShortStringHash.
-String GetVariableName(ShortStringHash hash)
+/// Get back the human-readable variable name from the StringHash.
+String GetVarName(StringHash hash)
 {
     // First try to get it from scene
     String name = editorScene.GetVarName(hash);
-    // Then from the UIElement variable names
-    if (name.empty && uiElementVarNames.Contains(hash))
-        name = uiElementVarNames[hash].ToString();
-    return name;    // Since this is a reverse mapping, it does not really matter from which side the name is retrieved back
+    // Then from the global variable reverse mappings
+    if (name.empty && globalVarNames.Contains(hash))
+        name = globalVarNames[hash].ToString();
+    return name;
 }
 
 bool inSetStyleListSelection = false;

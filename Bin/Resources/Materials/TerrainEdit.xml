@@ -1,7 +1,7 @@
 <material>
 <technique name="Techniques/TerrainBlendEdit.xml" />
-<texture unit="1" name="Textures/TerrainBlend4/SoilSand0181_23_S.jpg"/>
-<texture unit="2" name="Textures/TerrainBlend4/Grass0126_2_S.jpg" />
+<texture unit="1" name="Textures/TerrainBlend4/Grass0126_2_S.jpg"/>
+<texture unit="2" name="Textures/TerrainBlend4/Desert2.jpg" />
 <texture unit="3" name="Textures/TerrainBlend4/Cliff2.jpg" />
 <texture unit="4" name="Textures/TerrainBlend4/Cliff3.jpg" />
 <parameter name="MatSpecColor" value="0.5 0.5 0.5 16" />

@@ -96,6 +96,10 @@ void CreateScene()
     }
 
     // Create the camera. Limit far clip distance to match the fog
+    // The camera needs to be created into a local node so that each client can retain its own camera, that is unaffected by
+    // network messages. Furthermore, because the client removes all replicated scene nodes when connecting to a server scene,
+    // the screen would become blank if the camera node was replicated (as only the locally created camera is assigned to a
+    // viewport in SetupViewports() below)
     cameraNode = scene_.CreateChild("Camera", LOCAL);
     Camera@ camera = cameraNode.CreateComponent("Camera");
     camera.farClip = 300.0f;
@@ -174,6 +178,8 @@ void SubscribeToEvents()
     SubscribeToEvent("ClientDisconnected", "HandleClientDisconnected");
     // This is a custom event, sent from the server to the client. It tells the node ID of the object the client should control
     SubscribeToEvent("ClientObjectID", "HandleClientObjectID");
+    // Events sent between client & server (remote events) must be explicitly registered or else they are not allowed to be received
+    network.RegisterRemoteEvent("ClientObjectID");
 }
 
 Button@ CreateButton(const String& text, int width)

@@ -13,16 +13,15 @@
 struct terrain_rule
 {
     int worldtype;      // world type
-    int subworldtype;      // subworldtype
-    float moutainrange; // value 0.0f to 1.0f
-    float cratersdeep; // deep craters
-    time_t timeseed;
+    int subworldtype;
+    float sealevel;
+    unsigned long long int creationtime;
 };
 
 struct planet_rule
 {
     int worldtype;
-    time_t timeseed;
+    unsigned long long int creationtime;
 };
 
 #endif

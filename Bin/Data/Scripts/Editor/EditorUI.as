@@ -9,17 +9,20 @@ Window@ mruScenesPopup;
 Array<QuickMenuItem@> quickMenuItems;
 FileSelector@ uiFileSelector;
 String consoleCommandInterpreter;
+Window@ contextMenu;
 
-const ShortStringHash UI_ELEMENT_TYPE("UIElement");
-const ShortStringHash WINDOW_TYPE("Window");
-const ShortStringHash MENU_TYPE("Menu");
-const ShortStringHash TEXT_TYPE("Text");
-const ShortStringHash CURSOR_TYPE("Cursor");
+const StringHash UI_ELEMENT_TYPE("UIElement");
+const StringHash WINDOW_TYPE("Window");
+const StringHash MENU_TYPE("Menu");
+const StringHash TEXT_TYPE("Text");
+const StringHash CURSOR_TYPE("Cursor");
 
 const String AUTO_STYLE("");    // Empty string means auto style, i.e. applying style according to UI-element's type automatically
 const String TEMP_SCENE_NAME("_tempscene_.xml");
-const ShortStringHash CALLBACK_VAR("Callback");
-const ShortStringHash INDENT_MODIFIED_BY_ICON_VAR("IconIndented");
+const StringHash CALLBACK_VAR("Callback");
+const StringHash INDENT_MODIFIED_BY_ICON_VAR("IconIndented");
+
+const StringHash VAR_CONTEXT_MENU_HANDLER("ContextMenuHandler");
 
 const int SHOW_POPUP_INDICATOR = -1;
 const uint MAX_QUICK_MENU_ITEMS = 10;
@@ -31,18 +34,21 @@ Array<String> uiElementFilters = {"*.xml"};
 Array<String> uiAllFilters = {"*.*"};
 Array<String> uiScriptFilters = {"*.as", "*.*"};
 Array<String> uiParticleFilters = {"*.xml"};
+Array<String> uiRenderPathFilters = {"*.xml"};
 uint uiSceneFilter = 0;
 uint uiElementFilter = 0;
 uint uiNodeFilter = 0;
 uint uiImportFilter = 0;
 uint uiScriptFilter = 0;
 uint uiParticleFilter = 0;
+uint uiRenderPathFilter = 0;
 String uiScenePath = fileSystem.programDir + "Data/Scenes";
 String uiElementPath = fileSystem.programDir + "Data/UI";
 String uiNodePath = fileSystem.programDir + "Data/Objects";
 String uiImportPath;
 String uiScriptPath = fileSystem.programDir + "Data/Scripts";
 String uiParticlePath = fileSystem.programDir + "Data/Particles";
+String uiRenderPathPath = fileSystem.programDir + "CoreData/RenderPaths";
 Array<String> uiRecentScenes;
 String screenshotDir = fileSystem.programDir + "Screenshots";
 
@@ -57,24 +63,28 @@ void CreateUI()
     /// \todo The console will not be properly recreated as it has already been created once
     ui.root.RemoveAllChildren();
 
-    uiStyle = cache.GetResource("XMLFile", "UI/DefaultStyle.xml");
+    uiStyle = GetEditorUIXMLFile("UI/DefaultStyle.xml");
     ui.root.defaultStyle = uiStyle;
-    iconStyle = cache.GetResource("XMLFile", "UI/EditorIcons.xml");
+    iconStyle = GetEditorUIXMLFile("UI/EditorIcons.xml");
 
     CreateCursor();
     CreateMenuBar();
     CreateToolBar();
     CreateSecondaryToolBar();
     CreateQuickMenu();
+    CreateContextMenu();
     CreateHierarchyWindow();
     CreateAttributeInspectorWindow();
     CreateEditorSettingsDialog();
     CreateEditorPreferencesDialog();
     CreateMaterialEditor();
+    CreateParticleEffectEditor();
     CreateSpawnEditor();
+    CreateSoundTypeEditor();
     CreateStatsBar();
     CreateConsole();
     CreateDebugHud();
+    CreateResourceBrowser();
     CreateCamera();
 
     SubscribeToEvent("ScreenMode", "ResizeUI");
@@ -234,9 +244,10 @@ void CreateQuickMenu()
     if (quickMenu !is null)
         return;
 
-    quickMenu = ui.LoadLayout(cache.GetResource("XMLFile", "UI/EditorQuickMenu.xml"));
+    quickMenu = LoadEditorUI("UI/EditorQuickMenu.xml");
     quickMenu.enabled = false;
     quickMenu.visible = false;
+    quickMenu.opacity = uiMaxOpacity;
     
     // Handle a dummy search in the quick menu to finalize its initial size to empty
     PerformQuickMenuSearch("");
@@ -311,6 +322,7 @@ void CreateMenuBar()
         popup.AddChild(CreateMenuItem("Redo", @Redo, 'Y', QUAL_CTRL));
         CreateChildDivider(popup);
         popup.AddChild(CreateMenuItem("Cut", @Cut, 'X', QUAL_CTRL));
+        popup.AddChild(CreateMenuItem("Duplicate", @Duplicate, 'D', QUAL_CTRL));
         popup.AddChild(CreateMenuItem("Copy", @Copy, 'C', QUAL_CTRL));
         popup.AddChild(CreateMenuItem("Paste", @Paste, 'V', QUAL_CTRL));
         popup.AddChild(CreateMenuItem("Delete", @Delete, KEY_DELETE, QUAL_ANY));
@@ -328,8 +340,6 @@ void CreateMenuBar()
         popup.AddChild(CreateMenuItem("Stop test animation", @StopTestAnimation));
         CreateChildDivider(popup);
         popup.AddChild(CreateMenuItem("Rebuild navigation data", @SceneRebuildNavigation));
-        popup.AddChild(CreateMenuItem("Load particle data", @PickFile));
-        popup.AddChild(CreateMenuItem("Save particle data", @PickFile));
         FinalizedPopupMenu(popup);
         uiMenuBar.AddChild(menu);
     }
@@ -407,8 +417,11 @@ void CreateMenuBar()
         Window@ popup = menu.popup;
         popup.AddChild(CreateMenuItem("Hierarchy", @ShowHierarchyWindow, 'H', QUAL_CTRL));
         popup.AddChild(CreateMenuItem("Attribute inspector", @ShowAttributeInspectorWindow, 'I', QUAL_CTRL));
+        popup.AddChild(CreateMenuItem("Resource browser", @ShowResourceBrowserWindow, 'B', QUAL_CTRL));
         popup.AddChild(CreateMenuItem("Material editor", @ShowMaterialEditor));
+        popup.AddChild(CreateMenuItem("Particle editor", @ShowParticleEffectEditor));
         popup.AddChild(CreateMenuItem("Spawn editor", @ShowSpawnEditor));
+        popup.AddChild(CreateMenuItem("Sound Type editor", @ShowSoundTypeEditor));
         popup.AddChild(CreateMenuItem("Editor settings", @ShowEditorSettingsDialog));
         popup.AddChild(CreateMenuItem("Editor preferences", @ShowEditorPreferencesDialog));
         CreateChildDivider(popup);
@@ -539,35 +552,6 @@ bool PickFile()
         CreateFileSelector("Set resource path", "Set", "Cancel", sceneResourcePath, uiAllFilters, 0);
         uiFileSelector.directoryMode = true;
         SubscribeToEvent(uiFileSelector, "FileSelected", "HandleResourcePath");
-    }
-    else if (action == "Load particle data")
-    {
-        bool hasParticleEmitter = false;
-        for (uint i = 0; i < editComponents.length; ++i)
-        {
-            if (editComponents[i].typeName == "ParticleEmitter")
-            {
-                hasParticleEmitter = true;
-                break;
-            }
-        }
-        if (hasParticleEmitter)
-        {
-            CreateFileSelector("Load particle data", "Load", "Cancel", uiParticlePath, uiParticleFilters, uiParticleFilter);
-            SubscribeToEvent(uiFileSelector, "FileSelected", "HandleLoadParticleData");
-        }
-        else
-            MessageBox("Need to have a selected ParticleEmitter component to load particle data.");
-    }
-    else if (action == "Save particle data")
-    {
-        if (editComponents.length == 1 && editComponents[0].typeName == "ParticleEmitter")
-        {
-            CreateFileSelector("Save particle data", "Save", "Cancel", uiParticlePath, uiParticleFilters, uiParticleFilter);
-            SubscribeToEvent(uiFileSelector, "FileSelected", "HandleSaveParticleData");
-        }
-        else
-            MessageBox("Need to have a selected ParticleEmitter component to save particle data.");
     }
     // UI-element
     else if (action == "Open UI-layout...")
@@ -738,7 +722,7 @@ void AddQuickMenuItem(MENU_CALLBACK@ callback, String text)
         return;
 
     bool exists = false;
-    for (uint i=0;i<quickMenuItems.length;i++)
+    for (uint i=0;i<quickMenuItems.length;++i)
     {
         if (quickMenuItems[i].action == text)
         {
@@ -948,6 +932,12 @@ void CenterDialog(UIElement@ element)
     element.SetPosition((graphics.width - size.x) / 2, (graphics.height - size.y) / 2);
 }
 
+void CreateContextMenu()
+{
+    contextMenu = LoadEditorUI("UI/EditorContextMenu.xml");
+    ui.root.AddChild(contextMenu);
+}
+
 void UpdateWindowTitle()
 {
     String sceneName = GetFileNameAndExtension(editorScene.fileName);
@@ -1033,17 +1023,6 @@ void HandleImportScene(StringHash eventType, VariantMap& eventData)
     ImportScene(ExtractFileName(eventData));
 }
 
-void HandleLoadParticleData(StringHash eventType, VariantMap& eventData)
-{
-    CloseFileSelector(uiParticleFilter, uiParticlePath);
-    LoadParticleData(ExtractFileName(eventData));
-}
-
-void HandleSaveParticleData(StringHash eventType, VariantMap& eventData)
-{
-    CloseFileSelector(uiParticleFilter, uiParticlePath);
-    SaveParticleData(ExtractFileName(eventData, true));
-}
 
 void ExecuteScript(const String&in fileName)
 {
@@ -1118,6 +1097,8 @@ void HandleKeyDown(StringHash eventType, VariantMap& eventData)
             UnhideUI();
         else if (console.visible)
             console.visible = false;
+        else if (contextMenu.visible)
+            CloseContextMenu();
         else if (quickMenu.visible)
         {
             quickMenu.visible = false;
@@ -1402,4 +1383,94 @@ bool LoadMostRecentScene()
         return false;
 
     return LoadScene(text.text);
+}
+
+// Set from click to false if opening menu procedurally.
+void OpenContextMenu(bool fromClick=true)
+{
+    if (contextMenu is null)
+        return;
+
+    contextMenu.enabled = true;
+    contextMenu.visible = true;
+    contextMenu.BringToFront();
+    if (fromClick)
+        contextMenuActionWaitFrame=true;
+}
+
+void CloseContextMenu()
+{
+    if (contextMenu is null)
+        return;
+
+    contextMenu.enabled = false;
+    contextMenu.visible = false;
+}
+
+void ActivateContextMenu(Array<UIElement@> actions)
+{
+    contextMenu.RemoveAllChildren();
+    for (uint i=0; i< actions.length; ++i)
+    {
+        contextMenu.AddChild(actions[i]);
+    }
+    contextMenu.SetFixedHeight(24*actions.length+6);
+    contextMenu.position = ui.cursor.screenPosition + IntVector2(10,-10);
+    OpenContextMenu();
+}
+
+Menu@ CreateContextMenuItem(String text, String handler)
+{
+    Menu@ menu = Menu();
+    menu.defaultStyle = uiStyle;
+    menu.style = AUTO_STYLE;
+    menu.SetLayout(LM_HORIZONTAL, 0, IntRect(8, 2, 8, 2));
+    Text@ menuText = Text();
+    menuText.style = "EditorMenuText";
+    menu.AddChild(menuText);
+    menuText.text = text;
+    menu.vars[VAR_CONTEXT_MENU_HANDLER] = handler;
+    SubscribeToEvent(menu, "Released", "ContextMenuEventWrapper");
+    return menu;
+}
+
+void ContextMenuEventWrapper(StringHash eventType, VariantMap& eventData)
+{
+    UIElement@ uiElement = eventData["Element"].GetPtr();
+    if (uiElement is null)
+        return;
+
+    String handler = uiElement.vars[VAR_CONTEXT_MENU_HANDLER].GetString();
+    if (!handler.empty)
+    {
+        SubscribeToEvent(uiElement, "Released", handler);
+        uiElement.SendEvent("Released", eventData);
+    }
+    CloseContextMenu();
+}
+
+/// Load a UI XML file used by the editor
+XMLFile@ GetEditorUIXMLFile(const String&in fileName)
+{
+    // Prefer the executable path to avoid using the user's resource path, which may point
+    // to an outdated Urho installation
+    String fullFileName = fileSystem.programDir + "Data/" + fileName;
+    if (fileSystem.FileExists(fullFileName))
+    {
+        File@ file = File(fullFileName, FILE_READ);
+        XMLFile@ xml = XMLFile();
+        xml.name = fileName;
+        if (xml.Load(file))
+            return xml;
+    }
+
+    // Fallback to resource system
+    return cache.GetResource("XMLFile", fileName);
+}
+
+
+/// Load an UI layout used by the editor
+UIElement@ LoadEditorUI(const String&in fileName)
+{
+    return ui.LoadLayout(GetEditorUIXMLFile(fileName));
 }
