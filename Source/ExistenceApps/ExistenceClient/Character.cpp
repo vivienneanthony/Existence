@@ -33,6 +33,7 @@
 
 
 #include "AnimationController.h"
+#include "AnimationState.h"
 #include "Character.h"
 #include "Context.h"
 #include "MemoryBuffer.h"
@@ -80,6 +81,8 @@ void Character::Start()
     /// Initalize additional information
     CharacterPlayer.Start();
 
+    characterstate_=CHARACTERNONE;
+    previouscharacterstate_=CHARACTERNONE;
     /// Component has been inserted into its scene node. Subscribe to events now
     SubscribeToEvent(GetNode(), E_NODECOLLISION, HANDLER(Character, HandleNodeCollision));
 }
@@ -225,6 +228,8 @@ void Character::FixedUpdate(float timeStep)
     RigidBody* body = GetComponent<RigidBody>();
     AnimationController* animCtrl = GetComponent<AnimationController>();
 
+    int setstate=0;
+
     /// Update the in air timer. Reset if grounded
     if (!onGround_)
     {
@@ -249,23 +254,83 @@ void Character::FixedUpdate(float timeStep)
     /// Create quaternion for a new rotation
     Quaternion  newrotation;
 
-    /// Controls force of movement
-    if (controls_.IsDown(CTRL_FORWARD))
+
+    /// Normalize move vector so that diagonal strafing is not faster
+    if (moveDir.LengthSquared() > 0.0f)
+        moveDir.Normalize();
+
+
+    if(characterstate_==CHARACTERNONE)
     {
-        moveDir += Vector3::FORWARD;
-    }
-    if (controls_.IsDown(CTRL_BACK))
-    {
-        moveDir += Vector3::BACK;
-    }
-    if (controls_.IsDown(CTRL_LEFT))
-    {
-        newrotation = rot * Quaternion(-1.0f, Vector3(0.0f, 1.0f, 0.0f)); // Pitch
+        characterstate_=CHARACTERIDLE;
     }
 
-    if (controls_.IsDown(CTRL_RIGHT))
+    // Movement in four directions
+    if (controls_.IsDown(CTRL_FORWARD|CTRL_BACK|CTRL_LEFT|CTRL_RIGHT))
     {
-        newrotation = rot * Quaternion(1.0f, Vector3(0.0f, 1.0f, 0.0f)); // Pitch
+
+        /// Controls force of movement
+        if (controls_.IsDown(CTRL_FORWARD))
+        {
+            moveDir += Vector3::FORWARD;
+        }
+        if (controls_.IsDown(CTRL_BACK))
+        {
+            moveDir += Vector3::BACK;
+        }
+        if (controls_.IsDown(CTRL_LEFT))
+        {
+            newrotation = rot * Quaternion(-1.0f, Vector3(0.0f, 1.0f, 0.0f)); // Pitch
+        }
+
+        if (controls_.IsDown(CTRL_RIGHT))
+        {
+            newrotation = rot * Quaternion(1.0f, Vector3(0.0f, 1.0f, 0.0f)); // Pitch
+        }
+
+        /// If in air, allow control, but slower than when on ground
+        body->ApplyImpulse(rot * moveDir * (softGrounded ? MOVE_FORCE : INAIR_MOVE_FORCE));
+
+        /// Fade change weights
+        AnimationState * walkAnimationState = animCtrl->GetAnimationState(String("WalkAnimation"));
+        AnimationState * idleAnimationState = animCtrl->GetAnimationState(String("IdleAnimation"));
+
+        /// animation code here
+        walkAnimationState -> SetWeight(1.0f);
+        idleAnimationState -> SetWeight(0.0f);
+        walkAnimationState -> AddTime(timeStep);
+
+        /// set state
+        characterstate_=CHARACTERWALKING;
+    }
+
+
+    // if soft grounded
+    if(softGrounded)
+    {
+        if (!(controls_.IsDown(CTRL_FORWARD|CTRL_BACK|CTRL_LEFT|CTRL_RIGHT)))
+        {
+            if(characterstate_ == CHARACTERWALKING)
+            {
+                /// Fade change weights
+                AnimationState * walkAnimationState = animCtrl->GetAnimationState(String("WalkAnimation"));
+                AnimationState * idleAnimationState = animCtrl->GetAnimationState(String("IdleAnimation"));
+
+                /// animation code here
+                walkAnimationState -> SetWeight(0.0f);
+                idleAnimationState -> SetWeight(1.0f);
+
+                idleAnimationState -> AddTime(timeStep);
+            }
+
+
+                if(characterstate_==CHARACTERIDLE)
+                {
+                    AnimationState * idleAnimationState = animCtrl->GetAnimationState(String("IdleAnimation"));
+                     idleAnimationState -> SetWeight(1.0f);
+                    idleAnimationState -> AddTime(timeStep);
+                }
+        }
     }
 
     if (controls_.IsDown(CTRL_FIRE))
@@ -273,12 +338,6 @@ void Character::FixedUpdate(float timeStep)
         MagicBox();
     }
 
-    /// Normalize move vector so that diagonal strafing is not faster
-    if (moveDir.LengthSquared() > 0.0f)
-        moveDir.Normalize();
-
-    /// If in air, allow control, but slower than when on ground
-    body->ApplyImpulse(rot * moveDir * (softGrounded ? MOVE_FORCE : INAIR_MOVE_FORCE));
 
     /// Set Rotation if left and right is pressed
     if (controls_.IsDown(CTRL_RIGHT)||controls_.IsDown(CTRL_LEFT))
@@ -288,6 +347,7 @@ void Character::FixedUpdate(float timeStep)
 
     if (softGrounded)
     {
+
         // When on ground, apply a braking force to limit maximum ground velocity
         Vector3 brakeForce = -planeVelocity * BRAKE_FORCE;
         body->ApplyImpulse(brakeForce);
@@ -307,7 +367,7 @@ void Character::FixedUpdate(float timeStep)
 
     }
 
-    // Reset grounded flag for next frame
+// Reset grounded flag for next frame
     onGround_ = false;
 }
 

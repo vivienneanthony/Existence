@@ -52,6 +52,10 @@ const float JUMP_FORCE = 1.0f;
 const float YAW_SENSITIVITY = 0.1f;
 const float INAIR_THRESHOLD_TIME = 0.1f;
 
+#define CHARACTERWALKING 10
+#define CHARACTERIDLE 1
+#define CHARACTERNONE 0
+
 /// Character component, responsible for physical movement according to controls, as well as animation.
 class Character : public LogicComponent
 {
@@ -103,4 +107,9 @@ private:
     float inAirTimer_;
 
     Player CharacterPlayer;
+
+    int characterstate_;
+    int previouscharacterstate_;
+
+
 };

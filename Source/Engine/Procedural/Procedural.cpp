@@ -94,7 +94,7 @@ bool Procedural::SetOctaves(const unsigned &octaves, const float &opersistence, 
 }
 
 
-// standard perlin generation
+/// Standard perlin generation
 bool Procedural::GenerateProceduralPerlin( const float &scale)
 {
 

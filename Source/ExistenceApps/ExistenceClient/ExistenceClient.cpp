@@ -57,6 +57,7 @@
 #include "RigidBody.h"
 #include "CollisionShape.h"
 #include "PhysicsWorld.h"
+#include "Animation.h"
 #include "AnimatedModel.h"
 #include "AnimationController.h"
 #include "Character.h"
@@ -2056,14 +2057,16 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         }
     }
 
-
-
-
     Node * playermeshNode1 = playermeshNode -> CreateChild("playermeshNode1");
     Node * playermeshNode2 = playermeshNode -> CreateChild("playermeshNode2");
 
-    StaticModel* playermeshObject1 = playermeshNode1 ->CreateComponent<StaticModel>();
-    StaticModel* playermeshObject2 = playermeshNode2 ->CreateComponent<StaticModel>();
+    /// Created Animated MOdel
+    AnimatedModel* playermeshObject1 = playermeshNode1 ->CreateComponent<AnimatedModel>();
+    AnimatedModel* playermeshObject2 = playermeshNode2 ->CreateComponent<AnimatedModel>();
+
+    /// Add Animation Controller
+    playermeshNode1->CreateComponent<AnimationController>();
+    playermeshNode2->CreateComponent<AnimationController>();
 
     /// Setup mesh and mesh details nodes and stactic models
     if((gender<51&&mode==DISPLAYMESH_SINGLECHARACTER)||mode==DISPLAYMESH_MUILTIPLECHARACTER)
@@ -2086,7 +2089,7 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         string clothingmodel;
         string clothingmaterial;
 
-        StaticModel* playermeshObject1outfitbottom = playermeshNode1->CreateComponent<StaticModel>();
+        AnimatedModel * playermeshObject1outfitbottom = playermeshNode1->CreateComponent<AnimatedModel>();
 
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femalebottom"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femalebottom"+".txt";
@@ -2094,7 +2097,7 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         playermeshObject1outfitbottom->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         playermeshObject1outfitbottom->ApplyMaterialList(clothingmaterial.c_str());
 
-        StaticModel* playermeshObject1outfittop =  playermeshNode1->CreateComponent<StaticModel>();
+        AnimatedModel* playermeshObject1outfittop =  playermeshNode1->CreateComponent<AnimatedModel>();
 
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femaletop"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femaletop"+".txt";
@@ -2102,14 +2105,29 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         playermeshObject1outfittop->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         playermeshObject1outfittop->ApplyMaterialList(clothingmaterial.c_str());
 
-        StaticModel* playermeshObject1teeth =  playermeshNode1->CreateComponent<StaticModel>();
+        AnimatedModel* playermeshObject1teeth =  playermeshNode1->CreateComponent<AnimatedModel>();
         playermeshObject1teeth->SetModel(cache->GetResource<Model>("Resources/Models/standardfemaleteeth.mdl"));
         playermeshObject1teeth->ApplyMaterialList("Resources/Models/standardfemaleteeth.txt");
 
-        StaticModel* playermeshObject1eyes =  playermeshNode1->CreateComponent<StaticModel>();
+        AnimatedModel* playermeshObject1eyes =  playermeshNode1->CreateComponent<AnimatedModel>();
         playermeshObject1eyes->SetModel(cache->GetResource<Model>("Resources/Models/standardfemaleeyes.mdl"));
         playermeshObject1eyes->ApplyMaterialList("Resources/Models/standardfemaleeyes.txt");
 
+        /// Add animation state
+        Animation * IdleAnimation = new Animation(context_);
+        IdleAnimation = cache->GetResource<Animation>("Resources/Models/standardbipedolianfemaleIdleAction.ani");
+
+        playermeshObject1 -> AddAnimationState(IdleAnimation);
+        IdleAnimation -> SetAnimationName ("IdleFemaleAnimation");
+
+        /// Get Controller
+        AnimationController * playermeshAnimationController1 = playermeshNode1 -> GetComponent<AnimationController>();
+
+        /// Set Morph Weight
+        playermeshAnimationController1-> SetWeight("IdleFemaleAnimation",1);
+        playermeshAnimationController1-> SetTime("IdleFemaleAnimation",1.80991);
+
+        playermeshAnimationController1->Play("IdleFemaleAnimation",0,1,0);
     }
 
     /// Setup mesh and mesh details nodes and stactic models
@@ -2135,7 +2153,7 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         string clothingmodel;
         string clothingmaterial;
 
-        StaticModel* playermeshObject2outfitbottom = playermeshNode2->CreateComponent<StaticModel>();
+        AnimatedModel* playermeshObject2outfitbottom = playermeshNode2->CreateComponent<AnimatedModel>();
 
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"malebottom"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"malebottom"+".txt";
@@ -2143,7 +2161,7 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         playermeshObject2outfitbottom->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         playermeshObject2outfitbottom->ApplyMaterialList(clothingmaterial.c_str());
 
-        StaticModel* playermeshObject2outfittop =  playermeshNode2->CreateComponent<StaticModel>();
+        AnimatedModel* playermeshObject2outfittop =  playermeshNode2->CreateComponent<AnimatedModel>();
 
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"maletop"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"maletop"+".txt";
@@ -2151,13 +2169,31 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         playermeshObject2outfittop->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         playermeshObject2outfittop->ApplyMaterialList(clothingmaterial.c_str());
 
-        StaticModel* playermeshObject2teeth =  playermeshNode2->CreateComponent<StaticModel>();
+        AnimatedModel* playermeshObject2teeth =  playermeshNode2->CreateComponent<AnimatedModel>();
         playermeshObject2teeth->SetModel(cache->GetResource<Model>("Resources/Models/standardmaleteeth.mdl"));
         playermeshObject2teeth->ApplyMaterialList("Resources/Models/standardmaleteeth.txt");
 
-        StaticModel* playermeshObject2eyes =  playermeshNode2->CreateComponent<StaticModel>();
+        AnimatedModel* playermeshObject2eyes =  playermeshNode2->CreateComponent<AnimatedModel>();
         playermeshObject2eyes->SetModel(cache->GetResource<Model>("Resources/Models/standardmaleeyes.mdl"));
         playermeshObject2eyes->ApplyMaterialList("Resources/Models/standardmaleeyes.txt");
+
+
+        /// Add animation state
+        Animation * IdleAnimation = new Animation(context_);
+        IdleAnimation = cache->GetResource<Animation>("Resources/Models/standardbipedolianmaleIdleGuardAction.ani");
+
+        playermeshObject2 -> AddAnimationState(IdleAnimation);
+        IdleAnimation -> SetAnimationName ("IdleMaleAnimation");
+
+        /// Get Controller
+        AnimationController * playermeshAnimationController2 = playermeshNode2 -> GetComponent<AnimationController>();
+
+        /// Set Morph Weight
+        playermeshAnimationController2-> SetWeight("IdleMaleAnimation",1);
+        playermeshAnimationController2-> SetTime("IdleMaleAnimation",1.80991);
+
+        playermeshAnimationController2->Play("IdleMaleAnimation",0,1,0);
+
     }
 
     /// Position static models if muiltiple charaters shown
@@ -2168,9 +2204,6 @@ int ExistenceClient::loadplayerMesh(Node * playermeshNode, int alienrace, int ge
         playermeshNode2 -> SetPosition(Vector3(-0.5f,0.0f,0.0f));
         playermeshNode2 ->SetRotation(Quaternion(0.0,-10,0.0));
     }
-
-
-
 
     return 1;
 }
@@ -3541,7 +3574,7 @@ void ExistenceClient::CreateCharacter(void)
     body->SetMass(.2f);
 
     /// Get static model and bounding box, calculate offset
-    StaticModel * staticmodelreference = objectNode->GetComponent<StaticModel>();
+    AnimatedModel * staticmodelreference = objectNode->GetComponent<AnimatedModel>();
     Model * staticmodel=staticmodelreference->GetModel();
 
     BoundingBox   staticmodelbox = staticmodel->GetBoundingBox();
@@ -3574,7 +3607,6 @@ void ExistenceClient::CreateCharacter(void)
     cameraObject->SetOrthographic(0);
     cameraObject->SetZoom(1);
 
-
     Node * crossboxNode = objectNode ->CreateChild("CrossBox");
 
     /// Set an initial position for the camera scene node above the plane
@@ -3586,7 +3618,6 @@ void ExistenceClient::CreateCharacter(void)
 
     crossboxModel ->SetModel(cache->GetResource<Model>("Resources/Models/CrossBox.mdl"));
     crossboxModel ->ApplyMaterialList("Resources/Models/CrossBox.txt");
-
 
     /// Set camera to first person
     ExistenceGameState.SetCameraMode(CAMERAMODE_FIRSTPERSON);
@@ -3611,7 +3642,6 @@ void ExistenceClient::CreateCharacter(void)
 
     character_->controls_.pitch_ = cameraNode_->GetRotation().PitchAngle();
     character_->controls_.yaw_ = cameraNode_->GetRotation().YawAngle();
-
 
     return;
 }
@@ -3674,6 +3704,9 @@ int ExistenceClient::LoadCharacterMesh(String nodename, unsigned int alienrace, 
 
     AnimatedModel* objectNodemodel=objectNode->CreateComponent<AnimatedModel>();
 
+    /// Add Animation Controller
+    objectNode->CreateComponent<AnimationController>();
+
     /// Setup mesh and mesh details nodes and stactic models
     if(gender<51)
     {
@@ -3694,27 +3727,41 @@ int ExistenceClient::LoadCharacterMesh(String nodename, unsigned int alienrace, 
         string clothingmodel;
         string clothingmaterial;
 
-        StaticModel* objectNodeoutfitbottom = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeoutfitbottom = objectNode ->CreateComponent<AnimatedModel>();
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femalebottom"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femalebottom"+".txt";
 
         objectNodeoutfitbottom->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         objectNodeoutfitbottom->ApplyMaterialList(clothingmaterial.c_str());
 
-        StaticModel* objectNodeoutfittop = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeoutfittop = objectNode ->CreateComponent<AnimatedModel>();
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femaletop"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"femaletop"+".txt";
 
         objectNodeoutfittop->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         objectNodeoutfittop->ApplyMaterialList(clothingmaterial.c_str());
 
-        StaticModel* objectNodeteeth = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeteeth = objectNode ->CreateComponent<AnimatedModel>();
         objectNodeteeth->SetModel(cache->GetResource<Model>("Resources/Models/standardfemaleteeth.mdl"));
         objectNodeteeth->ApplyMaterialList("Resources/Models/standardfemaleteeth.txt");
 
-        StaticModel* objectNodeeyes = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeeyes = objectNode ->CreateComponent<AnimatedModel>();
         objectNodeeyes->SetModel(cache->GetResource<Model>("Resources/Models/standardfemaleeyes.mdl"));
         objectNodeeyes->ApplyMaterialList("Resources/Models/standardfemaleeyes.txt");
+
+        /// Add animation state
+        Animation * IdleAnimation = new Animation(context_);
+        IdleAnimation = cache->GetResource<Animation>("Resources/Models/standardbipedolianfemaleIdleAction.ani");
+
+        objectNodemodel -> AddAnimationState(IdleAnimation);
+        IdleAnimation -> SetAnimationName ("IdleAnimation");
+
+        /// Add Walking Animation
+        Animation * AddAnimation = new Animation(context_);
+        AddAnimation = cache->GetResource<Animation>("Resources/Models/standardbipedolianFemaleWalkAction.ani");
+
+        objectNodemodel -> AddAnimationState(AddAnimation);
+        AddAnimation -> SetAnimationName ("WalkAnimation");
 
     }
     else
@@ -3736,36 +3783,65 @@ int ExistenceClient::LoadCharacterMesh(String nodename, unsigned int alienrace, 
         string clothingmodel;
         string clothingmaterial;
 
-        StaticModel* objectNodeoutfitbottom = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeoutfitbottom = objectNode ->CreateComponent<AnimatedModel>();
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"malebottom"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"malebottom"+".txt";
 
         objectNodeoutfitbottom->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         objectNodeoutfitbottom->ApplyMaterialList(clothingmaterial.c_str());
 
-        StaticModel* objectNodeoutfittop = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeoutfittop = objectNode ->CreateComponent<AnimatedModel>();
         clothingmodel = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"maletop"+".mdl";
         clothingmaterial = filesystem->GetProgramDir().CString()+string("Resources/Models/")+string("standardoutfit")+alienracename+"maletop"+".txt";
 
         objectNodeoutfittop->SetModel(cache->GetResource<Model>(clothingmodel.c_str()));
         objectNodeoutfittop->ApplyMaterialList(clothingmaterial.c_str());
 
-
-        StaticModel* objectNodeteeth = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeteeth = objectNode ->CreateComponent<AnimatedModel>();
         objectNodeteeth->SetModel(cache->GetResource<Model>("Resources/Models/standardmaleteeth.mdl"));
         objectNodeteeth->ApplyMaterialList("Resources/Models/standardmaleteeth.txt");
 
-        StaticModel* objectNodeeyes = objectNode ->CreateComponent<StaticModel>();
+        AnimatedModel* objectNodeeyes = objectNode ->CreateComponent<AnimatedModel>();
         objectNodeeyes->SetModel(cache->GetResource<Model>("Resources/Models/standardmaleeyes.mdl"));
         objectNodeeyes->ApplyMaterialList("Resources/Models/standardmaleeyes.txt");
 
+
+        /// Add animation state
+        Animation * IdleAnimation = new Animation(context_);
+        IdleAnimation = cache->GetResource<Animation>("Resources/Models/standardbipedolianmaleIdleGuardAction.ani");
+
+        objectNodemodel -> AddAnimationState(IdleAnimation);
+        IdleAnimation -> SetAnimationName ("IdleAnimation");
+
+
+        /// Add Walking Animation
+        Animation * AddAnimation = new Animation(context_);
+        AddAnimation = cache->GetResource<Animation>("Resources/Models/standardbipedolianMaleWalkAction.ani");
+
+        objectNodemodel -> AddAnimationState(AddAnimation);
+        AddAnimation -> SetAnimationName ("WalkAnimation");
+
     }
+
+    /// Get Controller
+    AnimationController * playermeshAnimationController1 = objectNode -> GetComponent<AnimationController>();
+
+    /// Set Morph Weight
+    playermeshAnimationController1-> SetWeight("IdleAnimation",1);
+    playermeshAnimationController1-> SetTime("IdleAnimation",1.89753);
+    playermeshAnimationController1-> SetLayer("IdleAnimation",0);
+    playermeshAnimationController1-> SetLooped("IdleAnimation",true);
+
+    playermeshAnimationController1-> SetWeight("WalkAnimation",0);
+    playermeshAnimationController1-> SetTime("WalkAnimation",2.45833);
+    playermeshAnimationController1-> SetLayer("WalkAnimation",1);
+    playermeshAnimationController1-> SetLooped("WalkAnimation",true);
+
+   /// playermeshAnimationController1->Play("IdleAnimation",0,true,0);
 
     /// Set shado
     objectNodemodel->	SetCastShadows(true);
 
-    /// Add animation controller
-    objectNode->CreateComponent<AnimationController>();
 
     return 1;
 }

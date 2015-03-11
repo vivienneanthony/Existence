@@ -1,1 +1,2 @@
 Materials/standardfemaleskinhumans.xml
+Materials/skintransparentmask.xml

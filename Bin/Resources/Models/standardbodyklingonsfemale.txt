@@ -1,1 +1,2 @@
 Materials/standardfemaleskinklingons.xml
+Materials/skintransparentmask.xml

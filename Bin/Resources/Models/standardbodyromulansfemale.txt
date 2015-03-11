@@ -1,1 +1,2 @@
 Materials/standardfemaleskinromulans.xml
+Materials/skintransparentmask.xml
