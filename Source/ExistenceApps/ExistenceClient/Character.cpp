@@ -304,7 +304,6 @@ void Character::FixedUpdate(float timeStep)
         characterstate_=CHARACTERWALKING;
     }
 
-
     // if soft grounded
     if(softGrounded)
     {

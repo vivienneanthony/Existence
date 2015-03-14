@@ -78,6 +78,7 @@
 #include "PlayerLevels.h"
 #include "GameObject.h"
 #include "WorldBuild.h"
+#include "Manager.h"
 
 #include <string>
 #include <iostream>
@@ -276,6 +277,8 @@ void ExistenceClient::Start()
     ResourceCache* cache = GetSubsystem<ResourceCache>();
     XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
     FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+    ///Manager* manager = GetSubsystem<Manager>();
 
     UI* ui = GetSubsystem<UI>();
 
@@ -2684,7 +2687,8 @@ void ExistenceClient::SavePlayer(int writemode)
 
     String playerconfigfilename;
 
-    //cout << filesystem->GetProgramDir().CString()+"CoreData/"+playerconfigfilename.CString();
+    //Debug
+    //out << filesystem->GetProgramDir().CString()+"CoreData/"+playerconfigfilename.CString();
     playerconfigfilename.Append(filesystem->GetProgramDir().CString());
     playerconfigfilename.Append("CoreData/");
     playerconfigfilename.Append(PLAYERFILE);
@@ -2692,6 +2696,7 @@ void ExistenceClient::SavePlayer(int writemode)
     /// check if player file exist
     if(!filesystem->FileExists(playerconfigfilename.CString()))
     {
+        //Debug
         //cout << "\r\nPlayer file ("<< playerconfigfilename.CString() << ") does not exist.";
         fileexist=false;
     }
@@ -2918,6 +2923,15 @@ void ExistenceClient::HandleInput(const String& input)
             /// go to environment function
             ConsoleActionCamera(input.CString());
         }
+
+        /// go to camera functions
+        if(parseinput[0] == "/build")
+        {
+            /// go to environment function
+            ConsoleActionBuild(input.CString());
+        }
+
+
 
         /// go to debug functions
         if(parseinput[0] == "/debug")
@@ -3595,17 +3609,23 @@ void ExistenceClient::CreateCharacter(void)
     shape->SetPosition(Vector3(staticmodelboxcenter));
     shape->SetLodLevel(1);
 
+    /// Gets the child position
+    Node* headNode = objectNode->GetChild("head", true);
+
     /// Create a scene node for the camera, which we will move around
     /// The camera will use default settings (1000 far clip distance, 45 degrees FOV, set aspect ratio automatically)
-    Node * cameraNode_ = objectNode ->CreateChild("CameraFirstPerson");
+    Node * cameraNode_ = headNode ->CreateChild("CameraFirstPerson");
 
     /// Set an initial position for the camera scene node above the plane
-    cameraNode_->SetPosition(Vector3(0.0f,1.2f,0.185821f));
+    cameraNode_->SetPosition(Vector3(0.0f,0.0f,0.15f));
     cameraNode_->SetRotation(Quaternion(0.0,0.0,0.0));
 
+    /// Set first person camera Node
     Camera* cameraObject = cameraNode_->CreateComponent<Camera>();
     cameraObject->SetOrthographic(0);
     cameraObject->SetZoom(1);
+    cameraObject->SetNearClip(0.0f);
+    cameraObject->SetUseClipping(false);
 
     Node * crossboxNode = objectNode ->CreateChild("CrossBox");
 
@@ -3626,7 +3646,6 @@ void ExistenceClient::CreateCharacter(void)
     /// at minimum. Additionally we could configure the viewport screen size and the rendering path (eg. forward / deferred) to
     /// use, but now we just use full screen and default render path configured	SetOrthographic ( in the engine command line options
     /// viewport -> SetCamera(cameraObject);
-
     SharedPtr<Viewport> viewport(new Viewport(context_, scene_, cameraObject));
     renderer->SetViewport(0, viewport);
 
@@ -3837,7 +3856,7 @@ int ExistenceClient::LoadCharacterMesh(String nodename, unsigned int alienrace, 
     playermeshAnimationController1-> SetLayer("WalkAnimation",1);
     playermeshAnimationController1-> SetLooped("WalkAnimation",true);
 
-   /// playermeshAnimationController1->Play("IdleAnimation",0,true,0);
+    /// playermeshAnimationController1->Play("IdleAnimation",0,true,0);
 
     /// Set shado
     objectNodemodel->	SetCastShadows(true);
@@ -3874,7 +3893,8 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
 
         terrainrule.creationtime=(unsigned long long int)pick1*pick2;
 
-        cout << "\r\nDebug: terrainrule " << terrainrule.creationtime << endl;
+        //Debug
+        //cout << "\r\n[Debug]: Function GenerateScene: terrainrule " << terrainrule.creationtime << endl;
     }
 
 
@@ -3882,10 +3902,13 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     /// illusion of the box planes being far away. Use just the ordinary Box model and a suitable material, whose shader will
     /// generate the necessary 3D texture coordinates for cube mapping
     Node* skyNode = scene_->CreateChild("Sky");
-    skyNode->SetScale(500.0f); /// The scale actually does not matter
+
     Skybox* skybox = skyNode->CreateComponent<Skybox>();
     skybox->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
     skybox->SetMaterial(cache->GetResource<Material>("Materials/Skybox.xml"));
+
+    skyNode->SetScale(500.0f); /// The scale actually does not matter
+    skyNode->SetName("GeneratedSkybox_Skybox1");
 
     /// Create a Zone component for ambient lighting & fog control
     Node* zoneNode = scene_->CreateChild("Zone");
@@ -3902,6 +3925,8 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     zone->SetFogEnd(1000.0f);
     zone->SetHeightFog (false);
 
+    zoneNode->SetName("GeneratedZone_Zone1");
+
     /// Create a directional light to the world. Enable cascaded shadows on it
     Node* lightNode = scene_->CreateChild("DirectionalLight1");
     lightNode->SetDirection(Vector3(0.6f, -1.0f, 0.8f));
@@ -3913,6 +3938,7 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     light->SetColor(Color(0.251f, 0.612f, 1.0f));
 
     lightNode->SetPosition(Vector3(0.0f,3.0f,0.0f));
+    lightNode->SetName("GeneratedLight_Light1");
 
     /// Create a directional light to the world. Enable cascaded shadows on it
     Node* lightNode2 = scene_->CreateChild("DirectionalLight2");
@@ -3923,8 +3949,10 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     light2->SetBrightness(.6);
     light2->SetColor(Color(1.0f, 1.0f,.95f));
 
+
     lightNode2->SetRotation(Quaternion(55.7392,0,0));
     lightNode2->SetPosition(Vector3(0.0f,3.0f,0.0f));
+    lightNode2->SetName("GeneratedLight_Light2");
 
     /// Create a directional light to the world. Enable cascaded shadows on it
     Node* lightNode3 = scene_->CreateChild("DirectionalLight3");
@@ -3937,9 +3965,11 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
 
     lightNode3->SetRotation(Quaternion(39.1376,-180,-180));
     lightNode3->SetPosition(Vector3(0.0f,3.0f,0.0f));
+    lightNode3->SetName("GeneratedLight_Light3");
 
     /// Define Terrain component information
     Node* terrainNode = scene_->CreateChild("Terrain");
+    terrainNode ->SetName("GeneratedTerrainRule_Terrain");
 
     Terrain* terrain = terrainNode->CreateComponent<Terrain>();
     terrain->SetPatchSize(64);
@@ -3974,13 +4004,11 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     bool override=false;
     float persistence=basepersistence;
 
-
     /// Set component
     terrainProcedural -> Initialize();
     terrainProcedural -> SetDimensions(2048,2048);
     terrainProcedural -> SetWorldType(terrainrule.worldtype, terrainrule.subworldtype, terrainrule.sealevel, terrainrule.creationtime);
     terrainProcedural -> SetOctaves(override, octaves,  persistence, octave1,octave2,octave3,octave4,octave5,octave6,octave7,octave8);
-
 
     /// Generate Produracel map
     terrain->GenerateProceduralHeightMap(terrainrule);
@@ -4298,7 +4326,7 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[10];
+    string argument[40];
 
     /// create a idx
     int idx = 0;
@@ -4324,7 +4352,7 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
         if(scene_->GetChild("Zone",true))
         {
             /// Found a zone
-            Node * SceneZoneNode = scene_->GetChild("Zone",true);
+            Node * SceneZoneNode = scene_->GetChild("GeneratedZone_Zone1",true);
             Zone * SceneZone = SceneZoneNode -> GetComponent<Zone>();
 
             ///  Change parameter for start end
@@ -4390,7 +4418,7 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
     if(argument[1]=="pointsteep")
     {
         /// Get Terrain
-        Node* terrainNode = scene_->GetChild("Terrain",true);
+        Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
         Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
         /// get testing values
@@ -4427,7 +4455,7 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
     {
 
         /// Get Terrain
-        Node* terrainNode = scene_->GetChild("Terrain",true);
+        Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
         Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
 
@@ -4467,7 +4495,7 @@ int ExistenceClient::ConsoleActionCamera(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[10];
+    string argument[40];
 
     /// create a idx
     int idx = 0;
@@ -4530,7 +4558,7 @@ int ExistenceClient::ConsoleActionDebug(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[10];
+    string argument[40];
 
     /// create a idx
     int idx = 0;
@@ -4581,7 +4609,7 @@ int ExistenceClient::ConsoleActionCharacter(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[10];
+    string argument[40];
 
     /// create a idx
     int idx = 0;
@@ -4627,7 +4655,7 @@ int ExistenceClient::ConsoleActionRenderer(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[10];
+    string argument[40];
 
     /// create a idx
     int idx = 0;
@@ -4678,7 +4706,7 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
     Node * WorldObjectNode = scene_-> CreateChild("WorldBuildNode");
     WorldBuild * WorldBuildObjects = WorldObjectNode  -> CreateComponent<WorldBuild>();
 
-    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
     Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
     /// Initialize
@@ -4705,27 +4733,27 @@ int ExistenceClient::GenerateSceneUpdateEnvironment(terrain_rule terrainrule)
     /// Get skybox. The Skybox component is used like StaticModel, but it will be always located at the camera, giving the
     /// illusion of the box planes being far away. Use just the ordinary Box model and a suitable material, whose shader will
     /// generate the necessary 3D texture coordinates for cube mapping
-    Node* skyNode = scene_->GetChild("Sky",true);
+    Node* skyNode = scene_->GetChild("GeneratedSkybox_Skybox1",true);
     Skybox* skybox = skyNode->GetComponent<Skybox>();
 
     /// Get a Zone component for ambient lighting & fog control
-    Node* zoneNode = scene_->GetChild("Zone",true);
+    Node* zoneNode = scene_->GetChild("GeneratedZone_Zone1",true);
     Zone* zone = zoneNode->GetComponent<Zone>();
 
     /// Get a directional light to the world. Enable cascaded shadows on it
-    Node* lightNode1 = scene_->GetChild("DirectionalLight1",true);
+    Node* lightNode1 = scene_->GetChild("GeneratedLight_Light1",true);
     Light* light1 = lightNode1->GetComponent<Light>();
 
     /// Get a directional light to the world. Enable cascaded shadows on it
-    Node* lightNode2 = scene_->GetChild("DirectionalLight2",true);
+    Node* lightNode2 = scene_->GetChild("GeneratedLight_Light2",true);
     Light* light2 = lightNode2->GetComponent<Light>();
 
     /// Get a directional light to the world. Enable cascaded shadows on it
-    Node* lightNode3 = scene_->GetChild("DirectionalLight3",true);
+    Node* lightNode3 = scene_->GetChild("GeneratedLight_Light3",true);
     Light* light3 = lightNode3->GetComponent<Light>();
 
     /// Generate Terrain
-    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
     Terrain* terrain = terrainNode->GetComponent<Terrain>();
 
     /// Change texture
@@ -4782,6 +4810,49 @@ int  ExistenceClient::CreateCursor(void)
 
 }
 
+
+/// Routine for Console Environment related actions
+int ExistenceClient::ConsoleActionBuild(const char * lineinput)
+{
+
+    /// get resources
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+    Manager * manager_ = GetSubsystem<Manager>();
+
+    /// string string leaving something comparable
+    string argumentsstring = lineinput;
+    string argument[40];
+
+    /// create a idx
+    int idx = 0;
+
+    /// transfer to lowercase
+    std::transform(argumentsstring.begin(), argumentsstring.end(), argumentsstring.begin(), ::tolower);
+
+    /// copy string to stream
+    stringstream ssin(argumentsstring);
+
+    /// loop through arguments
+    while (ssin.good() && idx < 10)
+    {
+        ssin >> argument[idx];
+        ++idx;
+    }
+
+    /// parameters for debug related command
+    if(argument[1]=="addobject")
+    {
+        /// Call the manager
+        bool result=manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str());
+    }
+
+
+    return 1;
+}
 
 
 

@@ -104,7 +104,7 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
 
     /// Get scene and terrain node
     Scene * scene_ = this -> GetScene();
-    Node* terrainNode = scene_->GetChild("Terrain",true);
+    Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
     Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
     /// Get terrain size
@@ -179,7 +179,8 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
     /// initialize rule on seed
     RandomRule.SetRandomSeed(terrainrules.creationtime+2);
 
-    cout << "\r\nWorldBuild Seed" << terrainrules.creationtime+2<<endl;
+    //Debug
+    //cout << "\r\nWorldBuild Seed" << terrainrules.creationtime+2<<endl;
     switch (terrainrules.worldtype)
     {
         /// world type terrain
@@ -779,9 +780,12 @@ int WorldBuild::CreateObjectsAlongPath(int objecttypes, float worldsize_x, float
                     }
                 default:
                     /// Do nothing
+                    return 1;
                     break;
                 }
 
+                /// Add name
+                ObjectStaticNode->SetName("GeneratedAsset_Object");
 
                 /// Create Nodes and COmponents
                 ObjectStaticModelBase->SetCastShadows(true);
@@ -902,6 +906,8 @@ int WorldBuild::GenerateGrass2(float worldsize_x, float worldsize_y, Image * ter
 
         Node* GrassInitialNode = scene_->CreateChild("GrassBillboardSetNode");
         GrassInitialNode->SetPosition(Vector3(InitialrandomSpotx,0.0f,InitialrandomSpotz));
+        GrassInitialNode->SetName("GeneratedAsset_GrassBillNode");
+
         BillboardSet* billboardObject = GrassInitialNode->CreateComponent<BillboardSet>();
         billboardObject->SetNumBillboards(NumberOfPlantingsGrowth);
 

@@ -155,6 +155,7 @@ private:
     int ConsoleActionDebug(const char * lineinput);
     int ConsoleActionCharacter(const char * lineinput);
     int ConsoleActionRenderer(const char * lineinput);
+    int ConsoleActionBuild(const char * lineinput);
 
     void GenerateScene(terrain_rule terrainrule);
     int GenerateSceneBuildWorld(terrain_rule terrainrule);

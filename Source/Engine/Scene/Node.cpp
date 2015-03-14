@@ -596,15 +596,15 @@ void Node::AddChild(Node* node, unsigned index)
             {
                 // Otherwise do not remove from the scene during reparenting, just send the necessary change event
                 using namespace NodeRemoved;
-    
+
                 VariantMap& eventData = GetEventDataMap();
                 eventData[P_SCENE] = scene_;
                 eventData[P_PARENT] = oldParent;
                 eventData[P_NODE] = node;
-                
+
                 scene_->SendEvent(E_NODEREMOVED, eventData);
             }
-            
+
             oldParent->children_.Remove(nodeShared);
         }
     }
@@ -710,7 +710,7 @@ Component* Node::CloneComponent(Component* component, unsigned id)
         LOGERROR("Null source component given for CloneComponent");
         return 0;
     }
-    
+
     return CloneComponent(component, component->GetID() < FIRST_LOCAL_ID ? REPLICATED : LOCAL, id);
 }
 
@@ -731,7 +731,7 @@ Component* Node::CloneComponent(Component* component, CreateMode mode, unsigned 
 
     const Vector<AttributeInfo>* compAttributes = component->GetAttributes();
     const Vector<AttributeInfo>* cloneAttributes = cloneComponent->GetAttributes();
-    
+
     if (compAttributes)
     {
         for (unsigned i = 0; i < compAttributes->Size() && i < cloneAttributes->Size(); ++i)
@@ -749,7 +749,7 @@ Component* Node::CloneComponent(Component* component, CreateMode mode, unsigned 
         }
         cloneComponent->ApplyAttributes();
     }
-    
+
     return cloneComponent;
 }
 
@@ -1187,7 +1187,7 @@ bool Node::Load(Deserializer& source, SceneResolver& resolver, bool readChildren
         unsigned compID = compBuffer.ReadUInt();
 
         Component* newComponent = SafeCreateComponent(String::EMPTY, compType,
-            (mode == REPLICATED && compID < FIRST_LOCAL_ID) ? REPLICATED : LOCAL, rewriteIDs ? 0 : compID);
+                                  (mode == REPLICATED && compID < FIRST_LOCAL_ID) ? REPLICATED : LOCAL, rewriteIDs ? 0 : compID);
         if (newComponent)
         {
             resolver.AddComponent(compID, newComponent);
@@ -1204,7 +1204,7 @@ bool Node::Load(Deserializer& source, SceneResolver& resolver, bool readChildren
     {
         unsigned nodeID = source.ReadUInt();
         Node* newNode = CreateChild(rewriteIDs ? 0 : nodeID, (mode == REPLICATED && nodeID < FIRST_LOCAL_ID) ? REPLICATED :
-            LOCAL);
+                                    LOCAL);
         resolver.AddNode(nodeID, newNode);
         if (!newNode->Load(source, resolver, readChildren, rewriteIDs, mode))
             return false;
@@ -1228,7 +1228,7 @@ bool Node::LoadXML(const XMLElement& source, SceneResolver& resolver, bool readC
         String typeName = compElem.GetAttribute("type");
         unsigned compID = compElem.GetInt("id");
         Component* newComponent = SafeCreateComponent(typeName, StringHash(typeName),
-            (mode == REPLICATED && compID < FIRST_LOCAL_ID) ? REPLICATED : LOCAL, rewriteIDs ? 0 : compID);
+                                  (mode == REPLICATED && compID < FIRST_LOCAL_ID) ? REPLICATED : LOCAL, rewriteIDs ? 0 : compID);
         if (newComponent)
         {
             resolver.AddComponent(compID, newComponent);
@@ -1247,7 +1247,7 @@ bool Node::LoadXML(const XMLElement& source, SceneResolver& resolver, bool readC
     {
         unsigned nodeID = childElem.GetInt("id");
         Node* newNode = CreateChild(rewriteIDs ? 0 : nodeID, (mode == REPLICATED && nodeID < FIRST_LOCAL_ID) ? REPLICATED :
-            LOCAL);
+                                    LOCAL);
         resolver.AddNode(nodeID, newNode);
         if (!newNode->LoadXML(childElem, resolver, readChildren, rewriteIDs, mode))
             return false;
@@ -1315,8 +1315,8 @@ void Node::PrepareNetworkUpdate()
 
             // Mark the attribute dirty in all replication states that are tracking this node
             for (PODVector<ReplicationState*>::Iterator j = networkState_->replicationStates_.Begin(); j !=
-                networkState_->replicationStates_.End();
-                ++j)
+                    networkState_->replicationStates_.End();
+                    ++j)
             {
                 NodeReplicationState* nodeState = static_cast<NodeReplicationState*>(*j);
                 nodeState->dirtyAttributes_.Set(i);
@@ -1341,7 +1341,7 @@ void Node::PrepareNetworkUpdate()
 
             // Mark the var dirty in all replication states that are tracking this node
             for (PODVector<ReplicationState*>::Iterator j = networkState_->replicationStates_.Begin(); j !=
-                networkState_->replicationStates_.End(); ++j)
+                    networkState_->replicationStates_.End(); ++j)
             {
                 NodeReplicationState* nodeState = static_cast<NodeReplicationState*>(*j);
                 nodeState->dirtyVars_.Insert(i->first_);
@@ -1378,7 +1378,7 @@ void Node::MarkReplicationDirty()
     if (networkState_)
     {
         for (PODVector<ReplicationState*>::Iterator j = networkState_->replicationStates_.Begin(); j !=
-            networkState_->replicationStates_.End(); ++j)
+                networkState_->replicationStates_.End(); ++j)
         {
             NodeReplicationState* nodeState = static_cast<NodeReplicationState*>(*j);
             if (!nodeState->markedDirty_)
@@ -1520,7 +1520,7 @@ void Node::SetObjectAttributeAnimation(const String& name, ValueAnimation* attri
                 return;
             }
         }
-        
+
         if (i == names.Size() - 1)
         {
             node->SetAttributeAnimation(names.Back(), attributeAnimation, wrapMode, speed);
@@ -1573,7 +1573,7 @@ void Node::SetEnabled(bool enable, bool recursive, bool storeSelf)
 
     if (storeSelf)
         enabledPrev_ = enable;
-    
+
     if (enable != enabled_)
     {
         enabled_ = enable;
@@ -1673,7 +1673,7 @@ void Node::RemoveChild(Vector<SharedPtr<Node> >::Iterator i)
 {
     // Send change event. Do not send when already being destroyed
     Node* child = *i;
-    
+
     if (Refs() > 0 && scene_)
     {
         using namespace NodeRemoved;
@@ -1682,7 +1682,7 @@ void Node::RemoveChild(Vector<SharedPtr<Node> >::Iterator i)
         eventData[P_SCENE] = scene_;
         eventData[P_PARENT] = this;
         eventData[P_NODE] = child;
-        
+
         scene_->SendEvent(E_NODEREMOVED, eventData);
     }
 
@@ -1755,7 +1755,7 @@ Node* Node::CloneRecursive(Node* parent, SceneResolver& resolver, CreateMode mod
     {
         Component* component = *i;
         Component* cloneComponent = cloneNode->CloneComponent(component,
-            (mode == REPLICATED && component->GetID() < FIRST_LOCAL_ID) ? REPLICATED : LOCAL, 0);
+                                    (mode == REPLICATED && component->GetID() < FIRST_LOCAL_ID) ? REPLICATED : LOCAL, 0);
         if (cloneComponent)
             resolver.AddComponent(component->GetID(), cloneComponent);
     }
