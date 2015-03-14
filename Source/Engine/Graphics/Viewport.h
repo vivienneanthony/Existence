@@ -41,7 +41,7 @@ class View;
 class URHO3D_API Viewport : public Object
 {
     OBJECT(Viewport);
-    
+
 public:
     /// Construct with defaults.
     Viewport(Context* context);
@@ -51,7 +51,7 @@ public:
     Viewport(Context* context, Scene* scene, Camera* camera, const IntRect& rect, RenderPath* renderPath = 0);
     /// Destruct.
     ~Viewport();
-    
+
     /// Set scene.
     void SetScene(Scene* scene);
     /// Set camera.
@@ -64,7 +64,7 @@ public:
     void SetRenderPath(XMLFile* file);
     /// Set whether to render debug geometry. Default true.
     void SetDrawDebug(bool enable);
-    
+
     /// Return scene.
     Scene* GetScene() const;
     /// Return camera.
@@ -83,10 +83,10 @@ public:
     IntVector2 WorldToScreenPoint(const Vector3& worldPos) const;
     // Convert screen coordinates and depth to a world space point.
     Vector3 ScreenToWorldPoint(int x, int y, float depth) const;
-    
+
     /// Allocate the view structure. Called by Renderer.
     void AllocateView();
-    
+
 private:
     /// Scene pointer.
     WeakPtr<Scene> scene_;

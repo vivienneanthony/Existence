@@ -27888,4 +27888,18 @@
 		<gender gender="89" />
 		<personalitytrait personalitytrait="0" />
 	</character>
+	<character character="character">
+		<firstname firstname="Roe" />
+		<middlename middlename="Jesonul" />
+		<lastname lastname="Jesoeelys" />
+		<reputation1 reputation1="0" />
+		<reputation2 reputation2="0" />
+		<reputation3 reputation3="0" />
+		<reputation4 reputation4="0" />
+		<experience experience="0" />
+		<alienrace alienrace="1" />
+		<alienalliancealigned alienalliancealigned="false" />
+		<gender gender="10" />
+		<personalitytrait personalitytrait="0" />
+	</character>
 </characters>

@@ -1,5 +1,7 @@
 /// Urho Related Header Files
 #include "CoreEvents.h"
+#include  "Context.h"
+#include "Object.h"
 #include "Engine.h"
 #include "Font.h"
 #include "Input.h"
@@ -88,6 +90,12 @@ Manager::Manager(Context* context) :
 Manager::~Manager()
 {
     //dtor
+}
+
+
+void Manager::RegisterNewSubsystem(Context* context)
+{
+    context -> RegisterSubsystem(new Manager(context));
 }
 
 int Manager::SetScene(Scene* scene)

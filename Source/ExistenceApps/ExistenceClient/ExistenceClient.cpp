@@ -120,6 +120,8 @@ ExistenceClient::ExistenceClient(Context* context) :
     GameObject::RegisterObject(context);
     WorldBuild::RegisterObject(context);
     ProceduralTerrain::RegisterObject(context);
+    Manager::RegisterNewSubsystem(context);
+
 }
 
 vector<string> split(const string& s, const string& delim, const bool keep_empty = true)

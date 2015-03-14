@@ -31,11 +31,14 @@ class URHO3D_API Manager : public Object
     OBJECT(Manager);
 public:
     Manager(Context* context);
+    void RegisterNewSubsystem(Context* context);
+
+    virtual ~Manager();
 
     int SetScene(Scene* scene);
     int AddObject(int type, const char * name, float x, float y, float z, const char *filename);
 
-    virtual ~Manager();
+
 protected:
 private:
   /// Scene pointer.
