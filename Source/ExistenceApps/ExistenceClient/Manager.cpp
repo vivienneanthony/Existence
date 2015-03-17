@@ -1,5 +1,6 @@
 /// Urho Related Header Files
 #include "CoreEvents.h"
+#include <Serializable.h>
 #include  "Context.h"
 #include "Object.h"
 #include "Engine.h"
@@ -9,6 +10,7 @@
 #include "Text.h"
 #include "UI.h"
 #include "Scene.h"
+#include "Component.h"
 #include "StaticModel.h"
 #include "Octree.h"
 #include "Model.h"
@@ -52,6 +54,8 @@
 #include "RenderPath.h"
 #include "Color.h"
 #include "Graphics.h"
+#include "Str.h"
+#include "Node.h"
 
 ///C/C++ related header files
 #include <string>
@@ -81,10 +85,13 @@
 
 #include "DebugNew.h"
 
+using namespace std;
+
+
 Manager::Manager(Context* context) :
     Object(context)
 {
-    scene_=NULL;
+    scene_ = NULL;
 }
 
 Manager::~Manager()
@@ -92,28 +99,39 @@ Manager::~Manager()
     //dtor
 }
 
-
+/// Register Subsystem
 void Manager::RegisterNewSubsystem(Context* context)
 {
     context -> RegisterSubsystem(new Manager(context));
+
+
 }
 
-int Manager::SetScene(Scene* scene)
+/// Set Scene
+void Manager::SetScene(Scene *scene)
 {
-    scene_=scene;
+    /// point
+    scene_ = scene;
+
 }
 
+/// Add Object
 int Manager::AddObject(int type, const char * name, float x, float y, float z, const char *filename)
 {
-    /// Get Needed SubSystems
+    int test = scene_->GetNumChildren();
+
+    cout << test << endl;
+    /*
+    //// Get Needed SubSystems
     Renderer* renderer = GetSubsystem<Renderer>();
     Graphics* graphics = GetSubsystem<Graphics>();
 
-    /// if no scene return 0
+    /// Check if a scene exist
     if(!scene_)
     {
         return 0;
     }
+
 
     /// Get scene and terrain node
     Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
@@ -125,6 +143,163 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
     cout << terrainsize.ToString().CString() <<endl;
     cout << "test" << endl;
 
-    return 1;
+    return 1;*/
 }
 
+
+/// Main Save scene
+int Manager::SaveScene(int mode)
+{
+
+    /// Check if scene exist
+
+    if(scene_==NULL)
+    {
+        return 1;
+    }
+
+
+    String savesceneexport;
+
+    ResourceCache * cache = GetSubsystem<ResourceCache>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+    savesceneexport.Append(filesystem->GetProgramDir().CString());
+    savesceneexport.Append("CoreData/");
+    savesceneexport.Append("testing.xml");
+
+    File saveFile(context_, savesceneexport.CString(), FILE_WRITE);
+
+    /// Check if the account file information exist
+    if(!filesystem->FileExists(savesceneexport.CString()))
+    {
+        //cout << "\r\nAccount file ("<< savesceneexport.CString() << ") does not exist.";
+    }
+
+    XMLFile * savesceneexportxml= new XMLFile(context_);
+
+    XMLElement configElem = savesceneexportxml-> CreateRoot("node");
+
+    /// point
+    unsigned int childrencount=scene_->GetNumChildren();
+    cout <<  childrencount << endl;
+
+    children_ = scene_->GetChildren();
+
+    /// loop each child
+    for (Vector<SharedPtr<Node> >::Iterator i = children_.Begin(); i != children_.End(); ++i)
+    {
+        /// Create a new child instance
+        Node* childnode = *i;
+
+        /// Get node infomration, check for children, and check components
+        if((childnode->GetName().Find("Generated",0,false)==String::NPOS)
+            &&(childnode->GetName().Find("Character",0,false)==String::NPOS)
+            &&(childnode->GetName().Find("Camera",0,false)==String::NPOS))
+        {
+            XMLElement NodeElement = configElem. CreateChild ("node");
+
+            // set virtual const
+            const Vector<AttributeInfo>* attributes = childnode->GetAttributes();
+
+            /// loop through attributes
+            for (Vector<AttributeInfo>::ConstIterator i = attributes->Begin(); i != attributes->End(); ++i)
+            {
+                XMLElement AttributeElement = NodeElement. CreateChild ("attribute");
+                AttributeElement.SetAttribute ("name", i -> name_);
+                AttributeElement.SetAttribute ("value", i -> defaultValue_.ToString());
+
+            }
+
+            if(childnode->GetNumChildren())
+            {
+                SaveSceneNode(childnode);
+            }
+            else
+            {
+                SaveSceneNodeComponents(childnode);
+            }
+
+        }
+    }
+      savesceneexportxml->Save(saveFile);
+
+}
+
+/// Recursive
+int Manager::SaveSceneNode(Node * node)
+{
+    /// Define a temporary pointer
+    Vector<SharedPtr<Node> > subchildren_;
+
+    /// Get children node
+    subchildren_ = node->GetChildren();
+
+    for (Vector<SharedPtr<Node> >::Iterator i = subchildren_.Begin(); i != subchildren_.End(); ++i)
+    {
+        /// Create a new child instance
+        Node* childnode = *i;
+
+        /// Get node infomration, check for children, and check components
+        if(childnode->GetName().Find("Generated",0,false)==String::NPOS)
+        {
+            ///cout << "SubNode :" << childnode->GetName().CString() <<endl;
+            XMLElement NodeElement = configElem. CreateChild ("node");
+
+            if(childnode->GetNumChildren())
+            {
+                SaveSceneNode(childnode);
+            }
+            else
+            {
+                SaveSceneNodeComponents(childnode);
+            }
+        }
+    }
+}
+int Manager::SaveSceneNodeComponents(Node *node)
+{
+    /// Define temporary pointer for components
+    Vector< SharedPtr< Component > > 	subcomponents_;
+
+    /// If node has no components
+    if(node->	GetNumComponents ()==0)
+    {
+        cout << " Node has no components" << endl;
+
+        return 1;
+    }
+
+    /// Get children node
+    subcomponents_ = node->GetComponents();
+
+    /// Loop through components
+    for (Vector<SharedPtr<Component> >::Iterator i = subcomponents_.Begin(); i != subcomponents_.End(); ++i)
+    {
+        Component * subcomponent = *i;
+
+      	XMLElement componentElement = configElem.CreateChild ("component");
+      	componentElement.SetAttribute("Type", subcomponent->GetTypeName());
+
+        /// READ EACH COMPONENT AND GET ATTRIBUTES
+        if(subcomponent->GetNumAttributes ())
+        {
+            /// set virtual const
+            const Vector<AttributeInfo>* attributes = subcomponent->GetAttributes();
+
+            /// loop through attributes
+            for (Vector<AttributeInfo>::ConstIterator i = attributes->Begin(); i != attributes->End(); ++i)
+            {
+                /// output info
+                ///cout << i -> name_.CString() << " type " << i -> defaultValue_. GetTypeName ().CString() <<" value " << i -> defaultValue_.ToString().CString()<< endl;
+                XMLElement AttributeElement = configElem. CreateChild ("attribute");
+                AttributeElement.SetAttribute ("name", i -> name_);
+                AttributeElement.SetAttribute ("value", i -> defaultValue_.ToString());
+            }
+
+        }
+    }
+
+
+    return 1;
+}

@@ -1,0 +1,4750 @@
+[Tue Mar 17 02:08:32 2015] INFO: Opened log file /home/vivienne/.local/share/urho3d/logs/ExistenceClient.log
+[Tue Mar 17 02:08:32 2015] INFO: Created 3 worker threads
+[Tue Mar 17 02:08:32 2015] INFO: Added resource path /media/home2/vivienne/Existence/Bin/Data/
+[Tue Mar 17 02:08:32 2015] INFO: Added resource path /media/home2/vivienne/Existence/Bin/CoreData/
+[Tue Mar 17 02:08:32 2015] INFO: Set screen mode 1440x900 fullscreen
+[Tue Mar 17 02:08:32 2015] INFO: Initialized input
+[Tue Mar 17 02:08:32 2015] INFO: Initialized user interface
+[Tue Mar 17 02:08:32 2015] INFO: Initialized renderer
+[Tue Mar 17 02:08:32 2015] INFO: Set audio mode 44100 Hz stereo interpolated
+[Tue Mar 17 02:08:32 2015] INFO: Initialized engine
+[Tue Mar 17 02:08:32 2015] INFO: Added resource path /media/home2/vivienne/Existence/Bin/Resources/
+[Tue Mar 17 02:08:36 2015] INFO: Loading scene from /media/home2/vivienne/Existence/Bin/Resources/Scenes/charactercreationroom1.xml
+[Tue Mar 17 02:08:36 2015] WARNING: Forcing top alignment because parent element has vertical layout
+Cursor Exist
+
+205
+
+
+Node :Camera
+Camera
+Is Enabled type Bool valuetrue
+Near Clip type Float value0.1
+Far Clip type Float value1000
+FOV type Float value45
+Aspect Ratio type Float value1
+Fill Mode type Int value0
+Auto Aspect Ratio type Bool valuetrue
+Orthographic type Bool valuefalse
+Orthographic Size type Float value20
+Zoom type Float value1
+LOD Bias type Float value1
+View Mask type Int value-1
+View Override Flags type Int value0
+Projection Offset type Vector2 value0 0
+Reflection Plane type Vector4 value0 1 0 0
+Clip Plane type Vector4 value0 1 0 0
+Use Reflection type Bool valuefalse
+Use Clipping type Bool valuefalse
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Plane
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+RigidBody
+Is Enabled type Bool valuetrue
+Physics Rotation type Quaternion value1 0 0 0
+Physics Position type Vector3 value0 0 0
+Mass type Float value0
+Friction type Float value0.5
+Anisotropic Friction type Vector3 value1 1 1
+Rolling Friction type Float value0
+Restitution type Float value0
+Linear Velocity type Vector3 value0 0 0
+Angular Velocity type Vector3 value0 0 0
+Linear Factor type Vector3 value1 1 1
+Angular Factor type Vector3 value1 1 1
+Linear Damping type Float value0
+Angular Damping type Float value0
+Linear Rest Threshold type Float value0.8
+Angular Rest Threshold type Float value1
+Collision Layer type Int value1
+Collision Mask type Int value-1
+Contact Threshold type Float value1e+18
+CCD Radius type Float value0
+CCD Motion Threshold type Float value0
+Network Angular Velocity type Buffer value
+Collision Event Mode type Int value1
+Use Gravity type Bool valuetrue
+Is Kinematic type Bool valuefalse
+Is Trigger type Bool valuefalse
+Gravity Override type Vector3 value0 0 0
+CollisionShape
+Is Enabled type Bool valuetrue
+Shape Type type Int value0
+Size type Vector3 value1 1 1
+Offset Position type Vector3 value0 0 0
+Offset Rotation type Quaternion value1 0 0 0
+Model type ResourceRef value
+LOD Level type Int value0
+Collision Margin type Float value0.04
+CustomGeometry NodeID type Int value0
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :DirectionalLight
+Light
+Is Enabled type Bool valuetrue
+Light Type type Int value2
+Color type Color value1 1 1 1
+Specular Intensity type Float value1
+Brightness Multiplier type Float value1
+Range type Float value10
+Spot FOV type Float value30
+Spot Aspect Ratio type Float value1
+Attenuation Texture type ResourceRef value
+Light Shape Texture type ResourceRef value
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Per Vertex type Bool valuefalse
+Draw Distance type Float value0
+Fade Distance type Float value0
+Shadow Distance type Float value0
+Shadow Fade Distance type Float value0
+Shadow Intensity type Float value0
+Shadow Resolution type Float value1
+Focus To Scene type Bool valuetrue
+Non-uniform View type Bool valuetrue
+Auto-Reduce Size type Bool valuetrue
+CSM Splits type Vector4 value1000 0 0 0
+CSM Fade Start type Float value0.8
+CSM Bias Auto Adjust type Float value1
+View Size Quantize type Float value0.5
+View Size Minimum type Float value3
+Depth Constant Bias type Float value0.0002
+Depth Slope Bias type Float value0.5
+Near/Farclip Ratio type Float value0.002
+View Mask type Int value-1
+Light Mask type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Mushroom
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+GameObject
+Game Lifetime type Float value-1
+
+
+Node :Character
+SubNode :hips
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :thigh.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :shin.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :foot.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :toe.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :thigh.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :shin.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :foot.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :toe.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :spine
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :chest
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :clavicle.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :upper_arm.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :forearm.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :hand.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :thumb.02.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :thumb.03.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :f_ring.01.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :f_index.01.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :clavicle.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :upper_arm.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :forearm.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :hand.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :thumb.02.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :thumb.03.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :f_ring.01.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :f_index.01.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :neck
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :head
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+SubNode :jaw
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :eye.R
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :eye.L
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+ Node has no components
+SubNode :CameraFirstPerson
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+Camera
+Is Enabled type Bool valuetrue
+Near Clip type Float value0.1
+Far Clip type Float value1000
+FOV type Float value45
+Aspect Ratio type Float value1
+Fill Mode type Int value0
+Auto Aspect Ratio type Bool valuetrue
+Orthographic type Bool valuefalse
+Orthographic Size type Float value20
+Zoom type Float value1
+LOD Bias type Float value1
+View Mask type Int value-1
+View Override Flags type Int value0
+Projection Offset type Vector2 value0 0
+Reflection Plane type Vector4 value0 1 0 0
+Clip Plane type Vector4 value0 1 0 0
+Use Reflection type Bool valuefalse
+Use Clipping type Bool valuefalse
+SubNode :CrossBox
+Is Enabled type Bool valuetrue
+Name type String value
+Position type Vector3 value0 0 0
+Rotation type Quaternion value1 0 0 0
+Scale type Vector3 value1 1 1
+Variables type VariantMap value
+Network Position type Vector3 value0 0 0
+Network Rotation type Buffer value
+Network Parent Node type Buffer value
+StaticModel
+Is Enabled type Bool valuetrue
+Model type ResourceRef value
+Material type ResourceRefList value
+Is Occluder type Bool valuefalse
+Can Be Occluded type Bool valuetrue
+Cast Shadows type Bool valuefalse
+Draw Distance type Float value0
+Shadow Distance type Float value0
+LOD Bias type Float value1
+Max Lights type Int value0
+View Mask type Int value-1
+Light Mask type Int value-1
+Shadow Mask type Int value-1
+Zone Mask type Int value-1
+Occlusion LOD Level type Int value-1
+
+
+Node :Camera
+Camera
+Is Enabled type Bool valuetrue
+Near Clip type Float value0.1
+Far Clip type Float value1000
+FOV type Float value45
+Aspect Ratio type Float value1
+Fill Mode type Int value0
+Auto Aspect Ratio type Bool valuetrue
+Orthographic type Bool valuefalse
+Orthographic Size type Float value20
+Zoom type Float value1
+LOD Bias type Float value1
+View Mask type Int value-1
+View Override Flags type Int value0
+Projection Offset type Vector2 value0 0
+Reflection Plane type Vector4 value0 1 0 0
+Clip Plane type Vector4 value0 1 0 0
+Use Reflection type Bool valuefalse
+Use Clipping type Bool valuefalse
+GameObject
+Game Lifetime type Float value-1

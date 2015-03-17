@@ -279,6 +279,8 @@ void ExistenceClient::Start()
     ResourceCache* cache = GetSubsystem<ResourceCache>();
     XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
     FileSystem * filesystem = GetSubsystem<FileSystem>();
+    Manager * manager_ = GetSubsystem<Manager>();
+
 
     ///Manager* manager = GetSubsystem<Manager>();
 
@@ -329,8 +331,6 @@ void ExistenceClient::Start()
 
     /// Star+t Login UI
     LoginUI(accountexist);
-
-
 
 
     /// Finally subscribe to the update event. Note that by subscribing events at this point we have already missed some events
@@ -4845,11 +4845,19 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
         ++idx;
     }
 
-    /// parameters for debug related command
-    if(argument[1]=="addobject")
+    if(argument[1]=="setscene")
     {
-        /// Call the manager
-        bool result=manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str());
+
+        manager_->SetScene(scene_);
+    }
+
+    /// parameters for debug related command
+    if(argument[1]=="savescene")
+    {
+
+            //bool result=manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str());
+            manager_->SaveScene(1);
+
     }
 
 

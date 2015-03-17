@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "Ptr.h"
+#include <vector>
 
 namespace Urho3D
 {
@@ -31,18 +32,31 @@ class URHO3D_API Manager : public Object
     OBJECT(Manager);
 public:
     Manager(Context* context);
-    void RegisterNewSubsystem(Context* context);
+    static void RegisterNewSubsystem(Context* context);
 
     virtual ~Manager();
 
-    int SetScene(Scene* scene);
+    void SetScene(Scene * scene);
+
     int AddObject(int type, const char * name, float x, float y, float z, const char *filename);
+
+    int SaveScene(int mode);
 
 
 protected:
+
 private:
-  /// Scene pointer.
-    WeakPtr<Scene> scene_;
+    /// Node related functions
+    int SaveSceneNode(Node * node);
+    int SaveSceneNodeComponents(Node *node);
+
+    /// Weak Pointer children
+    Vector<SharedPtr<Node> > children_;
+
+     /// Scene.
+    Scene * scene_;
+      XMLFile * savesceneexportxml;
+      XMLElement configElem;
 };
 
 #endif // MANAGER_H
