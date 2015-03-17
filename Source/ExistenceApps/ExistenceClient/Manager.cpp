@@ -182,7 +182,9 @@ int Manager::SaveScene(int mode)
 
     /// point
     unsigned int childrencount=scene_->GetNumChildren();
-    cout <<  childrencount << endl;
+
+    /// Weak Pointer children
+    Vector<SharedPtr<Node> > children_;
 
     children_ = scene_->GetChildren();
 
@@ -193,41 +195,40 @@ int Manager::SaveScene(int mode)
         Node* childnode = *i;
 
         /// Get node infomration, check for children, and check components
-        if((childnode->GetName().Find("Generated",0,false)==String::NPOS)
-            &&(childnode->GetName().Find("Character",0,false)==String::NPOS)
-            &&(childnode->GetName().Find("Camera",0,false)==String::NPOS))
+         if(childnode->GetName().Find("Generated",0,false)==String::NPOS)
+         {
+        XMLElement NodeElement = configElem. CreateChild ("node");
+
+        const Vector<AttributeInfo>* attributes = childnode->GetAttributes();
+
+        /// loop through attributes
+        for (Vector<AttributeInfo>::ConstIterator j = attributes->Begin(); j != attributes->End(); ++j)
         {
-            XMLElement NodeElement = configElem. CreateChild ("node");
+            XMLElement AttributeElement;
 
-            // set virtual const
-            const Vector<AttributeInfo>* attributes = childnode->GetAttributes();
+            AttributeElement = NodeElement. CreateChild ("attribute");
+            AttributeElement.SetAttribute ("name", j -> name_);
+            AttributeElement.SetAttribute ("value", j -> defaultValue_.ToString());
 
-            /// loop through attributes
-            for (Vector<AttributeInfo>::ConstIterator i = attributes->Begin(); i != attributes->End(); ++i)
-            {
-                XMLElement AttributeElement = NodeElement. CreateChild ("attribute");
-                AttributeElement.SetAttribute ("name", i -> name_);
-                AttributeElement.SetAttribute ("value", i -> defaultValue_.ToString());
+        }
 
-            }
-
-            if(childnode->GetNumChildren())
-            {
-                SaveSceneNode(childnode);
-            }
-            else
-            {
-                SaveSceneNodeComponents(childnode);
-            }
+        if(childnode->GetNumChildren())
+        {
+            SaveSceneNode(childnode, NodeElement);
+        }
+        else
+        {
+            SaveSceneNodeComponents(childnode,NodeElement);
+        }
 
         }
     }
-      savesceneexportxml->Save(saveFile);
+    savesceneexportxml->Save(saveFile);
 
 }
 
 /// Recursive
-int Manager::SaveSceneNode(Node * node)
+int Manager::SaveSceneNode(Node * node, XMLElement parentelement)
 {
     /// Define a temporary pointer
     Vector<SharedPtr<Node> > subchildren_;
@@ -244,20 +245,20 @@ int Manager::SaveSceneNode(Node * node)
         if(childnode->GetName().Find("Generated",0,false)==String::NPOS)
         {
             ///cout << "SubNode :" << childnode->GetName().CString() <<endl;
-            XMLElement NodeElement = configElem. CreateChild ("node");
+            XMLElement NodeElement = parentelement. CreateChild ("node");
 
             if(childnode->GetNumChildren())
             {
-                SaveSceneNode(childnode);
+                SaveSceneNode(childnode, parentelement);
             }
             else
             {
-                SaveSceneNodeComponents(childnode);
+                SaveSceneNodeComponents(childnode,parentelement);
             }
         }
     }
 }
-int Manager::SaveSceneNodeComponents(Node *node)
+int Manager::SaveSceneNodeComponents(Node *node, XMLElement parentelement)
 {
     /// Define temporary pointer for components
     Vector< SharedPtr< Component > > 	subcomponents_;
@@ -278,8 +279,8 @@ int Manager::SaveSceneNodeComponents(Node *node)
     {
         Component * subcomponent = *i;
 
-      	XMLElement componentElement = configElem.CreateChild ("component");
-      	componentElement.SetAttribute("Type", subcomponent->GetTypeName());
+        XMLElement componentElement = parentelement.CreateChild ("component");
+        componentElement.SetAttribute("Type", subcomponent->GetTypeName());
 
         /// READ EACH COMPONENT AND GET ATTRIBUTES
         if(subcomponent->GetNumAttributes ())
@@ -292,14 +293,13 @@ int Manager::SaveSceneNodeComponents(Node *node)
             {
                 /// output info
                 ///cout << i -> name_.CString() << " type " << i -> defaultValue_. GetTypeName ().CString() <<" value " << i -> defaultValue_.ToString().CString()<< endl;
-                XMLElement AttributeElement = configElem. CreateChild ("attribute");
+                XMLElement AttributeElement =  componentElement. CreateChild ("attribute");
                 AttributeElement.SetAttribute ("name", i -> name_);
                 AttributeElement.SetAttribute ("value", i -> defaultValue_.ToString());
             }
 
         }
     }
-
 
     return 1;
 }

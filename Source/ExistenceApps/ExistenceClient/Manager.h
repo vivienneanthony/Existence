@@ -47,8 +47,8 @@ protected:
 
 private:
     /// Node related functions
-    int SaveSceneNode(Node * node);
-    int SaveSceneNodeComponents(Node *node);
+    int SaveSceneNode(Node * node, XMLElement parentelement);
+    int SaveSceneNodeComponents(Node *node, XMLElement parentelement);
 
     /// Weak Pointer children
     Vector<SharedPtr<Node> > children_;
