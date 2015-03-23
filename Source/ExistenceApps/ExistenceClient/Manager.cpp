@@ -56,6 +56,7 @@
 #include "Graphics.h"
 #include "Str.h"
 #include "Node.h"
+#include <XMLElement.h>
 
 ///C/C++ related header files
 #include <string>
@@ -113,18 +114,33 @@ void Manager::SetScene(Scene *scene)
     /// point
     scene_ = scene;
 
+    /// reserve
+    ManagedNodes.Reserve(1024);
+    ManagedGeneratedNodes.Reserve(1024);
+
+    /// Clear Managed Nodes
+    ManagedNodes.Clear();
+    ManagedGeneratedNodes.Clear();
+
+
+
+}
+
+int Manager::AddGeneratedObject(Node * node)
+{
+    ManagedGeneratedNodes.Push(node);
 }
 
 /// Add Object
-int Manager::AddObject(int type, const char * name, float x, float y, float z, const char *filename)
+int Manager::AddObject(int type, const char * name, float x, float y, float z, const char *filename, bool physics)
 {
-    int test = scene_->GetNumChildren();
-
-    cout << test << endl;
-    /*
-    //// Get Needed SubSystems
+    /// Get Needed SubSystems
     Renderer* renderer = GetSubsystem<Renderer>();
     Graphics* graphics = GetSubsystem<Graphics>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+
+    int result=false;
 
     /// Check if a scene exist
     if(!scene_)
@@ -133,173 +149,350 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
     }
 
 
-    /// Get scene and terrain node
-    Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
-    Terrain * terrain = terrainNode -> GetComponent<Terrain>();
+    String AddObjectFilename;
 
-    Vector3 terrainposition = terrainNode ->GetPosition();
-    IntVector2 terrainsize = terrain->GetNumVertices();
 
-    cout << terrainsize.ToString().CString() <<endl;
-    cout << "test" << endl;
+    /// Switch type for filename
+    switch (type)
+    {
+    case MANAGESTATICMODEL:
+    {
+        /// First Check if .mdl is in the filename
+        if(!string(filename).find(".mdl"))
+        {
+            return 0;
+        }
 
-    return 1;*/
+        /// Create Urho3D equivalent of the filenames
+        AddObjectFilename.Append(filesystem->GetProgramDir().CString());
+
+        AddObjectFilename.Append("Resources/Models/");
+        AddObjectFilename.Append(filename);
+
+        /// If the model does not exist
+        if(!filesystem->FileExists(AddObjectFilename.CString()))
+        {
+            return 0;
+        }
+    }
+
+    break;
+    default:
+        return 0;
+
+
+    }
+
+    /// Switch type
+    switch (type)
+    {
+    case MANAGESTATICMODEL:
+    {
+        /// check if static model exist
+
+        /// create node
+        Node * AddObjectNode = 	scene_ -> CreateChild (String(name));
+
+        /// Setup node in scene
+        AddObjectNode->SetPosition(Vector3(x,y,z));
+        AddObjectNode->SetRotation(Quaternion(0.0f,0.0f,0.0f));
+        AddObjectNode->SetScale(1);
+
+        StaticModel* AddObjectNodeObject = AddObjectNode->CreateComponent<StaticModel>();
+
+        /// Addd Static Model component
+        AddObjectNodeObject->SetModel(cache->GetResource<Model>(AddObjectFilename));
+
+        /// Create material
+        String AddObjectFilenameMaterial;
+        AddObjectFilenameMaterial = AddObjectFilename.Replaced (String(".mdl"), String(".txt"), true);
+
+        AddObjectNodeObject->ApplyMaterialList( AddObjectFilenameMaterial.CString());
+
+        ///AddObjectNodeObject->SetMaterial(cache->GetResource<Material>(AddObjectFilenameMaterial));
+        /// Add Physics
+        if(physics)
+        {
+            /// Create rigidbody, and set non-zero mass so that the body becomes dynamic
+            RigidBody* AddObjectNodeRigid =  AddObjectNode->CreateComponent<RigidBody>();
+            AddObjectNodeRigid->SetCollisionLayer(1);
+
+            AddObjectNodeRigid->SetMass(0);
+
+            /// Get static model and bounding box, calculate offset
+            BoundingBox  AddObjectNodeObjectBounding = AddObjectNodeObject->GetBoundingBox();
+
+            Vector3 BoundBoxCenter = AddObjectNodeObjectBounding.Center();
+
+            /// Set zero angular factor so that physics doesn't turn the character on its own.
+            /// Instead we will control the character yaw manually
+            AddObjectNodeRigid->SetAngularFactor(Vector3::ZERO);
+
+            /// Set the rigidbody to signal collision also when in rest, so that we get ground collisions properly
+            AddObjectNodeRigid->SetCollisionEventMode(COLLISION_ALWAYS);
+
+            /// Set a capsule shape for collision
+            CollisionShape* AddObjectNodeCollisionShape = AddObjectNode->CreateComponent<CollisionShape>();
+
+            /// Set shape collision
+            AddObjectNodeCollisionShape->SetBox(Vector3::ONE);
+            AddObjectNodeCollisionShape->SetPosition(Vector3(BoundBoxCenter));
+            AddObjectNodeCollisionShape->SetLodLevel(1);
+        }
+
+        /// Add a component
+        GameObject * AddObjectNodeGameComponent = AddObjectNode -> CreateComponent<GameObject>();
+
+        AddObjectNodeGameComponent->SetLifetime(-1.0f);
+
+        /// push
+        ManagedNodes.Push(AddObjectNode);
+
+        result=true;
+    }
+    break;
+
+    case MANAGELIGHT:
+    {
+        /// Create a directional light to the world. Enable cascaded shadows on it
+        Node* AddObjectNode = scene_->CreateChild(name);
+        Light* AddObjectNodeLight = AddObjectNode->CreateComponent<Light>();
+        AddObjectNodeLight->SetLightType(LIGHT_DIRECTIONAL);
+        AddObjectNodeLight->SetCastShadows(true);
+        AddObjectNodeLight->SetSpecularIntensity(.3f);
+        AddObjectNodeLight->SetBrightness(.6);
+        AddObjectNodeLight->SetColor(Color(1.0f, 1.0f,.95f));
+
+        /// Setup node in scene
+        AddObjectNode->SetPosition(Vector3(x,y,z));
+        AddObjectNode->SetRotation(Quaternion(0.0f,0.0f,0.0f));
+        AddObjectNode->SetScale(1);
+
+        /// Add a component
+        GameObject * AddObjectNodeGameComponent = AddObjectNode -> CreateComponent<GameObject>();
+
+        AddObjectNodeGameComponent->SetLifetime(-1.0f);
+
+
+        /// Use filename to change type
+        if(filename=="directional")
+        {
+            AddObjectNodeLight->SetLightType(LIGHT_DIRECTIONAL);
+        }
+
+        if(filename=="spot")
+        {
+            AddObjectNodeLight->SetLightType(LIGHT_SPOT);
+        }
+
+        if(filename=="point")
+        {
+            AddObjectNodeLight->SetLightType(LIGHT_POINT);
+        }
+
+
+        /// push
+        ManagedNodes.Push(AddObjectNode);
+    }
+    break;
+
+    default:
+        break;
+    }
+
+    return result;
+}
+
+int Manager::SaveManagedNodes(const char *filename)
+{
+    /// Grab resources
+    ResourceCache * cache = GetSubsystem<ResourceCache>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+    /// Check if scene exist
+    if(scene_==NULL)
+    {
+        return 0;
+    }
+
+    /// Check if Node is empty
+    if (ManagedNodes.Empty())
+    {
+        return 0;
+    }
+
+    /// Force .xml on save
+    if(!string(filename).find(".xml"))
+    {
+        return 0;
+    }
+
+    /// Create String
+    String savesceneexport;
+
+    /// Set directory
+    savesceneexport.Append(filesystem->GetProgramDir().CString());
+    savesceneexport.Append("Resources/ScenesData/");
+    savesceneexport.Append(filename);
+
+    savesceneexport = savesceneexport.Replaced(String(".xml"),String("diff.xml"),true);
+
+    File saveFile(context_, savesceneexport.CString(), FILE_WRITE);
+
+    XMLFile * savesceneexportxml= new XMLFile(context_);
+
+    XMLElement xmfileelement = savesceneexportxml-> CreateRoot("scene");
+
+    /// Loop through components
+    for(Vector<Node *>:: Iterator it = ManagedNodes.Begin(); it != ManagedNodes.End(); ++it)
+    {
+        XMLElement xmfileelementnode = xmfileelement.CreateChild("node");
+        (*it) -> SaveXML(xmfileelementnode);
+    }
+
+    savesceneexportxml->Save(saveFile);
+
+    return 1;
 }
 
 
-/// Main Save scene
-int Manager::SaveScene(int mode)
+int Manager::SaveManagedGeneratedNodes(const char *filename)
 {
+    /// Grab resources
+    ResourceCache * cache = GetSubsystem<ResourceCache>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
 
     /// Check if scene exist
+    if(scene_==NULL)
+    {
+        return 0;
+    }
 
+    /// Check if Node is empty
+    if (ManagedGeneratedNodes.Empty())
+    {
+        return 0;
+    }
+
+    /// Force .xml on save
+    if(!string(filename).find(".xml"))
+    {
+        return 0;
+    }
+
+    /// Create String
+    String savescenegenerateexport;
+
+    /// Set directory
+    savescenegenerateexport.Append(filesystem->GetProgramDir().CString());
+
+    savescenegenerateexport.Append("Resources/ScenesData/");
+
+    savescenegenerateexport.Append(filename);
+
+    savescenegenerateexport = savescenegenerateexport.Replaced(String(".xml"),String("gene.xml"),true);
+
+    File saveFile(context_, savescenegenerateexport.CString(), FILE_WRITE);
+
+    XMLFile * savescenegenerateexportxml= new XMLFile(context_);
+
+    XMLElement xmfileelement = savescenegenerateexportxml-> CreateRoot("scene");
+
+    /// Loop through components
+    for(Vector<Node *>:: Iterator it = ManagedGeneratedNodes.Begin(); it != ManagedGeneratedNodes.End(); ++it)
+    {
+        XMLElement xmfileelementnode = xmfileelement.CreateChild("node");
+        (*it) -> SaveXML(xmfileelementnode);
+    }
+
+    savescenegenerateexportxml->Save(saveFile);
+
+    return 1;
+}
+
+
+/// Load account information from a account file
+int Manager::LoadManagedNodes(const char *filename)
+{
+
+    /// Grab resources
+    ResourceCache * cache = GetSubsystem<ResourceCache>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+
+    /// Check if scene exist
     if(scene_==NULL)
     {
         return 1;
     }
 
+    /// Force .xml on Load
+    if(!string(filename).find(".xml"))
+    {
+        return 0;
+    }
 
-    String savesceneexport;
+    /// Create String
+    String Loadsceneexport;
 
-    ResourceCache * cache = GetSubsystem<ResourceCache>();
-    FileSystem * filesystem = GetSubsystem<FileSystem>();
-
-    savesceneexport.Append(filesystem->GetProgramDir().CString());
-    savesceneexport.Append("CoreData/");
-    savesceneexport.Append("testing.xml");
-
-    File saveFile(context_, savesceneexport.CString(), FILE_WRITE);
+    /// Set directory
+    Loadsceneexport.Append(filesystem->GetProgramDir().CString());
+    Loadsceneexport.Append("Resources/ScenesData/");
+    Loadsceneexport.Append(filename);
 
     /// Check if the account file information exist
-    if(!filesystem->FileExists(savesceneexport.CString()))
+    if(!filesystem->FileExists(Loadsceneexport.CString()))
     {
-        //cout << "\r\nAccount file ("<< savesceneexport.CString() << ") does not exist.";
+        return 0;
     }
 
-    XMLFile * savesceneexportxml= new XMLFile(context_);
+    XMLFile * loadingfile = new XMLFile(context_);
 
-    XMLElement configElem = savesceneexportxml-> CreateRoot("node");
+    /// Create a file in current context
+    File LoadFile(context_, Loadsceneexport.CString(), FILE_READ);
 
-    /// point
-    unsigned int childrencount=scene_->GetNumChildren();
+    loadingfile->Load(LoadFile);
 
-    /// Weak Pointer children
-    Vector<SharedPtr<Node> > children_;
+    XMLElement nextElement = loadingfile->GetRoot("scene");
 
-    children_ = scene_->GetChildren();
-
-    /// loop each child
-    for (Vector<SharedPtr<Node> >::Iterator i = children_.Begin(); i != children_.End(); ++i)
+    do
     {
-        /// Create a new child instance
-        Node* childnode = *i;
+        /// Create pointer
+        Node * newNode;
 
-        /// Get node infomration, check for children, and check components
-         if(childnode->GetName().Find("Generated",0,false)==String::NPOS)
-         {
-        XMLElement NodeElement = configElem. CreateChild ("node");
+        /// get node attributes
+        XMLElement AttributesPosition;
 
-        const Vector<AttributeInfo>* attributes = childnode->GetAttributes();
+        /// Is enabled
+        AttributesPosition = nextElement.GetChild ("attribute");
 
-        /// loop through attributes
-        for (Vector<AttributeInfo>::ConstIterator j = attributes->Begin(); j != attributes->End(); ++j)
-        {
-            XMLElement AttributeElement;
+        /// name
+        AttributesPosition = AttributesPosition.GetNext ("attribute");
 
-            AttributeElement = NodeElement. CreateChild ("attribute");
-            AttributeElement.SetAttribute ("name", j -> name_);
-            AttributeElement.SetAttribute ("value", j -> defaultValue_.ToString());
+        /// position
+        AttributesPosition = AttributesPosition.GetNext ("attribute");
+        Vector3 NodePosition= AttributesPosition .GetVector3("value");
 
-        }
+        /// rotation
+        AttributesPosition = AttributesPosition.GetNext ("attribute");
+        Quaternion NodeRotation =  AttributesPosition.GetQuaternion ("value");
 
-        if(childnode->GetNumChildren())
-        {
-            SaveSceneNode(childnode, NodeElement);
-        }
-        else
-        {
-            SaveSceneNodeComponents(childnode,NodeElement);
-        }
 
-        }
+        float nodeScale = nextElement.GetFloat("Scale");
+
+        cout << "position" << NodePosition.ToString().CString();
+        newNode=scene_->InstantiateXML (nextElement,(const Vector3 &)Vector3(NodePosition),(const Quaternion &)Quaternion(NodeRotation),REPLICATED);
+
+        cout << nextElement.GetName().CString() << endl;
+
+        /// push
+        ManagedNodes.Push(newNode);
+
+        nextElement=nextElement.GetNext();
+
     }
-    savesceneexportxml->Save(saveFile);
-
-}
-
-/// Recursive
-int Manager::SaveSceneNode(Node * node, XMLElement parentelement)
-{
-    /// Define a temporary pointer
-    Vector<SharedPtr<Node> > subchildren_;
-
-    /// Get children node
-    subchildren_ = node->GetChildren();
-
-    for (Vector<SharedPtr<Node> >::Iterator i = subchildren_.Begin(); i != subchildren_.End(); ++i)
-    {
-        /// Create a new child instance
-        Node* childnode = *i;
-
-        /// Get node infomration, check for children, and check components
-        if(childnode->GetName().Find("Generated",0,false)==String::NPOS)
-        {
-            ///cout << "SubNode :" << childnode->GetName().CString() <<endl;
-            XMLElement NodeElement = parentelement. CreateChild ("node");
-
-            if(childnode->GetNumChildren())
-            {
-                SaveSceneNode(childnode, parentelement);
-            }
-            else
-            {
-                SaveSceneNodeComponents(childnode,parentelement);
-            }
-        }
-    }
-}
-int Manager::SaveSceneNodeComponents(Node *node, XMLElement parentelement)
-{
-    /// Define temporary pointer for components
-    Vector< SharedPtr< Component > > 	subcomponents_;
-
-    /// If node has no components
-    if(node->	GetNumComponents ()==0)
-    {
-        cout << " Node has no components" << endl;
-
-        return 1;
-    }
-
-    /// Get children node
-    subcomponents_ = node->GetComponents();
-
-    /// Loop through components
-    for (Vector<SharedPtr<Component> >::Iterator i = subcomponents_.Begin(); i != subcomponents_.End(); ++i)
-    {
-        Component * subcomponent = *i;
-
-        XMLElement componentElement = parentelement.CreateChild ("component");
-        componentElement.SetAttribute("Type", subcomponent->GetTypeName());
-
-        /// READ EACH COMPONENT AND GET ATTRIBUTES
-        if(subcomponent->GetNumAttributes ())
-        {
-            /// set virtual const
-            const Vector<AttributeInfo>* attributes = subcomponent->GetAttributes();
-
-            /// loop through attributes
-            for (Vector<AttributeInfo>::ConstIterator i = attributes->Begin(); i != attributes->End(); ++i)
-            {
-                /// output info
-                ///cout << i -> name_.CString() << " type " << i -> defaultValue_. GetTypeName ().CString() <<" value " << i -> defaultValue_.ToString().CString()<< endl;
-                XMLElement AttributeElement =  componentElement. CreateChild ("attribute");
-                AttributeElement.SetAttribute ("name", i -> name_);
-                AttributeElement.SetAttribute ("value", i -> defaultValue_.ToString());
-            }
-
-        }
-    }
+    while(nextElement.NotNull());
 
     return 1;
 }
+
+

@@ -5,6 +5,9 @@
 #include "Ptr.h"
 #include <vector>
 
+#define MANAGESTATICMODEL 0
+#define MANAGELIGHT 100
+
 namespace Urho3D
 {
 class Geometry;
@@ -36,27 +39,33 @@ public:
 
     virtual ~Manager();
 
+    /// Setscene
     void SetScene(Scene * scene);
 
-    int AddObject(int type, const char * name, float x, float y, float z, const char *filename);
+    /// Add Objects
+    int AddObject(int type, const char * name, float x, float y, float z, const char *filename, bool physics=false);
 
-    int SaveScene(int mode);
+    /// public
+    int AddGeneratedObject(Node * node);
 
+    /// Save nodes
+    int SaveManagedNodes(const char *filename);
+    int SaveManagedGeneratedNodes(const char *filename);
+
+    int LoadManagedNodes(const char *filename);
 
 protected:
 
 private:
-    /// Node related functions
-    int SaveSceneNode(Node * node, XMLElement parentelement);
-    int SaveSceneNodeComponents(Node *node, XMLElement parentelement);
 
-    /// Weak Pointer children
-    Vector<SharedPtr<Node> > children_;
+    /// create a vector list of managed nodes
+    Vector <Node *> ManagedNodes;
+    Vector <Node *> ManagedGeneratedNodes;
 
      /// Scene.
     Scene * scene_;
-      XMLFile * savesceneexportxml;
-      XMLElement configElem;
+
+
 };
 
 #endif // MANAGER_H

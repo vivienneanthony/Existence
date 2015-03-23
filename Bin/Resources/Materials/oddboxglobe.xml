@@ -1,0 +1,6 @@
+<material>
+	<technique name="Techniques/Diff.xml"/>
+	<texture name="Textures/oddbox.png" unit="diffuse"/>
+	<parameter name="MatDiffColor" value="0.055718 0.0846261 0.339683 1"/>
+	<parameter name="MatSpecColor" value="1 1 1 50"/>
+</material>

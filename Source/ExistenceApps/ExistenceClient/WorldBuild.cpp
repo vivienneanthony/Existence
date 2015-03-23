@@ -105,6 +105,7 @@ int WorldBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule terra
     /// Get scene and terrain node
     Scene * scene_ = this -> GetScene();
     Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
+
     Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
     /// Get terrain size

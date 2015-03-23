@@ -157,9 +157,10 @@ private:
     int ConsoleActionRenderer(const char * lineinput);
     int ConsoleActionBuild(const char * lineinput);
 
-    void GenerateScene(terrain_rule terrainrule);
+    void GenerateScene(terrain_rule terrainrule, const char *differentialfilename="");
     int GenerateSceneBuildWorld(terrain_rule terrainrule);
     int GenerateSceneUpdateEnvironment(terrain_rule terrainrule);
+    int GenerateSceneLoadDifferential(const char *filename=NULL);
 
     /// The Window.
     SharedPtr<Window> window_;

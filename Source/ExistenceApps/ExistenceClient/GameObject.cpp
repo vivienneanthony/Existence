@@ -42,11 +42,12 @@
 #define OBJECTTYPE_Camera        100
 #define OBJECTTYPE_Light         101
 
+
 using namespace std;
 /// Base code
 GameObject::GameObject(Context* context) :
     LogicComponent(context),
-    GameObjectLifetime(0)
+    GameObjectLifetime(-1.0f)
 {
     /// Only the physics update event is needed: unsubscribe from the rest for optimization
     SetUpdateEventMask(USE_FIXEDUPDATE);
@@ -62,6 +63,7 @@ void GameObject::RegisterObject(Context* context)
 
     return;
 }
+
 
 /// Creation of a game object
 void GameObject::Start()

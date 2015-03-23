@@ -3143,6 +3143,11 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
 
+    /// Set Scene
+    Manager * manager_ = GetSubsystem<Manager>();
+    manager_->SetScene(scene_);
+
+
     Input* input = GetSubsystem<Input>();
 
     /// string string leaving something comparable
@@ -3238,7 +3243,7 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
         terrainrule.creationtime=creationtime; /// new for randomizing
 
         /// generate a seen
-        GenerateScene(terrainrule);
+        GenerateScene(terrainrule, argument[6+padded].c_str());
     }
 /// Run trhrough arugments - first check if FILE
     else if (argument[1]=="file")
@@ -3313,13 +3318,11 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
         ///Set an initial position for the camera scene node above the ground
         cameraNode_->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 
-
     }
 
 /// Setup viewport
     SharedPtr<Viewport> viewport(new Viewport(context_, scene_, cameraNode_->GetComponent<Camera>()));
     renderer->SetViewport(0, viewport);
-
 
 /// Loop through the whole scene and get the root Node
     Node * RootNode = scene_ -> GetParent();
@@ -3373,7 +3376,6 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 /// use UI cursor
 /// Enable OS cursor
     ui->GetCursor()->SetVisible(true);
-
 
     if(ui->GetCursor()->IsVisible())
     {
@@ -3868,7 +3870,7 @@ int ExistenceClient::LoadCharacterMesh(String nodename, unsigned int alienrace, 
 }
 
 // code to handle actual commans
-void ExistenceClient::GenerateScene(terrain_rule terrainrule)
+void ExistenceClient::GenerateScene(terrain_rule terrainrule,const char *differentialfilename)
 {
 
     /// Define Resouces
@@ -3877,6 +3879,7 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
+    Manager * manager_ = GetSubsystem<Manager>();
 
     /// create variables (urho3d)
     String InputDataFile;
@@ -3886,6 +3889,7 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     scene_-> CreateComponent<PhysicsWorld>();
     scene_-> CreateComponent<DebugRenderer>();
 
+    manager_->SetScene(scene_);
 
     /// test creation
     if(terrainrule.creationtime==0)
@@ -3950,7 +3954,6 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     light2->SetSpecularIntensity(.3f);
     light2->SetBrightness(.6);
     light2->SetColor(Color(1.0f, 1.0f,.95f));
-
 
     lightNode2->SetRotation(Quaternion(55.7392,0,0));
     lightNode2->SetPosition(Vector3(0.0f,3.0f,0.0f));
@@ -4105,7 +4108,6 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
 
             blend-> SetPixel(x,y,resultcolor);
 
-
         }
     }
 
@@ -4124,6 +4126,9 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
     Vector3 position(0.0f,0.0f);
     position.y_ = terrain->GetHeight(position) + 1.0f;
 
+    /// Add node
+    manager_->AddGeneratedObject(terrainNode);
+
     /// Position character
     Node * characternode_ = scene_->CreateChild("Character");
     characternode_->SetPosition(Vector3(0.0f, position.y_ , 0.0f));
@@ -4136,6 +4141,13 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule)
 
     /// Add objects functions
     GenerateSceneBuildWorld(terrainrule);
+
+    /// Load differiental
+    if(differentialfilename)
+    {
+        GenerateSceneLoadDifferential(differentialfilename);
+
+    }
 
     return;
 }
@@ -4346,6 +4358,29 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
         ++idx;
     }
 
+    /// parameters for zone related command
+    if(argument[1]=="generatedbasicinfo")
+    {
+        /// Continue if a zone exist
+        if(Node * terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true))
+        {
+            if(ProceduralTerrain * proceduralComponent = terrainNode-> GetComponent<ProceduralTerrain>())
+            {
+
+                /// Check component
+                proceduralterrain proceduralterraindefaults;
+
+                /// Get component values
+                proceduralterraindefaults = proceduralComponent -> Get();
+
+                float sealevel=proceduralterraindefaults.sealevel;
+                int subworldtype=proceduralterraindefaults.subworldtype;
+                int worldtype=proceduralterraindefaults.worldtype;
+                unsigned int creationtime=proceduralterraindefaults.creationtime;
+            }
+        }
+    }
+
 
     /// parameters for zone related command
     if(argument[1]=="zone")
@@ -4413,10 +4448,29 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
 
             }
 
+            if(argument[3]=="lighttype")
+            {
+                /// Use filename to change type
+                if(argument[4]=="directional")
+                {
+                    SceneLight -> SetLightType(LIGHT_DIRECTIONAL);
+                }
+
+                if(argument[4]=="spot")
+                {
+                    SceneLight -> SetLightType(LIGHT_SPOT);
+                }
+
+                if(argument[4]=="point")
+                {
+                    SceneLight -> SetLightType(LIGHT_POINT);
+                }
+            }
+
         }
     }
 
-    /// parameters for zone related command - Old code
+/// parameters for zone related command - Old code
     if(argument[1]=="pointsteep")
     {
         /// Get Terrain
@@ -4452,7 +4506,7 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
         Print(stringoutput.c_str());
     }
 
-    /// parameters for zone related command
+/// parameters for zone related command
     if(argument[1]=="terrainsize")
     {
 
@@ -4630,19 +4684,26 @@ int ExistenceClient::ConsoleActionCharacter(const char * lineinput)
     }
 
     /// parameters for debug related command
-    if(argument[1]=="locate")
+    if(argument[1]=="locate"||argument[1]=="getposition")
     {
 
-        Node* objectNode = scene_->GetChild("Character");
+        /// Get character node
+        if(Node* objectNode = scene_->GetChild("Character"))
+        {
+            /// Get node position
+            Vector3 position = objectNode->GetWorldPosition();
 
-        Vector3 position = objectNode->GetWorldPosition();
-
-        Print ("Character : Loc"+position.ToString()+"\n");
+            /// Print character position
+            Print ("Character located at Vector3("+position.ToString()+")");
+        }
+        else
+        {
+            Print ("Character node not located");
+        }
     }
 
     return 1;
 }
-
 
 /// Routine for Console Environment related actions
 int ExistenceClient::ConsoleActionRenderer(const char * lineinput)
@@ -4845,23 +4906,176 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
         ++idx;
     }
 
+    /// Conole Command :/build move
+    if(argument[1]=="moveobject")
+    {
+        /// Get character node
+        if(Node* objectNode = scene_->GetChild(argument[2].c_str(),true))
+        {
+
+            /// Get node position
+            Vector3 position = Vector3(StringToFloat(argument[3]),StringToFloat(argument[4]),StringToFloat(argument[5]));
+
+            objectNode->SetPosition(position);
+
+            /// Print character position
+            Print ("Node "+String(argument[2].c_str())+" moved to ("+position.ToString()+").");
+        }
+        else
+        {
+            Print ("Missing Node. Node "+String(argument[2].c_str())+" cannot be moved");
+        }
+    }
+
+    /// Conole Command :/build rotate
+    if(argument[1]=="rotateobject")
+    {
+        /// Get character node
+        if(Node* objectNode = scene_->GetChild(argument[2].c_str(),true))
+        {
+
+            /// Get node position
+            Quaternion rotation= Quaternion(0.0f,StringToFloat(argument[3]),StringToFloat(argument[4]),StringToFloat(argument[5]));
+
+            objectNode->SetRotation(rotation);
+
+            /// Print character position
+            Print ("Node "+String(argument[2].c_str())+" rotated to ("+rotation.ToString()+").");
+        }
+        else
+        {
+            Print ("Missing Node. Node "+String(argument[2].c_str())+" cannot be rotated.");
+        }
+    }
+
+/// Conole Command :/build rotate
+    if(argument[1]=="massobject")
+    {
+        /// Get character node
+        if(Node* objectNode = scene_->GetChild(argument[2].c_str(),true))
+        {
+
+            if(RigidBody * objectNodeRigid=objectNode->GetComponent<RigidBody>())
+            {
+                /// if rigid body was created
+                if(objectNodeRigid)
+                {
+
+                    /// Get node position
+                    float mass= StringToFloat(argument[3]);
+
+                    /// avoid zero size
+                    if(mass<0)
+                    {
+                        mass=0;
+                    }
+
+                    /// Set Mass
+                    objectNodeRigid -> SetMass(mass);
+                }
+            }
+        }
+        else
+        {
+
+        }
+    }
+/// Conole Command :/build rotate
+    if(argument[1]=="scaleobject")
+    {
+        /// Get character node
+        if(Node* objectNode = scene_->GetChild(argument[2].c_str(),true))
+        {
+
+            /// Get node position
+            float scale= StringToFloat(argument[3]);
+
+            /// avoid zero size
+            if(scale==0)
+            {
+                scale=0.01f;
+            }
+
+            objectNode->SetScale(scale);
+
+            /// Print character position
+            Print ("Node "+String(argument[2].c_str())+" scaled to "+scale+".");
+        }
+        else
+        {
+            Print ("Missing Node. Node "+String(argument[2].c_str())+" cannot be scaled.");
+        }
+    }
+
+
+    /// Set Scene
     if(argument[1]=="setscene")
     {
 
         manager_->SetScene(scene_);
     }
 
-    /// parameters for debug related command
+    /// Save scene
     if(argument[1]=="savescene")
     {
+        manager_->SaveManagedNodes(argument[2].c_str());
+        manager_->SaveManagedGeneratedNodes(argument[2].c_str());
+    }
 
-            //bool result=manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str());
-            manager_->SaveScene(1);
+
+    /// Save scene
+    if(argument[1]=="savemanaged")
+    {
+        manager_->SaveManagedNodes(argument[2].c_str());
+    }
+
+
+    /// Save scene
+    if(argument[1]=="loadmanaged")
+    {
+        manager_->LoadManagedNodes(argument[2].c_str());
+    }
+
+
+    /// parameters for debug related command
+    if(argument[1]=="addobject")
+    {
+        /// Add physics
+        if(argument[8]=="physics")
+        {
+            manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str(),true);
+        }
+        else
+        {
+            manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str(),false);
+        }
+
 
     }
 
 
     return 1;
+}
+
+int ExistenceClient::GenerateSceneLoadDifferential(const char *filename)
+{
+    /// get resources
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    UI* ui = GetSubsystem<UI>();
+    FileSystem * filesystem = GetSubsystem<FileSystem>();
+    Manager * manager_ = GetSubsystem<Manager>();
+
+    /// create variables (urho3d)
+    String additionresourcePath;
+
+    additionresourcePath.Append(filesystem->GetProgramDir().CString());
+    additionresourcePath.Append("Resources/ScenesData/");
+
+    /// load
+    manager_->LoadManagedNodes(filename);
+
 }
 
 

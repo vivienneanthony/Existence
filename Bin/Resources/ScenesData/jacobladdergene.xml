@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<scene>
+	<node id="8">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="GeneratedTerrainRule_Terrain" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Terrain" id="10">
+			<attribute name="Material" value="Material;Materials/TerrainEdit.xml" />
+			<attribute name="Vertex Spacing" value="1 0.5 1" />
+			<attribute name="Patch Size" value="64" />
+			<attribute name="Smooth Height Map" value="true" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="ProceduralTerrain" id="11">
+			<attribute name="World Type" value="0" />
+			<attribute name="Sub World Type" value="0" />
+			<attribute name="Sea Level" value="0" />
+			<attribute name="Creation" value="7740" />
+			<attribute name="Width" value="2048" />
+			<attribute name="Height" value="2048" />
+			<attribute name="Override" value="true" />
+			<attribute name="Octaves" value="7" />
+			<attribute name="Base Persistence" value="0.23" />
+			<attribute name="Octave 1" value="0.62" />
+			<attribute name="Octave 2" value="0.1426" />
+			<attribute name="Octave 3" value="0.032798" />
+			<attribute name="Octave 4" value="0.00754354" />
+			<attribute name="Octave 7" value="9.17822e-05" />
+			<attribute name="Octave 8" value="2.11099e-05" />
+		</component>
+		<component type="RigidBody" id="1036" />
+		<component type="CollisionShape" id="1037">
+			<attribute name="Shape Type" value="Terrain" />
+		</component>
+		<component type="GameObject" id="1045" />
+	</node>
+</scene>
