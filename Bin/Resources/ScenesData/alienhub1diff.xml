@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<scene>
+	<node id="13">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="alienhub1" />
+		<attribute name="Position" value="-67.9287 58.7 -101.57" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="2083">
+			<attribute name="Model" value="Model;Models/alienhub1.mdl" />
+			<attribute name="Material" value="Material;Materials/alienhub1surface.xml;Materials/alienhub1ball.xml;Materials/alienhub1grill.xml" />
+		</component>
+		<component type="RigidBody" id="2084">
+			<attribute name="Physics Position" value="-67.9287 58.7 -101.57" />
+			<attribute name="Angular Factor" value="0 0 0" />
+			<attribute name="Collision Event Mode" value="Always" />
+		</component>
+		<component type="CollisionShape" id="2085">
+			<attribute name="Offset Position" value="5.96046e-07 1.61339 4.76837e-07" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+		<component type="GameObject" id="2086" />
+	</node>
+</scene>

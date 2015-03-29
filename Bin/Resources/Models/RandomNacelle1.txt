@@ -1,0 +1,6 @@
+Materials/RandomNacelle1Surface1.xml
+Materials/RandomNacelle1Surface2.xml
+Materials/RandomNacelle1Glass.xml
+Materials/RandomNacelle1WarpCore.xml
+Materials/RandomNacelle1Bussard1.xml
+Materials/RandomNacelle1Bussard2.xml

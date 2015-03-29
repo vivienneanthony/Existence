@@ -77,7 +77,7 @@
 #include "Account.h"
 #include "PlayerLevels.h"
 #include "GameObject.h"
-#include "WorldBuild.h"
+#include "EnvironmentBuild.h"
 #include "Manager.h"
 
 #include <string>
@@ -118,9 +118,10 @@ ExistenceClient::ExistenceClient(Context* context) :
     /// Register
     Character::RegisterObject(context);
     GameObject::RegisterObject(context);
-    WorldBuild::RegisterObject(context);
+    EnvironmentBuild::RegisterObject(context);
     ProceduralTerrain::RegisterObject(context);
     Manager::RegisterNewSubsystem(context);
+    EnvironmentBuild::RegisterNewSubsystem(context);
 
 }
 
@@ -280,7 +281,7 @@ void ExistenceClient::Start()
     XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
     FileSystem * filesystem = GetSubsystem<FileSystem>();
     Manager * manager_ = GetSubsystem<Manager>();
-
+    EnvironmentBuild * environmentbuild_ = GetSubsystem<EnvironmentBuild>();
 
     ///Manager* manager = GetSubsystem<Manager>();
 
@@ -3145,8 +3146,11 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
     /// Set Scene
     Manager * manager_ = GetSubsystem<Manager>();
-    manager_->SetScene(scene_);
+    EnvironmentBuild * environmentbuild_= GetSubsystem<EnvironmentBuild>();
 
+    /// clear api
+    manager_->SetScene(scene_);
+    environmentbuild_->SetScene(scene_);
 
     Input* input = GetSubsystem<Input>();
 
@@ -3880,7 +3884,7 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule,const char *differe
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
     Manager * manager_ = GetSubsystem<Manager>();
-
+    EnvironmentBuild * environmentbuild_= GetSubsystem<EnvironmentBuild>();
     /// create variables (urho3d)
     String InputDataFile;
 
@@ -3889,7 +3893,9 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule,const char *differe
     scene_-> CreateComponent<PhysicsWorld>();
     scene_-> CreateComponent<DebugRenderer>();
 
+    /// clear api
     manager_->SetScene(scene_);
+    environmentbuild_->SetScene(scene_);
 
     /// test creation
     if(terrainrule.creationtime==0)
@@ -4128,6 +4134,7 @@ void ExistenceClient::GenerateScene(terrain_rule terrainrule,const char *differe
 
     /// Add node
     manager_->AddGeneratedObject(terrainNode);
+
 
     /// Position character
     Node * characternode_ = scene_->CreateChild("Character");
@@ -4764,21 +4771,20 @@ int ExistenceClient::GenerateSceneBuildWorld(terrain_rule terrainrule)
     Graphics* graphics = GetSubsystem<Graphics>();
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
+    EnvironmentBuild * environmentbuild_ = GetSubsystem<EnvironmentBuild>();
 
     /// Build world
-    Node * WorldObjectNode = scene_-> CreateChild("WorldBuildNode");
-    WorldBuild * WorldBuildObjects = WorldObjectNode  -> CreateComponent<WorldBuild>();
+    ///Node * WorldObjectNode = scene_-> CreateChild("EnvironmentBuildNode");
+    ///EnvironmentBuild * EnvironmentBuildObjects = WorldObjectNode  -> CreateComponent<EnvironmentBuild>();
 
     Node* terrainNode = scene_->GetChild("GeneratedTerrainRule_Terrain",true);
     Terrain * terrain = terrainNode -> GetComponent<Terrain>();
 
     /// Initialize
-    WorldBuildObjects -> Initialize();
+    environmentbuild_-> Initialize();
 
-    WorldBuildObjects -> GenerateWorldObjects(0, terrainrule);
+    environmentbuild_ -> GenerateWorldObjects(0, terrainrule);
 
-    /// Remove
-    WorldObjectNode -> Remove();
 
     return 1;
 }
@@ -4885,6 +4891,7 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
     UI* ui = GetSubsystem<UI>();
     FileSystem * filesystem = GetSubsystem<FileSystem>();
     Manager * manager_ = GetSubsystem<Manager>();
+    EnvironmentBuild * environmentbuild_ = GetSubsystem<EnvironmentBuild>();
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
@@ -4977,7 +4984,7 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
         }
         else
         {
-
+            // blank
         }
     }
 /// Conole Command :/build rotate
@@ -5011,8 +5018,8 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
     /// Set Scene
     if(argument[1]=="setscene")
     {
-
         manager_->SetScene(scene_);
+        environmentbuild_->SetScene(scene_);
     }
 
     /// Save scene
@@ -5040,15 +5047,28 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
     /// parameters for debug related command
     if(argument[1]=="addobject")
     {
-        /// Add physics
-        if(argument[8]=="physics")
+        int collisiontype=COLLISION_BOX;
+
+        if (argument[8]=="box")
         {
-            manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str(),true);
+            collisiontype=COLLISION_BOX;
+        }
+        else if(argument[8]=="convex")
+        {
+            collisiontype=COLLISION_CONVEX;
+        }
+        else if(argument[8]=="triangle")
+        {
+            collisiontype=COLLISION_TRIANGLE;
         }
         else
         {
-            manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str(),false);
+            collisiontype=COLLISION_BOX;
         }
+
+        /// add collision
+        manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str(),collisiontype);
+
 
 
     }
@@ -5077,6 +5097,8 @@ int ExistenceClient::GenerateSceneLoadDifferential(const char *filename)
     manager_->LoadManagedNodes(filename);
 
 }
+
+
 
 
 

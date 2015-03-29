@@ -37,6 +37,7 @@
 
 
 using namespace Urho3D;
+using namespace std;
 
 const int CTRL_FORWARD = 1;
 const int CTRL_BACK = 2;

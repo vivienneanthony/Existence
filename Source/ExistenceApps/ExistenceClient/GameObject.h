@@ -29,6 +29,7 @@
 #include "Node.h"
 
 using namespace Urho3D;
+using namespace std;
 
 
 /// Character component, responsible for physical movement according to controls, as well as animation.

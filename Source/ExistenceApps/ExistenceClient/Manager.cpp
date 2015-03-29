@@ -79,7 +79,7 @@
 #include "GameStateHandler.h"
 #include "Account.h"
 #include "GameObject.h"
-#include "WorldBuild.h"
+#include "EnvironmentBuild.h"
 #include "Manager.h"
 
 #include "../../Engine/Procedural/RandomNumberGenerator.h"
@@ -90,7 +90,7 @@ using namespace std;
 
 
 Manager::Manager(Context* context) :
-    Object(context)
+    LogicComponent(context)
 {
     scene_ = NULL;
 }
@@ -121,9 +121,6 @@ void Manager::SetScene(Scene *scene)
     /// Clear Managed Nodes
     ManagedNodes.Clear();
     ManagedGeneratedNodes.Clear();
-
-
-
 }
 
 int Manager::AddGeneratedObject(Node * node)
@@ -132,7 +129,7 @@ int Manager::AddGeneratedObject(Node * node)
 }
 
 /// Add Object
-int Manager::AddObject(int type, const char * name, float x, float y, float z, const char *filename, bool physics)
+int Manager::AddObject(int type, const char * name, float x, float y, float z, const char *filename, unsigned int physics)
 {
     /// Get Needed SubSystems
     Renderer* renderer = GetSubsystem<Renderer>();
@@ -148,9 +145,7 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
         return 0;
     }
 
-
     String AddObjectFilename;
-
 
     /// Switch type for filename
     switch (type)
@@ -202,6 +197,7 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
 
         /// Addd Static Model component
         AddObjectNodeObject->SetModel(cache->GetResource<Model>(AddObjectFilename));
+        AddObjectNodeObject-> SetCastShadows(true);
 
         /// Create material
         String AddObjectFilenameMaterial;
@@ -211,6 +207,8 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
 
         ///AddObjectNodeObject->SetMaterial(cache->GetResource<Material>(AddObjectFilenameMaterial));
         /// Add Physics
+
+        physics=true;
         if(physics)
         {
             /// Create rigidbody, and set non-zero mass so that the body becomes dynamic
@@ -220,7 +218,12 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
             AddObjectNodeRigid->SetMass(0);
 
             /// Get static model and bounding box, calculate offset
-            BoundingBox  AddObjectNodeObjectBounding = AddObjectNodeObject->GetBoundingBox();
+            StaticModel * staticmodelreference = AddObjectNode->GetComponent<StaticModel>();
+            Model * staticmodel=staticmodelreference->GetModel();
+
+
+            /// Get static model and bounding box, calculate offset
+            BoundingBox  AddObjectNodeObjectBounding = staticmodel->GetBoundingBox();
 
             Vector3 BoundBoxCenter = AddObjectNodeObjectBounding.Center();
 
@@ -235,8 +238,24 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
             CollisionShape* AddObjectNodeCollisionShape = AddObjectNode->CreateComponent<CollisionShape>();
 
             /// Set shape collision
-            AddObjectNodeCollisionShape->SetBox(Vector3::ONE);
-            AddObjectNodeCollisionShape->SetPosition(Vector3(BoundBoxCenter));
+            switch (physics)
+            {
+            case COLLISION_BOX:
+                AddObjectNodeCollisionShape->SetBox(Vector3::ZERO);
+                break;
+            case COLLISION_CONVEX:
+                AddObjectNodeCollisionShape->SetConvexHull(staticmodel,1, Vector3::ONE,Vector3::ZERO);
+                break;
+            case COLLISION_TRIANGLE:
+                AddObjectNodeCollisionShape->SetTriangleMesh(staticmodel,1, Vector3::ONE,Vector3::ZERO);
+                break;
+            default:
+                AddObjectNodeCollisionShape->SetBox(Vector3::ZERO);
+                break;
+            }
+
+
+            AddObjectNodeCollisionShape->SetPosition(Vector3::ZERO);
             AddObjectNodeCollisionShape->SetLodLevel(1);
         }
 

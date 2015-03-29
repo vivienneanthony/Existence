@@ -8,29 +8,16 @@
 #define MANAGESTATICMODEL 0
 #define MANAGELIGHT 100
 
-namespace Urho3D
-{
-class Geometry;
-class Drawable;
-class Light;
-class Material;
-class Pass;
-class Technique;
-class Octree;
-class Graphics;
-class RenderPath;
-class RenderSurface;
-class ResourceCache;
-class Skeleton;
-class OcclusionBuffer;
-class Texture2D;
-class TextureCube;
-class View;
-class Zone;
-class Scene;
-}
 
-class URHO3D_API Manager : public Object
+#define COLLISION_BOX       0
+#define COLLISION_CONVEX    1
+#define COLLISION_TRIANGLE  2
+
+
+using namespace Urho3D;
+using namespace std;
+
+class URHO3D_API Manager : public LogicComponent
 {
     OBJECT(Manager);
 public:
@@ -43,7 +30,7 @@ public:
     void SetScene(Scene * scene);
 
     /// Add Objects
-    int AddObject(int type, const char * name, float x, float y, float z, const char *filename, bool physics=false);
+    int AddObject(int type, const char * name, float x, float y, float z, const char *filename, unsigned int physics=false);
 
     /// public
     int AddGeneratedObject(Node * node);
@@ -62,7 +49,7 @@ private:
     Vector <Node *> ManagedNodes;
     Vector <Node *> ManagedGeneratedNodes;
 
-     /// Scene.
+    /// Scene.
     Scene * scene_;
 
 
