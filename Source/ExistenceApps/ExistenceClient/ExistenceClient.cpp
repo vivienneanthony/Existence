@@ -4923,7 +4923,15 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
             /// Get node position
             Vector3 position = Vector3(StringToFloat(argument[3]),StringToFloat(argument[4]),StringToFloat(argument[5]));
 
-            objectNode->SetPosition(position);
+            if(RigidBody * objectNodeRigid=objectNode->GetComponent<RigidBody>())
+            {
+                objectNodeRigid->SetPosition(position);
+            }
+            else
+            {
+                objectNode->SetPosition(position);
+            }
+
 
             /// Print character position
             Print ("Node "+String(argument[2].c_str())+" moved to ("+position.ToString()+").");
@@ -4938,11 +4946,13 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
     if(argument[1]=="rotateobject")
     {
         /// Get character node
-        if(Node* objectNode = scene_->GetChild(argument[2].c_str(),true))
+        if(Node* objectNode = scene_->GetChild(argument[2].c_str(),false))
         {
 
             /// Get node position
             Quaternion rotation= Quaternion(0.0f,StringToFloat(argument[3]),StringToFloat(argument[4]),StringToFloat(argument[5]));
+
+            RigidBody * objectNodeRigid=objectNode->GetComponent<RigidBody>();
 
             objectNode->SetRotation(rotation);
 
@@ -5068,11 +5078,7 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
 
         /// add collision
         manager_-> AddObject(atoi(argument[2].c_str()),argument[3].c_str(), StringToFloat(argument[4]), StringToFloat(argument[5]), StringToFloat(argument[6]), argument[7].c_str(),collisiontype);
-
-
-
     }
-
 
     return 1;
 }

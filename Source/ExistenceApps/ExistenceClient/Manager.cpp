@@ -186,7 +186,7 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
         /// check if static model exist
 
         /// create node
-        Node * AddObjectNode = 	scene_ -> CreateChild (String(name));
+        Node * AddObjectNode = scene_ -> CreateChild (String(name));
 
         /// Setup node in scene
         AddObjectNode->SetPosition(Vector3(x,y,z));
@@ -208,7 +208,6 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
         ///AddObjectNodeObject->SetMaterial(cache->GetResource<Material>(AddObjectFilenameMaterial));
         /// Add Physics
 
-        physics=true;
         if(physics)
         {
             /// Create rigidbody, and set non-zero mass so that the body becomes dynamic
@@ -221,7 +220,6 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
             StaticModel * staticmodelreference = AddObjectNode->GetComponent<StaticModel>();
             Model * staticmodel=staticmodelreference->GetModel();
 
-
             /// Get static model and bounding box, calculate offset
             BoundingBox  AddObjectNodeObjectBounding = staticmodel->GetBoundingBox();
 
@@ -229,7 +227,8 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
 
             /// Set zero angular factor so that physics doesn't turn the character on its own.
             /// Instead we will control the character yaw manually
-            AddObjectNodeRigid->SetAngularFactor(Vector3::ZERO);
+            AddObjectNodeRigid->SetAngularFactor(Vector3::ONE);
+            AddObjectNodeRigid->SetLinearFactor (Vector3::ONE);
 
             /// Set the rigidbody to signal collision also when in rest, so that we get ground collisions properly
             AddObjectNodeRigid->SetCollisionEventMode(COLLISION_ALWAYS);
@@ -257,7 +256,13 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
 
             AddObjectNodeCollisionShape->SetPosition(Vector3::ZERO);
             AddObjectNodeCollisionShape->SetLodLevel(1);
+            AddObjectNodeCollisionShape->SetSize (Vector3::ONE);
         }
+
+        /// Setup node in scene
+        AddObjectNode->SetPosition(Vector3(x,y,z));
+        AddObjectNode->SetRotation(Quaternion(0.0f,0.0f,0.0f));
+        AddObjectNode->SetScale(1);
 
         /// Add a component
         GameObject * AddObjectNodeGameComponent = AddObjectNode -> CreateComponent<GameObject>();

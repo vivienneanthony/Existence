@@ -35,6 +35,6 @@
 		<component type="CollisionShape" id="1037">
 			<attribute name="Shape Type" value="Terrain" />
 		</component>
-		<component type="GameObject" id="1053" />
+		<component type="GameObject" id="1063" />
 	</node>
 </scene>

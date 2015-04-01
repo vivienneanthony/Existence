@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<node id="16788712">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="Suzanne" />
+	<attribute name="Position" value="-11.053 37.8855 71.6455" />
+	<attribute name="Rotation" value="1 7.45058e-09 0 0" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<component type="StaticModel" id="16777296">
+		<attribute name="Model" value="Model;Models/randomnacelle1.mdl" />
+		<attribute name="Material" value="Material;Materials/RandomNacelle1Surface2.xml;Materials/RandomNacelle1Surface1.xml;Materials/RandomNacelle1Glass.xml;Materials/RandomNacelle1WarpCore.xml;Materials/RandomNacelle1Metal1.xml;Materials/RandomNacelle1Bussard2.xml;Materials/RandomNacelle1Bussard1.xml" />
+	</component>
+	<component type="RigidBody" id="16777297">
+		<attribute name="Physics Rotation" value="1 7.45058e-09 0 0" />
+		<attribute name="Physics Position" value="-11.053 37.8855 71.6455" />
+		<attribute name="Mass" value="0.2" />
+	</component>
+	<component type="CollisionShape" id="16777298">
+		<attribute name="Shape Type" value="ConvexHull" />
+		<attribute name="Model" value="Model;Models/Suzanne.mdl" />
+		<attribute name="LOD Level" value="1" />
+	</component>
+</node>

@@ -1,6 +1,15 @@
+<?xml version="1.0"?>
 <material>
-	<technique name="Techniques/Diff.xml"/>
-	<texture name="Textures/alienhub1.png" unit="diffuse"/>
-	<parameter name="MatDiffColor" value="0.407138 0.407138 0.407138 1"/>
-	<parameter name="MatSpecColor" value="0.169811 0.169811 0.169811 50"/>
+	<technique name="Techniques/DiffSpec.xml" quality="0" loddistance="0" />
+	<texture unit="diffuse" name="Textures/alienhub1.png" />
+	<texture unit="specular" name="Textures/alienhub1specularity.png" />
+	<parameter name="UOffset" value="1 0 0 0" />
+	<parameter name="VOffset" value="0 1 0 0" />
+	<parameter name="MatDiffColor" value="0.407138 0.407138 0.407138 1" />
+	<parameter name="MatEmissiveColor" value="0 0 0" />
+	<parameter name="MatEnvMapColor" value="1 1 1" />
+	<parameter name="MatSpecColor" value="0.169811 0.169811 0.169811 50" />
+	<cull value="ccw" />
+	<shadowcull value="ccw" />
+	<depthbias constant="0" slopescaled="0" />
 </material>

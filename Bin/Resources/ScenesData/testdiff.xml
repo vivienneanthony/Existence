@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<scene>
+	<node id="209">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="alienhub" />
+		<attribute name="Position" value="3 0 3" />
+		<attribute name="Rotation" value="0 0.5 0.5 0.2" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="427">
+			<attribute name="Model" value="Model;Models/alienhub1.mdl" />
+			<attribute name="Material" value="Material;Materials/alienhub1surface.xml;Materials/alienhub1ball.xml;Materials/alienhub1grill.xml" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+		<component type="RigidBody" id="428">
+			<attribute name="Physics Rotation" value="0 0.680414 0.680414 0.272166" />
+			<attribute name="Physics Position" value="3 0 3" />
+			<attribute name="Collision Event Mode" value="Always" />
+		</component>
+		<component type="CollisionShape" id="429">
+			<attribute name="Shape Type" value="TriangleMesh" />
+			<attribute name="Model" value="Model;Models/alienhub1.mdl" />
+			<attribute name="LOD Level" value="1" />
+		</component>
+		<component type="GameObject" id="430" />
+	</node>
+</scene>

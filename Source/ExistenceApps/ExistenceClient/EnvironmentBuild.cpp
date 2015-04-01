@@ -198,6 +198,23 @@ int EnvironmentBuild::GenerateWorldObjects(const time_t &timeseed,  terrain_rule
     //cout << "\r\nEnvironmentBuild Seed" << terrainrules.creationtime+2<<endl;
     switch (terrainrules.worldtype)
     {
+    case WORLD_DESERT:
+        // Plant rocks
+        for(unsigned int i=0; i<600; i++)
+        {
+
+            /// Pick a random spotskx
+            Spotx=RandomRule.RandRange(1024);
+            Spotz=RandomRule.RandRange(1024);
+
+            randomSpotx=(float)Spotx-512.0f;
+            randomSpotz=(float)Spotz-512.0f;
+
+            /// Create rocks on paths
+            CreateObjectsAlongPath(EnvironmentBuild_ROCKS, patchWorldSize.x_, patchWorldSize.y_,randomSpotx,randomSpotz, 6, 100.0f, terrainHeightMap);
+        }
+        break;
+
         /// world type terrain
     case WORLD_TERRAIN:
         /// Generate grass
@@ -757,21 +774,39 @@ int EnvironmentBuild::CreateObjectsAlongPath(int objecttypes, float worldsize_x,
                 switch (objecttypes)
                 {
                 case EnvironmentBuild_ROCKS:
-                    /// Pick random
-                    pick= RandomRule.RandRange(2)+1;
 
-                    if(pick==1)
+                    if(terrainrules.worldtype==WORLD_DESERT)
                     {
-                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/Rock1.mdl"));
-                        ObjectStaticModelBase->ApplyMaterialList("Resources/Models/Rock1.txt");
+                        /// Pick random
+                        pick= RandomRule.RandRange(5)+1;
+                        String filenameBaseModel = String("Resources/Models/AlienRockDesert");
+                        filenameBaseModel.Append(String(pick));
+                        filenameBaseModel.Append(".mdl");
+                        String filenameBaseTexture = String("Resources/Models/AlienRockDesert1.txt");
+
+
+                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>(filenameBaseModel));
+                        ObjectStaticModelBase->ApplyMaterialList(filenameBaseTexture);
 
                     }
-                    else
+                /*    else
                     {
-                        ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/Rock2.mdl"));
-                        ObjectStaticModelBase->ApplyMaterialList("Resources/Models/Rock2.txt");
 
-                    }
+                        /// Pick random
+                        pick= RandomRule.RandRange(2)+1;
+                        if(pick==1)
+                        {
+                            ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/Rock1.mdl"));
+                            ObjectStaticModelBase->ApplyMaterialList("Resources/Models/Rock1.txt");
+
+                        }
+                        else
+                        {
+                            ObjectStaticModelBase->SetModel(cache->GetResource<Model>("Resources/Models/Rock2.mdl"));
+                            ObjectStaticModelBase->ApplyMaterialList("Resources/Models/Rock2.txt");
+
+                        }
+                    }*/
                     break;
                 case EnvironmentBuild_TREES:
                     /// Pick Random
@@ -828,8 +863,19 @@ int EnvironmentBuild::CreateObjectsAlongPath(int objecttypes, float worldsize_x,
                 BoundingBox  ObjectStaticModelBox = ObjectStaticModelBase ->GetBoundingBox();
                 Vector3  ObjectStaticModelCenter= ObjectStaticModelBox.HalfSize();
 
+                float ychange=0;
+
+                if(terrainrules.worldtype==WORLD_DESERT&&objecttypes==EnvironmentBuild_ROCKS)
+                {
+                    ychange=0;
+                }else
+                {
+                    ychange=ObjectStaticModelCenter.y_;
+                }
+
+
                 /// Select a possible position to place a Rock
-                Vector3 selectPosition=Vector3(position_x,terrain->GetHeight(Vector3(position_x,0.0f,position_z))+ObjectStaticModelCenter.y_,position_z);
+                Vector3 selectPosition=Vector3(position_x,terrain->GetHeight(Vector3(position_x,0.0f,position_z))+ychange,position_z);
 
 
                 /// Save collisions
