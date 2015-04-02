@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<scene>
+	<node id="672">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="GameObject" id="4077" />
+		<node id="673">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="alienhub1" />
+			<attribute name="Position" value="-67.9287 58.7 -101.57" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="2362">
+				<attribute name="Model" value="Model;Models/alienhub1.mdl" />
+				<attribute name="Material" value="Material;Materials/alienhub1surface.xml;Materials/alienhub1ball.xml;Materials/alienhub1grill.xml" />
+			</component>
+			<component type="RigidBody" id="2363">
+				<attribute name="Physics Position" value="-67.9287 58.7 -101.57" />
+				<attribute name="Angular Factor" value="0 0 0" />
+				<attribute name="Collision Event Mode" value="Always" />
+			</component>
+			<component type="CollisionShape" id="2364">
+				<attribute name="Shape Type" value="TriangleMesh" />
+				<attribute name="Model" value="Model;Models/alienhub1.mdl" />
+				<attribute name="LOD Level" value="1" />
+			</component>
+			<component type="GameObject" id="4078" />
+		</node>
+		<node id="674">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="aliencommantenna1" />
+			<attribute name="Position" value="27.8524 56.7604 -43.6167" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="2365">
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="Material" value="Material;Materials/aliencommantenna1antenna.xml;Materials/aliencommantenna1surface.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+			<component type="RigidBody" id="2366">
+				<attribute name="Physics Position" value="27.8524 56.7604 -43.6167" />
+				<attribute name="Angular Factor" value="0 0 0" />
+				<attribute name="Collision Event Mode" value="Always" />
+			</component>
+			<component type="CollisionShape" id="2367">
+				<attribute name="Shape Type" value="TriangleMesh" />
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="LOD Level" value="1" />
+			</component>
+			<component type="GameObject" id="4079" />
+		</node>
+		<node id="675">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="aliencommantenna3" />
+			<attribute name="Position" value="8.96581 70.1164 -105.302" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="2368">
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="Material" value="Material;Materials/aliencommantenna1antenna.xml;Materials/aliencommantenna1surface.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+			<component type="RigidBody" id="2369">
+				<attribute name="Physics Position" value="8.96581 70.1164 -105.302" />
+				<attribute name="Angular Factor" value="0 0 0" />
+				<attribute name="Collision Event Mode" value="Always" />
+			</component>
+			<component type="CollisionShape" id="2370">
+				<attribute name="Shape Type" value="TriangleMesh" />
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="LOD Level" value="1" />
+			</component>
+			<component type="GameObject" id="4080" />
+		</node>
+		<node id="676">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="aliencommantenna2" />
+			<attribute name="Position" value="16.6735 67.8509 -83.9448" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="2371">
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="Material" value="Material;Materials/aliencommantenna1antenna.xml;Materials/aliencommantenna1surface.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+			<component type="RigidBody" id="2372">
+				<attribute name="Physics Position" value="16.6735 67.8509 -83.9448" />
+				<attribute name="Angular Factor" value="0 0 0" />
+				<attribute name="Collision Event Mode" value="Always" />
+			</component>
+			<component type="CollisionShape" id="2373">
+				<attribute name="Shape Type" value="TriangleMesh" />
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="LOD Level" value="1" />
+			</component>
+			<component type="GameObject" id="4081" />
+		</node>
+		<node id="677">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="aliencommantenna6" />
+			<attribute name="Position" value="-28.0511 57.85 -118.615" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="2374">
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="Material" value="Material;Materials/aliencommantenna1antenna.xml;Materials/aliencommantenna1surface.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+			<component type="RigidBody" id="2375">
+				<attribute name="Physics Position" value="-28.0511 57.85 -118.615" />
+				<attribute name="Angular Factor" value="0 0 0" />
+				<attribute name="Collision Event Mode" value="Always" />
+			</component>
+			<component type="CollisionShape" id="2376">
+				<attribute name="Shape Type" value="TriangleMesh" />
+				<attribute name="Model" value="Model;Models/aliencommantenna1.mdl" />
+				<attribute name="LOD Level" value="1" />
+			</component>
+			<component type="GameObject" id="4082" />
+		</node>
+		<node id="678">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="federationnacelle" />
+			<attribute name="Position" value="-259.144 24 55.4767" />
+			<attribute name="Rotation" value="0.852869 0.0868241 -0.492404 -0.150384" />
+			<attribute name="Scale" value="10 10 10" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="2377">
+				<attribute name="Model" value="Model;Models/federationnacelle1.mdl" />
+				<attribute name="Material" value="Material;Materials/federationnacelle1surface2.xml;Materials/federationnacelle1surface1.xml;Materials/federationnacelle1glass.xml;Materials/federationnacelle1warpCore.xml;Materials/federationnacelle1metal1.xml;Materials/federationnacelle1bussard2.xml;Materials/federationnacelle1bussard1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+			<component type="RigidBody" id="2378">
+				<attribute name="Physics Rotation" value="0.852869 0.0868241 -0.492404 -0.150384" />
+				<attribute name="Physics Position" value="-259.144 24 55.4767" />
+				<attribute name="Collision Event Mode" value="Always" />
+			</component>
+			<component type="CollisionShape" id="2379">
+				<attribute name="Shape Type" value="TriangleMesh" />
+				<attribute name="Model" value="Model;Models/federationnacelle1.mdl" />
+				<attribute name="LOD Level" value="1" />
+			</component>
+			<component type="GameObject" id="4083" />
+		</node>
+		<node id="679">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="federationnacellepart1" />
+			<attribute name="Position" value="-94.706 32.2854 136.333" />
+			<attribute name="Rotation" value="1.49502e-08 0.939693 -0.34202 -4.10753e-08" />
+			<attribute name="Scale" value="10 10 10" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="2380">
+				<attribute name="Model" value="Model;Models/federationnacelle1part1.mdl" />
+				<attribute name="Material" value="Material;Materials/federationnacelle1surface1.xml;Materials/federationnacelle1bussard2.xml;Materials/federationnacelle1bussard1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+			<component type="RigidBody" id="2381">
+				<attribute name="Physics Rotation" value="1.49502e-08 0.939693 -0.34202 -4.10753e-08" />
+				<attribute name="Physics Position" value="-94.706 32.2854 136.333" />
+				<attribute name="Collision Event Mode" value="Always" />
+			</component>
+			<component type="CollisionShape" id="2382">
+				<attribute name="Shape Type" value="TriangleMesh" />
+				<attribute name="Model" value="Model;Models/federationnacelle1part1.mdl" />
+				<attribute name="LOD Level" value="1" />
+			</component>
+			<component type="GameObject" id="4084" />
+		</node>
+	</node>
+</scene>

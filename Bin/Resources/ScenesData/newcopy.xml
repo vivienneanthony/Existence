@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
-<scene>
-		<node id="3">
+<node id="2">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="" />
+	<attribute name="Position" value="67.9254 65.5036 109.551" />
+	<attribute name="Rotation" value="1 0 0 0" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<node id="3">
 		<attribute name="Is Enabled" value="true" />
 		<attribute name="Name" value="alienhub1" />
 		<attribute name="Position" value="-67.9287 58.7 -101.57" />
@@ -12,7 +18,7 @@
 			<attribute name="Material" value="Material;Materials/alienhub1surface.xml;Materials/alienhub1ball.xml;Materials/alienhub1grill.xml" />
 		</component>
 		<component type="RigidBody" id="33575">
-			<attribute name="Physics Position" value="-67.9287 58.7 -101.57" />
+			<attribute name="Physics Position" value="-0.0032959 124.204 7.98122" />
 			<attribute name="Angular Factor" value="0 0 0" />
 			<attribute name="Collision Event Mode" value="Always" />
 		</component>
@@ -35,7 +41,7 @@
 			<attribute name="Cast Shadows" value="true" />
 		</component>
 		<component type="RigidBody" id="33578">
-			<attribute name="Physics Position" value="27.8524 56.7604 -43.6167" />
+			<attribute name="Physics Position" value="95.7778 122.264 65.9345" />
 			<attribute name="Angular Factor" value="0 0 0" />
 			<attribute name="Collision Event Mode" value="Always" />
 		</component>
@@ -58,7 +64,7 @@
 			<attribute name="Cast Shadows" value="true" />
 		</component>
 		<component type="RigidBody" id="33581">
-			<attribute name="Physics Position" value="8.96581 70.1164 -105.302"/>
+			<attribute name="Physics Position" value="76.8912 135.62 4.24922" />
 			<attribute name="Angular Factor" value="0 0 0" />
 			<attribute name="Collision Event Mode" value="Always" />
 		</component>
@@ -81,7 +87,7 @@
 			<attribute name="Cast Shadows" value="true" />
 		</component>
 		<component type="RigidBody" id="33584">
-			<attribute name="Physics Position" value="16.6735 67.8509 -83.9448" />
+			<attribute name="Physics Position" value="84.5989 133.354 25.6064" />
 			<attribute name="Angular Factor" value="0 0 0" />
 			<attribute name="Collision Event Mode" value="Always" />
 		</component>
@@ -104,7 +110,7 @@
 			<attribute name="Cast Shadows" value="true" />
 		</component>
 		<component type="RigidBody" id="33587">
-			<attribute name="Physics Position" value="-28.0511 57.85 -118.615" />
+			<attribute name="Physics Position" value="39.8743 123.354 -9.06377" />
 			<attribute name="Angular Factor" value="0 0 0" />
 			<attribute name="Collision Event Mode" value="Always" />
 		</component>
@@ -127,8 +133,8 @@
 			<attribute name="Cast Shadows" value="true" />
 		</component>
 		<component type="RigidBody" id="33590">
-			<attribute name="Physics Position" value="-259.144 24 55.4767" />
 			<attribute name="Physics Rotation" value="0.852869 0.0868241 -0.492404 -0.150384" />
+			<attribute name="Physics Position" value="-191.219 89.5036 165.028" />
 			<attribute name="Collision Event Mode" value="Always" />
 		</component>
 		<component type="CollisionShape" id="33591">
@@ -151,7 +157,7 @@
 		</component>
 		<component type="RigidBody" id="33593">
 			<attribute name="Physics Rotation" value="1.49502e-08 0.939693 -0.34202 -4.10753e-08" />
-			<attribute name="Physics Position" value="-94.706 32.2854 136.333" />
+			<attribute name="Physics Position" value="-26.7806 97.789 245.884" />
 			<attribute name="Collision Event Mode" value="Always" />
 		</component>
 		<component type="CollisionShape" id="33594">
@@ -160,4 +166,4 @@
 			<attribute name="LOD Level" value="1" />
 		</component>
 	</node>
-</scene>
+</node>

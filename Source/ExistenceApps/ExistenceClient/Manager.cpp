@@ -191,7 +191,7 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
         /// Setup node in scene
         AddObjectNode->SetPosition(Vector3(x,y,z));
         AddObjectNode->SetRotation(Quaternion(0.0f,0.0f,0.0f));
-        AddObjectNode->SetScale(1);
+        AddObjectNode->SetScale(Vector3::ONE);
 
         StaticModel* AddObjectNodeObject = AddObjectNode->CreateComponent<StaticModel>();
 
@@ -217,8 +217,7 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
             AddObjectNodeRigid->SetMass(0);
 
             /// Get static model and bounding box, calculate offset
-            StaticModel * staticmodelreference = AddObjectNode->GetComponent<StaticModel>();
-            Model * staticmodel=staticmodelreference->GetModel();
+            Model * staticmodel=cache->GetResource<Model>(AddObjectFilename);
 
             /// Get static model and bounding box, calculate offset
             BoundingBox  AddObjectNodeObjectBounding = staticmodel->GetBoundingBox();
@@ -253,8 +252,7 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
                 break;
             }
 
-
-            AddObjectNodeCollisionShape->SetPosition(Vector3::ZERO);
+            /// Position is not correct hmmm.
             AddObjectNodeCollisionShape->SetLodLevel(1);
             AddObjectNodeCollisionShape->SetSize (Vector3::ONE);
         }
@@ -262,7 +260,7 @@ int Manager::AddObject(int type, const char * name, float x, float y, float z, c
         /// Setup node in scene
         AddObjectNode->SetPosition(Vector3(x,y,z));
         AddObjectNode->SetRotation(Quaternion(0.0f,0.0f,0.0f));
-        AddObjectNode->SetScale(1);
+        AddObjectNode->SetScale(Vector3::ONE);
 
         /// Add a component
         GameObject * AddObjectNodeGameComponent = AddObjectNode -> CreateComponent<GameObject>();
@@ -480,8 +478,7 @@ int Manager::LoadManagedNodes(const char *filename)
 
     do
     {
-        /// Create pointer
-        Node * newNode;
+
 
         /// get node attributes
         XMLElement AttributesPosition;
@@ -501,12 +498,13 @@ int Manager::LoadManagedNodes(const char *filename)
         Quaternion NodeRotation =  AttributesPosition.GetQuaternion ("value");
 
 
-        float nodeScale = nextElement.GetFloat("Scale");
+        /// rotation
+        AttributesPosition = AttributesPosition.GetNext ("attribute");
+        float nodeScale = AttributesPosition.GetFloat("Scale");
 
-        cout << "position" << NodePosition.ToString().CString();
-        newNode=scene_->InstantiateXML (nextElement,(const Vector3 &)Vector3(NodePosition),(const Quaternion &)Quaternion(NodeRotation),REPLICATED);
+        Node * newNode = scene_->InstantiateXML (nextElement,(const Vector3 &)Vector3(NodePosition),(const Quaternion &)Quaternion(NodeRotation),REPLICATED);
 
-        cout << nextElement.GetName().CString() << endl;
+        //cout << nextElement.GetName().CString() << endl;
 
         /// push
         ManagedNodes.Push(newNode);

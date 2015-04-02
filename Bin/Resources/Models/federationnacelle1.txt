@@ -1,0 +1,7 @@
+Materials/federationnacelle1surface2.xml
+Materials/federationnacelle1surface1.xml
+Materials/federationnacelle1glass.xml
+Materials/federationnacelle1warpCore.xml
+Materials/federationnacelle1metal1.xml
+Materials/federationnacelle1bussard2.xml
+Materials/federationnacelle1bussard1.xml

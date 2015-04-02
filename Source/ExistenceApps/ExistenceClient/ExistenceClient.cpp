@@ -3156,7 +3156,7 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[40];
+    string argument[80];
 
     /// create a idx
     int idx = 0;
@@ -3345,10 +3345,15 @@ void ExistenceClient::loadScene(const int mode, const char * lineinput)
         /// Do nothing like copy the node vector to a node
         OrphanNode = NodesVector[i];
 
+        /// Prevent double game objects
         /// Add a component
-        GameObject * OrphanNodeGameObject = OrphanNode-> CreateComponent<GameObject>();
+        if (!OrphanNode -> HasComponent<GameObject>())
+        {
+            GameObject * OrphanNodeGameObject = OrphanNode-> CreateComponent<GameObject>();
 
-        OrphanNodeGameObject -> SetLifetime(-1);
+            OrphanNodeGameObject -> SetLifetime(-1);
+        }
+
     }
 
 /// Create a character
@@ -4347,7 +4352,7 @@ int ExistenceClient::ConsoleActionEnvironment(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[40];
+    string argument[80];
 
     /// create a idx
     int idx = 0;
@@ -4558,7 +4563,7 @@ int ExistenceClient::ConsoleActionCamera(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[40];
+    string argument[80];
 
     /// create a idx
     int idx = 0;
@@ -4621,7 +4626,7 @@ int ExistenceClient::ConsoleActionDebug(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[40];
+    string argument[80];
 
     /// create a idx
     int idx = 0;
@@ -4672,7 +4677,7 @@ int ExistenceClient::ConsoleActionCharacter(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[40];
+    string argument[80];
 
     /// create a idx
     int idx = 0;
@@ -4725,7 +4730,7 @@ int ExistenceClient::ConsoleActionRenderer(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[40];
+    string argument[80];
 
     /// create a idx
     int idx = 0;
@@ -4895,7 +4900,7 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
 
     /// string string leaving something comparable
     string argumentsstring = lineinput;
-    string argument[40];
+    string argument[80];
 
     /// create a idx
     int idx = 0;
@@ -4923,15 +4928,7 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
             /// Get node position
             Vector3 position = Vector3(StringToFloat(argument[3]),StringToFloat(argument[4]),StringToFloat(argument[5]));
 
-            if(RigidBody * objectNodeRigid=objectNode->GetComponent<RigidBody>())
-            {
-                objectNodeRigid->SetPosition(position);
-            }
-            else
-            {
-                objectNode->SetPosition(position);
-            }
-
+            objectNode->SetPosition(position);
 
             /// Print character position
             Print ("Node "+String(argument[2].c_str())+" moved to ("+position.ToString()+").");
@@ -4950,9 +4947,9 @@ int ExistenceClient::ConsoleActionBuild(const char * lineinput)
         {
 
             /// Get node position
-            Quaternion rotation= Quaternion(0.0f,StringToFloat(argument[3]),StringToFloat(argument[4]),StringToFloat(argument[5]));
+            Quaternion rotation = Quaternion(StringToFloat(argument[3]),StringToFloat(argument[4]),StringToFloat(argument[5]));
 
-            RigidBody * objectNodeRigid=objectNode->GetComponent<RigidBody>();
+            ///RigidBody * objectNodeRigid=objectNode->GetComponent<RigidBody>();
 
             objectNode->SetRotation(rotation);
 
